@@ -2,8 +2,12 @@
 
 Install the package with composer and publish the assets with the senna-ui:install command:
 
-```composer require senna/ui```
-```php artisan senna-ui:install```
+```
+composer require senna/ui
+```
+```
+php artisan senna-ui:install
+```
 
 ```
 <head>
