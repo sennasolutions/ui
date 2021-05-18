@@ -1,0 +1,7 @@
+{
+    "files.exclude": {
+        "vendor": true,
+        ".vscode": true,
+        "node_modules": true
+    }
+}

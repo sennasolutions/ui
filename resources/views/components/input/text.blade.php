@@ -1,0 +1,1 @@
+<x-senna.input {{ $attributes}}></x-senna.input>
