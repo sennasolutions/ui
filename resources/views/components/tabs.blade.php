@@ -4,12 +4,12 @@
 ])
 
 @php
-    $val = $active;
+if (isset($active)) $val = $active;
 @endphp
 
 <div
     {{ $attributes->merge(['class' => 'w-full'])->only('class') }}
-    x-data='initTabs(@entangle($attributes->wire('model')))'
+    x-data="initTabs(@safe_entangle($attributes->wire('model')) )"
     x-init='init'
 >
     <div class="mb-3 border-b"
@@ -51,6 +51,10 @@
                         tab.__x.$data.id = (index + 1);
                         return tab.__x.$data.name;
                     });
+                    console.log(activeTab)
+                    if (!this.activeTab) {
+                        this.activeTab = this.tabHeadings[0] ?? null;
+                    }
                     this.toggleTabs();
                 },
                 toggleTabs() {

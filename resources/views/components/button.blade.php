@@ -20,9 +20,9 @@
      */
     'type' => 'button',
     /**
-     * @param string size The size of the button. 'small' or 'large'. default: 'large'
+     * @param string size The size of the button. 'sm' or 'lg' or 'xl'. default: 'lg'
      */
-    'size' => 'large',
+    'size' => 'lg',
     /**
      * @param string sizeClass The classes applied to override the size.
      */
@@ -35,12 +35,23 @@
         leading-5 transform
         focus:outline-none focus:ring
         font-semibold
-        flex space-x-2 items-center
+        inline-flex space-x-2 items-center
         focus:transform active:scale-95 hover:opacity-90
         shadow-lg
     ";
 
-    $sizeClass = $sizeClass ?? ($size == "small" ? "px-4 py-2 text-sm" : "px-6 py-3");
+    $sizeClass = "px-6 py-3";
+    switch($size) {
+        case "sm":
+            $sizeClass = "px-3 py-2 text-sm";
+            break;
+        case "lg":
+            $sizeClass = "px-6 py-3";
+                break;
+        case "xl":
+            $sizeClass = "px-7 py-4 text-lg";
+            break;
+    }
 
     $circleClass = $circle ? "p-2 rounded-full justify-center" : $sizeClass . " rounded-md";
 @endphp

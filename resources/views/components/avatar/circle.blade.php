@@ -18,6 +18,10 @@
      * @param string bgColor background of the fallback SVG. default: var(--primary-color-20)
      */
     'bgColor' => 'var(--primary-color-20)',
+    /**
+     * @param string sizeClass Specify the classes for the size
+     */
+    'sizeClass' => 'w-10 h-10'
 ])
 
 @php
@@ -30,7 +34,7 @@
 @if($img && !str_contains($img, "ui-avatars.com"))
 <img {{ $attributes->merge([
     'src' => $img,
-    'class' => 'rounded-full w-10 h-10 object-cover',
+    'class' => 'flex-grow-0 flex-shrink-0  rounded-full object-cover ' . $sizeClass,
     'alt' => $name
     ]) }} />
 @else
@@ -48,7 +52,7 @@
 
 
 
-<svg {{ $attributes->merge(['class' => 'w-10 h-10 rounded-full bg-white']) }} xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" version="1.1">
+<svg {{ $attributes->merge(['class' => $sizeClass . ' flex-grow-0 flex-shrink-0  rounded-full bg-white']) }} xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" version="1.1">
     <rect fill="{{ $bgColor }}" cx="32" width="64" height="64" cy="32" r="32"/>
     <text x="50%" y="50%"
     style="color: {{ $textColor }}; line-height: 1;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;"

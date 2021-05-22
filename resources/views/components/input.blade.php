@@ -22,13 +22,17 @@
     /**
      * @param string shortcut Define a keyboard shortcut for focus. 'cmd.a' etc see alpine.
      */
-    'shortcut' => ''
+    'shortcut' => '',
+    /**
+     * @param string size 'xl', 'lg' or 'sm'
+     */
+    'size' => 'lg'
 ])
 
 @php
     $prefix = $prefix ?? false;
     $suffix = $suffix ?? false;
-    $inputChrome = default_input_chrome();
+    $inputChrome = default_input_chrome($size);
     $shortcutAttriubtes = $shortcut ? 'x-on:keydown.window.' . $shortcut . '.prevent="$refs.input.focus(); $refs.input.select()" x-on:keydown.escape="$refs.input.blur()"' : '';
 @endphp
 

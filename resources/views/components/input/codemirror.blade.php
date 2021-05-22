@@ -29,7 +29,7 @@
 @endphp
 
 <div
-    x-data="initCodemirror(@entangle($attributes->wire('model')))"
+    x-data="initCodemirror(@safe_entangle($attributes->wire('model')))"
     x-init='init(@json($config))'
     x-on:cm-refresh.window="refresh"
     {{ $attributes->merge(['class' => 'bg-gray-800 cm-wrapper relative']) }}

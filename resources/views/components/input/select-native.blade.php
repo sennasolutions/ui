@@ -17,11 +17,15 @@
     /**
      * @param array items Items can be provided as an array (key/value) via this attribute or just by using the option tags in the slot.
      */
-    'items' => []
+    'items' => [],
+    /**
+     * @param string size 'xl', 'lg' or 'sm'
+     */
+     'size' => 'lg'
 ])
 
 @php
-    $defaultChrome = default_input_chrome();
+    $defaultChrome = default_input_chrome($size);
 @endphp
 
 <div {{ $attributes->merge(['class' => 'sn-input-select-native'])->only('class') }}>

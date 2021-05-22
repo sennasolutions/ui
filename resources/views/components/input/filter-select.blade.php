@@ -21,16 +21,20 @@
     /**
      * @param array val The default value if wire:model is not used
      */
-    'val' => ''
+    'val' => '',
+    /**
+     * @param string size 'xl', 'lg' or 'sm'
+     */
+     'size' => 'lg'
 ])
 
 <div
-    x-data='createFilterSelect(@entangle($attributes->wire('model')))'
+    x-data="createFilterSelect(@safe_entangle($attributes->wire('model')))"
     x-init='init()'
     {{ $attributes->merge(['class' => 'relative flex flex-col p-3 border border-gray-200 rounded-md shadow-sm']) }}
     >
     @if($showFilter)
-    <input class="{{ default_input_chrome() }}" x-ref="search" x-model="search" type="text" placeholder="{{ $placeholder }}">
+    <input class="{{ default_input_chrome($size) }}" x-ref="search" x-model="search" type="text" placeholder="{{ $placeholder }}">
     @endif
     <div class="flex w-full mt-2 opacity-50 text-sm">
         <button type="button" x-show="Array.isArray(selected)" x-on:click.prevent="selectAll">{{ __('Select all') }}</button>

@@ -54,7 +54,7 @@
 
 <div {{ $attributes->merge(['class' => 'sn-input-group' ]) }}>
     <div class="{{ class_concat($stackClass, "flex space-y-2 flex-col", (!$isHor ? "sm:flex-row sm:space-x-4 sm:items-center" : "")) }}">
-        <label for="{{ $for }}" class="{{ class_concat($labelClass, 'text-gray-700 dark:text-gray-200 cursor-pointer flex-shrink-0', (!$isHor ? "w-32" : "") ) }}">{{ $label }}</label>
+        <label for="{{ $for }}" class="{{ class_concat($labelClass, 'dark:text-gray-200 cursor-pointer flex-shrink-0', (!$isHor ? "w-32" : "") ) }}">{{ $label }}</label>
         <div class="flex-grow">
             {{ $slot }}
         </div>

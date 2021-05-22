@@ -1,0 +1,1 @@
+@stack("senna-ui-scripts")

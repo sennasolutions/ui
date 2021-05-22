@@ -1,0 +1,1 @@
+<link rel="stylesheet" href="{{ senna_ui_asset('css/ui.css') }}">

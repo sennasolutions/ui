@@ -5,7 +5,7 @@
         name: '{{ $name }}',
         show: false,
         showIfActive(active) {
-            this.show = (this.name === active);
+            this.show = (this.name == active);
         }
     }"
      wire:ignore.self wire:key="{{ $name }}"

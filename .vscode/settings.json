@@ -3,5 +3,6 @@
         "vendor": true,
         ".vscode": true,
         "node_modules": true
-    }
+    },
+    "workspace.isHidden": false
 }
