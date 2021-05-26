@@ -54,19 +54,23 @@
 
 <div {{ $attributes->merge(['class' => 'sn-input-group' ]) }}>
     <div class="{{ class_concat($stackClass, "flex space-y-2 flex-col", (!$isHor ? "sm:flex-row sm:space-x-4 sm:items-center" : "")) }}">
-        <label for="{{ $for }}" class="{{ class_concat($labelClass, 'dark:text-gray-200 cursor-pointer flex-shrink-0', (!$isHor ? "w-32" : "") ) }}">{{ $label }}</label>
+        <label @if(isset($for))for="{{ $for }}"@endif class="{{ class_concat($labelClass, 'dark:text-gray-200 cursor-pointer flex-shrink-0', (!$isHor ? "w-32" : "") ) }}">{{ $label }}</label>
         <div class="flex-grow">
             {{ $slot }}
         </div>
     </div>
-
+    @if($error || $helpText)
     <div class="{{ $suffixClass }} {{ (!$isHor ? "sm:pl-36" : "") }}">
         @if ($error)
-        <div class="mt-1 text-red-500 text-sm {{ $errorClass }}">{{ $error }}</div>
+        <div class="mt-2 text-error-color items-center flex gap-1 text-sm {{ $errorClass }}">
+            <x-senna.icon class="w-4" name="hs-exclamation"></x-senna.icon>
+            <span>{{ $error }}</span>
+        </div>
         @endif
 
         @if ($helpText)
             <p class="mt-2 text-sm text-gray-500 {{ $helpClass }}">{{ $helpText }}</p>
         @endif
     </div>
+    @endif
 </div>

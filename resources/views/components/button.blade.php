@@ -1,7 +1,7 @@
 @php
 /**
  * @name Button
- * @description Buttons with different colors and sizes.
+ * @description Buttons with different colors and sizes. Checkout the theme.blade.php for the coloring scheme.
  */
 @endphp
 

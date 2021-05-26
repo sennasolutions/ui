@@ -1,11 +1,15 @@
 <style>
     :root {
         --base-color: rgb(36, 35, 37);
-        --primary-color: rgb(5, 150, 160);
+        /* --primary-color: rgb(5, 150, 160); */
+        --primary-color: rgb(57, 0, 163);
         --secondary-color: rgb(247, 74, 6);
         --tertiary-color: rgb(74, 28, 158);
 
         --selected-color: rgb(229, 244, 245);
+
+        --gradient-color1: rgb(2, 153, 164);
+        --gradient-color2: rgb(36, 106, 149);
 
         --error-color: rgb(238, 28, 13);
         --error-color-ring: rgb(255, 204, 204);

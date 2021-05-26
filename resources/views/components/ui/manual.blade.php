@@ -4,7 +4,9 @@
     'id' => null,
     'name' => null,
     'description' => null,
-    'padding' => true
+    'collapseCode' => false,
+    'padding' => true,
+    'paddingClass' => 'bg-gray-50 p-12 rounded-md'
 ])
 
 @php
@@ -39,7 +41,7 @@
 
         <div class="w-full mb-7">
             @if($padding)
-            <div class="bg-gray-50 p-12 rounded-md">
+            <div class="{{ $paddingClass }}">
                 {{ $slot }}
             </div>
             @else
@@ -48,10 +50,19 @@
         </div>
 
         @if(isset($contents))
-            <x-senna.panel.window-dark class="mb-7">
-                <x-senna.input.codemirror :val="$contents" copyClass="-top-9 right-2" :showCopyButton="true"></x-senna.input.codemirror>
-            </x-senna.panel.window-dark>
+        <div x-cloak x-data="{ open: false }" class="mb-6">
+            <x-senna.button.primary size="sm" x-on:click="open = !open; $nextTick(() => $dispatch('cm-refresh'))">
+                <div x-show="!open">Show code</div>
+                <div x-show="open">Hide code</div>
+            </x-senna.button.primary>
+            <div x-show="open" class="mt-4">
+                <x-senna.panel.window-dark class="mb-7">
+                    <x-senna.input.codemirror :val="$contents" copyClass="-top-9 right-2" :showCopyButton="true"></x-senna.input.codemirror>
+                </x-senna.panel.window-dark>
+            </div>
+        </div>
         @endif
+
 
         @if(isset($properties))
             {{ $properties }}

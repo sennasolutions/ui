@@ -21,11 +21,15 @@
     /**
      * @param string size 'xl', 'lg' or 'sm'
      */
-     'size' => 'lg'
+     'size' => 'lg',
+     /**
+     * @param string Whether to show an error border on the input
+     */
+     'error' => false
 ])
 
 @php
-    $defaultChrome = default_input_chrome($size);
+    $defaultChrome = default_input_chrome($size, $error);
 @endphp
 
 <div {{ $attributes->merge(['class' => 'sn-input-select-native'])->only('class') }}>

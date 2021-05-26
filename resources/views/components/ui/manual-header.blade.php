@@ -10,7 +10,7 @@
 
 <div page-search="#{{ $id }}" page-search-name="{{ $name }}" {{ $attributes }}>
     <{{ $tag }} class="!mb-1" id="{{ $id }}" nav-group="{{ $name }}">{{ $name }}</{{ $tag }}>
-    <p class="text-lg opacity-50">
+    <p class="text-lg mt-3 text-gray-400">
         {{ $slot }}
     </p>
 </div>

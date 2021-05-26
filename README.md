@@ -30,4 +30,4 @@ Add the head component to your layouts page head-tag. This will include the styl
 
 ## Documentation
 
-You can preview the components and see the full documenation on: [https://getsenna.com/senna-ui/v1]
+You can preview the components and see the full documenation on: https://getsenna.com/senna-ui/v1

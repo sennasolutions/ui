@@ -3,9 +3,12 @@ module.exports = {
     "primary-color": "var(--primary-color-100)",
     "secondary-color": "var(--secondary-color-100)",
     "tertiary-color": "var(--tertiary-color-100)",
-    
-    "gradient-color1": "var(--gradient-color1)",
-    "gradient-color2": "var(--gradient-color2)",
+
+    "error-color": "var(--error-color)",
+    "error-color-ring": "var(--error-color-ring)",
+
+    "success-color": "var(--success-color)",
+    "info-color": "var(--info-color)",
     
     "primary-color-100": "var(--primary-color-100)",
     "primary-color-90": "var(--primary-color-90)",
@@ -40,7 +43,4 @@ module.exports = {
     "tertiary-color-20": "var(--tertiary-color-20)",
     "tertiary-color-10": "var(--tertiary-color-10)",
 
-    "danger-color": "var(--danger-color)",
-    "success-color": "var(--success-color)",
-    "info-color": "var(--info-color)",
 }

@@ -25,16 +25,20 @@
     /**
      * @param string prefixClass The classes for the prefix icon
      */
-    'prefixClass' => 'text-black'
+    'prefixClass' => 'text-black',
+    /**
+     * @param string Whether to show an error border on the input
+     */
+     'error' => false
 ])
 
 @php
-    $inputClass = "" . default_input_chrome($size) . " pl-9";
+    $inputClass = "" . default_input_chrome($size, $error) . " pl-9";
     $isInline = ($config['inline'] ?? false);
 @endphp
 
 <div
-    x-data="initDatepicker(@safe_entangle($attributes->wire('model')))"
+    x-data='initDatepicker(@safe_entangle($attributes->wire('model')))'
     x-init='init(@json($config))'
     {{ ($isInline) ? 'wire:ignore' : 'wire:ignore.self' }}
     {{ $attributes->merge(['class' => 'sn-input-date relative block'])->only('class') }}

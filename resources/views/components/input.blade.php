@@ -26,19 +26,23 @@
     /**
      * @param string size 'xl', 'lg' or 'sm'
      */
-    'size' => 'lg'
+    'size' => 'lg',
+    /**
+     * @param string Whether to show an error border on the input
+     */
+    'error' => false
 ])
 
 @php
     $prefix = $prefix ?? false;
     $suffix = $suffix ?? false;
-    $inputChrome = default_input_chrome($size);
+    $inputChrome = default_input_chrome($size, $error);
     $shortcutAttriubtes = $shortcut ? 'x-on:keydown.window.' . $shortcut . '.prevent="$refs.input.focus(); $refs.input.select()" x-on:keydown.escape="$refs.input.blur()"' : '';
 @endphp
 
-<div {!! $shortcutAttriubtes !!} {{ $attributes->merge(['class' => 'sn-input-text relative block', 'x-data' => '{}'])->only('class') }}>
+<div {!! $shortcutAttriubtes !!} {{ $attributes->merge(['class' => 'sn-input-text flex-grow relative block', 'x-data' => '{}'])->only('class') }}>
     @if($prefix)
-        <div class="{{ class_merge('absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-black opacity-70 sm:text-sm', $prefixClass) }}">
+        <div class="{{ class_concat('absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-black opacity-70 sm:text-sm', $prefixClass) }}">
             {{ $prefix }}
         </div>
     @endif
@@ -46,7 +50,7 @@
         {{ $attributes->merge(['type' => $type])->except('class') }}
     />
     @if($suffix)
-        <div class="{{ class_merge('absolute inset-y-0 right-0 flex items-center pr-3 text-black opacity-70 sm:text-sm', $suffixClass) }}">
+        <div class="{{ class_concat('absolute inset-y-0 right-0 flex items-center pr-3 text-black opacity-70 sm:text-sm', $suffixClass) }}">
             {{ $suffix }}
         </div>
     @endif

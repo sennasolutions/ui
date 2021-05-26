@@ -13,11 +13,15 @@
     /**
      * @param string size 'xl', 'lg' or 'sm'
      */
-     'size' => 'lg'
+     'size' => 'lg',
+     /**
+     * @param string Whether to show an error border on the input
+     */
+     'error' => false
 ])
 
 @php
-    $inputClass = "" . default_input_chrome($size) . " " . $inputClass;
+    $inputClass = "" . default_input_chrome($size, $error) . " " . $inputClass;
 @endphp
 
 <div class="{{ $attributes->merge(['class' => 'relative block' ])->only('class') }}">

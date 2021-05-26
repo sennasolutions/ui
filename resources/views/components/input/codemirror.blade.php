@@ -76,7 +76,6 @@
                     this.copied = true
                 },
                 refresh() {
-                    console.log('refresh')
                     this.editor.refresh();
                 },
                 init(config) {
