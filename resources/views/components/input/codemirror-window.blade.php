@@ -3,13 +3,13 @@
     'title' => '',
     'copyClass' => "-top-9 right-2",
     'showCopyButton' => true,
-    'val' => null
+    'value' => null
 ])
 
 @php
- $val = $val ?? ($slot ? $slot->toHtml() : "");
+ $value = $value ?? ($slot ? $slot->toHtml() : "");
 @endphp
 
 <x-senna.panel.window-dark :title="$title" {{ $attributes->only('class')  }}>
-    <x-senna.input.codemirror  :val="$val" :copyClass="$copyClass" :config="$config" :showCopyButton="$showCopyButton" {{ $attributes->except('class')  }} />
+    <x-senna.input.codemirror  :value="$value" :copyClass="$copyClass" :config="$config" :showCopyButton="$showCopyButton" {{ $attributes->except('class')  }} />
 </x-senna.panel.window-dark>

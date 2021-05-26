@@ -15,13 +15,17 @@
      */
     'showFilter' => true,
     /**
+     * @param bool showButtons Show the select all / deselect all buttons. Default: true
+     */
+    'showButtons' => true,
+    /**
      * @param string placeholder Placeholder value for the filter
      */
     'placeholder' => 'Filter..',
     /**
-     * @param array val The default value if wire:model is not used
+     * @param array value The default value if wire:model is not used
      */
-    'val' => '',
+    'value' => null,
     /**
      * @param string size 'xl', 'lg' or 'sm'
      */
@@ -29,21 +33,24 @@
      /**
      * @param string Whether to show an error border on the input
      */
-     'error' => false
+     'error' => false,
 ])
 
+
 <div
-    x-data='createFilterSelect(@safe_entangle($attributes->wire('model')))'
+    x-data="createFilterSelect(@safe_entangle($attributes->wire("model")))"
     x-init='init()'
     {{ $attributes->merge(['class' => 'relative flex flex-col p-3 border border-gray-200 rounded-md shadow-sm']) }}
     >
     @if($showFilter)
     <input class="{{ default_input_chrome($size, $error) }}" x-ref="search" x-model="search" type="text" placeholder="{{ $placeholder }}">
     @endif
+    @if($showButtons)
     <div class="flex w-full mt-2 opacity-50 text-sm">
         <button type="button" x-show="Array.isArray(selected)" x-on:click.prevent="selectAll">{{ __('Select all') }}</button>
         <button type="button" class="ml-auto" x-show="Array.isArray(selected)" x-on:click.prevent="unselectAll">{{ __('Deselect all') }}</button>
     </div>
+    @endif
 
     <div x-ref="slot" class="max-h-32 overflow-y-auto w-full p-1.5 rounded">
         @if($items)

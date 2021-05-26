@@ -17,7 +17,7 @@
     /**
      * @param array value The initial value, if wire:model is not used
      */
-    'val' => '',
+    'value' => null,
     /**
      * @param string size 'xl', 'lg' or 'sm'
      */
@@ -50,7 +50,7 @@
     </div>
 
     <input style="{{ $isInline ? 'display: none !important;' : '' }}" x-ref="flatpicker" class="{{ $inputClass }}" {{ $attributes->merge([
-        'value' => $val,
+        'value' => $value,
         'type' => $type
     ])->except('class') }}>
 </div>

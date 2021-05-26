@@ -19,13 +19,13 @@
      */
     'copyClass' => 'top-1 right-2',
     /**
-     * @param string val The value given via this attribute or via the slot if not supplied by wire:model
+     * @param string value The value given via this attribute or via the slot if not supplied by wire:model
      */
-    'val' => null
+    'value' => null
 ])
 
 @php
- $val = $val ?? ($slot ? $slot->toHtml() : "");
+ $value = $value ?? ($slot ? $slot->toHtml() : "");
 @endphp
 
 <div

@@ -57,7 +57,7 @@
             </x-senna.button.primary>
             <div x-show="open" class="mt-4">
                 <x-senna.panel.window-dark class="mb-7">
-                    <x-senna.input.codemirror :val="$contents" copyClass="-top-9 right-2" :showCopyButton="true"></x-senna.input.codemirror>
+                    <x-senna.input.codemirror :value="$contents" copyClass="-top-9 right-2" :showCopyButton="true"></x-senna.input.codemirror>
                 </x-senna.panel.window-dark>
             </div>
         </div>

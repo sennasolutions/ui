@@ -19,9 +19,9 @@
      */
     'config' => [],
     /**
-     * @param array val The default value if wire:model is not used
+     * @param array value The default value if wire:model is not used
      */
-    'val' => '',
+    'value' => null,
 ])
 
 <div

@@ -1,10 +1,11 @@
 @props([
     'active',
-    'tabClasses' => ''
+    'tabClasses' => '',
+    'value' => null
 ])
 
 @php
-if (isset($active)) $val = $active;
+if (isset($active)) $value = $active;
 @endphp
 
 <div
