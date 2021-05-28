@@ -10,7 +10,7 @@ if (isset($active)) $value = $active;
 
 <div
     {{ $attributes->merge(['class' => 'w-full'])->only('class') }}
-    x-data='initTabs(@safe_entangle($attributes->wire('model')) )'
+    x-data="initTabs(@safe_entangle($attributes->wire('model')) )"
     x-init='init'
 >
     <div class="mb-3 border-b"

@@ -13,6 +13,7 @@
     if($componentView) {
         $compContents = file_get_contents(view($componentView)->getPath());
         preg_match_all('/@param (?<type>.*?) (?<name>.*?) (?<description>.*)/', $compContents, $propertyInfo);
+        preg_match_all('/@event (?<type>.*?) (?<name>.*?) (?<description>.*)/', $compContents, $eventInfo);
         preg_match_all('/@name (?<name>.*)/', $compContents, $nameInfo);
         preg_match_all('/@description (?<description>.*)/', $compContents, $descriptionInfo);
 
@@ -93,6 +94,40 @@
                         </x-senna.table.cell>
                         <x-senna.table.cell paddingClass="p-1.5 px-4">
                             {{ $propertyInfo['description'][$key] }}
+                        </x-senna.table.cell>
+                    </x-senna.table.row>
+                    @endforeach
+                </x-senna.table.body>
+            </x-senna.table>
+            </div>
+            @endif
+
+            @if($eventInfo[0] ?? false)
+            <div class="w-full overflow-y-auto mt-5">
+            <x-senna.table class="w-full !whitespace-normal">
+                <x-senna.table.header>
+                    <x-senna.table.heading class="w-24" paddingClass="py-2 p-4">
+                        Event
+                    </x-senna.table.heading>
+                    <x-senna.table.heading  class="w-24" paddingClass="py-2 p-4">
+                        Type
+                    </x-senna.table.heading>
+                    <x-senna.table.heading paddingClass="py-2 p-4">
+                        Description
+                    </x-senna.table.heading>
+                </x-senna.table.header>
+
+                <x-senna.table.body>
+                    @foreach($eventInfo[0] as $key => $match)
+                    <x-senna.table.row>
+                        <x-senna.table.cell paddingClass="p-1.5 px-4">
+                            {{ $eventInfo['name'][$key] }}
+                        </x-senna.table.cell>
+                        <x-senna.table.cell paddingClass="p-1.5 px-4" class="opacity-50">
+                            {{ $eventInfo['type'][$key] }}
+                        </x-senna.table.cell>
+                        <x-senna.table.cell paddingClass="p-1.5 px-4">
+                            {{ $eventInfo['description'][$key] }}
                         </x-senna.table.cell>
                     </x-senna.table.row>
                     @endforeach

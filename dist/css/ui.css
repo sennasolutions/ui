@@ -844,6 +844,9 @@ select {
 .senna-ui .ml-auto {
 	margin-left: auto;
 }
+.senna-ui .mt-3 {
+	margin-top: 0.75rem;
+}
 .senna-ui .mb-6 {
 	margin-bottom: 1.5rem;
 }
@@ -858,9 +861,6 @@ select {
 }
 .senna-ui .\!mb-1 {
 	margin-bottom: 0.25rem !important;
-}
-.senna-ui .mt-3 {
-	margin-top: 0.75rem;
 }
 .senna-ui .mt-6 {
 	margin-top: 1.5rem;
@@ -895,6 +895,9 @@ select {
 .senna-ui .h-\[1\.15rem\] {
 	height: 1.15rem;
 }
+.senna-ui .h-6 {
+	height: 1.5rem;
+}
 .senna-ui .h-8 {
 	height: 2rem;
 }
@@ -924,6 +927,9 @@ select {
 }
 .senna-ui .w-4 {
 	width: 1rem;
+}
+.senna-ui .w-6 {
+	width: 1.5rem;
 }
 .senna-ui .w-32 {
 	width: 8rem;
@@ -1098,6 +1104,9 @@ select {
 }
 .senna-ui .border-t {
 	border-top-width: 1px;
+}
+.senna-ui .border-none {
+	border-style: none;
 }
 .senna-ui .\!border-none {
 	border-style: none !important;
@@ -1328,6 +1337,9 @@ select {
 }
 .senna-ui .pl-9 {
 	padding-left: 2.25rem;
+}
+.senna-ui .pl-10 {
+	padding-left: 2.5rem;
 }
 .senna-ui .pl-12 {
 	padding-left: 3rem;

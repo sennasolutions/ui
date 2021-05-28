@@ -47,10 +47,11 @@
      */
     'showMap' => true,
     /**
-     * @param array value The initial value, if wire:model is not used
+     * @param array value The initial value, if wire:model is not used. The value is the google maps place object. place.geometry.location.lat, place.geometry.location.lng, place.formatted_address are required.
      */
     'value' => null
 ])
+
 
 @if(!config('senna.ui.maps.apiKey'))
     <div>
@@ -64,7 +65,7 @@
         <x-senna.input.group :label="$label">
             <div class="sn-input-text flex-grow relative block">
                 <div class="{{ class_concat('absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-black opacity-70 sm:text-sm') }}">
-                    <x-senna.icon class="w-5 h-5" name="hs-location-marker"></x-senna.icon>
+                    <x-senna.icon class="w-5 h-5 -mt-1" name="hs-location-marker"></x-senna.icon>
                 </div>
                 <input type="text" x-ref="input" class="{{ class_concat(default_input_chrome($size, $error), $inputClass, "pl-10" ) }}"/>
             </div>
@@ -98,7 +99,9 @@
             markers: [],
             mapsConfig: {},
             autocompleteConfig: {},
-            init(mapsConfig, autocompleteConfig) {
+            init(mapsConfig, autocompleteConfig, wireId) {
+
+
                 this.mapsConfig = mapsConfig
                 this.autocompleteConfig = autocompleteConfig
 
@@ -128,11 +131,21 @@
             },
             initSearch() {
                 const options = {
-                    fields: ["formatted_address", "geometry", "name"],
+                    fields: ["formatted_address", "address_components", "geometry", "name"],
                     ...this.autocompleteConfig,
                 };
 
                 this.search = new google.maps.places.Autocomplete(this.$search, options);
+                this.$search.addEventListener('blur', (ev) => {
+                    if(!document.querySelector(".pac-item-selected")) {
+                        var simDown = new KeyboardEvent("keydown", {
+                            keyCode: 40,
+                            which: 40
+                        });
+
+                        this.$search.dispatchEvent(simDown);
+                    }
+                })
                 this.$search.addEventListener('keydown', (ev) => {
                     if(ev.code === "Enter" && !document.querySelector(".pac-item-selected")) {
                         var simDown = new KeyboardEvent("keydown", {
@@ -184,23 +197,20 @@
             },
             setValueFromPlace(place) {
                 if (place && place.geometry && place.geometry.location) {
-                    this.value = {
-                        name: place.formatted_address,
-                        shortName: place.name,
-                        lat: place.geometry.location.lat(),
-                        lng: place.geometry.location.lng(),
-                        viewport: place.geometry.viewport.toJSON()
-                    }
+                    // console.log(JSON.stringify(place))
+                    this.value = JSON.parse(JSON.stringify(place))
                 }
             },
             addMarkerFromValue(value) {
-                if (value.name) {
-                    this.$search.value = value.name
+
+                if (value.formatted_address) {
+                    this.$search.value = value.formatted_address
                 }
 
                 if (this.map) {
+
                     this.clearMarkers();
-                    let point = {lat:value.lat, lng:value.lng};
+                    let point = {lat:value.geometry.location.lat, lng:value.geometry.location.lng};
 
                     this.addMarker({
                         position: point,
@@ -208,7 +218,7 @@
                     })
 
                     if (value.viewport) {
-                        this.maps.fitBounds(value.viewport);
+                        this.maps.fitBounds(value.geometry.viewport);
                     } else {
                         let bounds = new google.maps.LatLngBounds();
                         bounds.extend(point)

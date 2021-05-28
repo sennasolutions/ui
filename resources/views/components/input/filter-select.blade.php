@@ -1,7 +1,7 @@
 @php
 /**
  * @name Filter Select
- * @description A filterable select using alpine
+ * @description A filterable select using alpine.
  */
 @endphp
 
@@ -11,17 +11,33 @@
      */
     'items' => null,
     /**
+     * @param string identifier Unique string that is added onto events. Example: filter-select:{identifier}:addValue
+     */
+    'identifier' => '',
+    /**
      * @param bool showFilter Show the filter input. Default: true
      */
     'showFilter' => true,
+    /**
+     * @param bool showAddOption Show a box below to manually add values
+     */
+    'showAddOption' => false,
     /**
      * @param bool showButtons Show the select all / deselect all buttons. Default: true
      */
     'showButtons' => true,
     /**
+     * @param bool showDeleteButtons Show the delete buttons after each value
+     */
+    'showDeleteButtons' => false,
+    /**
      * @param string placeholder Placeholder value for the filter
      */
-    'placeholder' => 'Filter..',
+    'placeholder' => __('Filter..'),
+    /**
+     * @param string addPlaceholder Placeholder value for the add field
+     */
+    'addPlaceholder' => __('Enter a value to add'),
     /**
      * @param array value The default value if wire:model is not used
      */
@@ -31,15 +47,19 @@
      */
      'size' => 'lg',
      /**
-     * @param string Whether to show an error border on the input
+     * @param string error Whether to show an error border on the input
      */
      'error' => false,
 ])
 
+@php
+    $wireId = isset($_instance) && $_instance->id ? '"' .$_instance->id . '"' : 'null';
+@endphp
+
 
 <div
     x-data="createFilterSelect(@safe_entangle($attributes->wire("model")))"
-    x-init='init()'
+    x-init='init($dispatch, {{ $wireId }}, @json($identifier))'
     {{ $attributes->merge(['class' => 'relative flex flex-col p-3 border border-gray-200 rounded-md shadow-sm']) }}
     >
     @if($showFilter)
@@ -61,6 +81,15 @@
             {{ $slot }}
         @endif
     </div>
+
+    @if($showAddOption)
+    <div class="flex space-x-2 mt-3">
+        <input class="{{ default_input_chrome($size, $error) }}" x-ref="add" x-model="add" type="text" placeholder="{{ $addPlaceholder }}">
+        <x-senna.button x-on:click="addValue" class="flex-shrink-0" type="submit">
+            {{ __("Add") }}
+        </x-senna.button>
+    </div>
+    @endif
 </div>
 
 @once
@@ -69,15 +98,37 @@
         function createFilterSelect(selected) {
             return {
                 search: '',
+                add: '',
                 visible: [],
                 selected: selected,
                 allNames: ['bike', 'car', 'boat'],
                 selectAll() { this.selected = this.getItems() },
                 unselectAll() { this.selected = []},
-                init() {
+                init($dispatch, wireId, identifier) {
+                    this.$dispatch = $dispatch
+                    this.identifier = identifier
+                    this.identifierEvent = identifier ? indentifier + ":" : "";
+                    this.$wire = (window.Livewire) ? window.Livewire.find(wireId) : null;
+
                     this.$watch('search', search => {
                         this.filter()
                     })
+                },
+                // @event livewire wire:filter-select:addValue  When the add button is clicked. Has the value as parameter.
+                // @event js filter-select:addValue  When the add button is clicked. Has the value as parameter.
+                addValue() {
+                    if (this.$wire) {
+                        this.$wire.emit('filter-select:' + this.identifierEvent + 'addValue', this.add)
+                    }
+                    this.$dispatch('filter-select:' + this.identifierEvent + 'addValue', this.add)
+                },
+                // @event livewire filter-select:removeValue  When the remove button is clicked. Has the key as parameter.
+                // @event js filter-select:removeValue  When the remove button is clicked. Has the key as parameter.
+                deleteValue(key) {
+                    if (this.$wire) {
+                        this.$wire.emit('filter-select:' + this.identifierEvent + 'deleteValue', key)
+                    }
+                    this.$dispatch('filter-select:' + this.identifierEvent + 'deleteValue', key)
                 },
                 filter() {
                     this.visible = this.getItems()

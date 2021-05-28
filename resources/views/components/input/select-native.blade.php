@@ -23,7 +23,7 @@
      */
      'size' => 'lg',
      /**
-     * @param string Whether to show an error border on the input
+     * @param string error Whether to show an error border on the input
      */
      'error' => false
 ])

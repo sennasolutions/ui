@@ -26,7 +26,7 @@
 
 <div
     {{ $attributes->merge(['class' => 'flex-grow'])->only('class') }}
-    x-data='initSelect(@safe_entangle($attributes->wire('model')))'
+    x-data="initSelect(@safe_entangle($attributes->wire('model')))"
 	x-init='init(@json($config))'
     x-ref="wrapper"
 	>

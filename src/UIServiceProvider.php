@@ -37,13 +37,13 @@ class UIServiceProvider extends ServiceProvider {
         Blade::directive('safe_entangle', function ($expression) {
             $entangle = class_exists(Livewire::class) ? "<?php if(count(\$attributes->thatStartWith('wire:model')->getAttributes()) > 0): ?>" . \Livewire\LivewireBladeDirectives::entangle($expression) . "<?php endif; ?>" : '';
             return <<<EOT
-<?php if (isset(\$value) && \$value !== null): ?><?php echo is_array(\$value) ? json_encode(\$value) : "`" . htmlentities(\$value) . "`" ?><?php else: ?>{$entangle}<?php endif; ?>
+<?php if (isset(\$value) && \$value !== null): ?><?php echo inject_in_javascript(\$value) ?><?php else: ?>{$entangle}<?php endif; ?>
 EOT;
         });
 
         if (!class_exists(Livewire::class)) {
             Blade::directive('entangle', function () {
-                return '<?php echo is_array($value) ? json_encode($value) : "`" . htmlentities($value) . "`" ?>';
+                return '<?php echo inject_in_javascript(\$value) ?>';
             });
             Blade::directive('this', function () {
                 return "{}";
