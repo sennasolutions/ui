@@ -15,7 +15,7 @@ function default_input_chrome($size = "lg", $error = false) {
     }
 
     $errorClass = $error ? "ring !ring-error-color-ring border !border-error-color" : "";
-  
+
     return "$sizeClass $errorClass transition duration-50 ease-in-out
     block w-full  text-gray-700 bg-white border border-gray-300 rounded-md
     dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:focus:border-primary-color

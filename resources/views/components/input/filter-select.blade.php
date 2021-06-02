@@ -35,9 +35,17 @@
      */
     'placeholder' => __('Filter..'),
     /**
+     * @param string noItemsText The text that is displayed when no items are in the items argument
+     */
+    'noItemsText' => __('No items'),
+    /**
      * @param string addPlaceholder Placeholder value for the add field
      */
     'addPlaceholder' => __('Enter a value to add'),
+    /**
+     * @param bool showCheckRadio Show the check/radio input before the label or each item. You can disable this by setting it to false. Default: true
+     */
+    'showCheckRadio' => true,
     /**
      * @param array value The default value if wire:model is not used
      */
@@ -73,22 +81,24 @@
     @endif
 
     <div x-ref="slot" class="max-h-32 overflow-y-auto w-full p-1.5 rounded">
-        @if($items)
-        @foreach($items as $key => $value)
-            <x-senna.input.filter-select-item :key="$key" :label="$value" />
-        @endforeach
+        @if($items !== null)
+            @forelse($items as $key => $value)
+                <x-senna.input.filter-select-item :showCheckRadio="$showCheckRadio" :showDeleteButton="$showDeleteButtons" :key="$key" :label="$value" />
+            @empty
+                <span>{{ $noItemsText }}</span>
+            @endforelse
         @else
             {{ $slot }}
         @endif
     </div>
 
     @if($showAddOption)
-    <div class="flex space-x-2 mt-3">
+    <form class="flex space-x-2 mt-3" x-on:submit.prevent="addValue">
         <input class="{{ default_input_chrome($size, $error) }}" x-ref="add" x-model="add" type="text" placeholder="{{ $addPlaceholder }}">
-        <x-senna.button x-on:click="addValue" class="flex-shrink-0" type="submit">
+        <x-senna.button  class="flex-shrink-0" type="submit">
             {{ __("Add") }}
         </x-senna.button>
-    </div>
+    </form>
     @endif
 </div>
 
@@ -121,6 +131,8 @@
                         this.$wire.emit('filter-select:' + this.identifierEvent + 'addValue', this.add)
                     }
                     this.$dispatch('filter-select:' + this.identifierEvent + 'addValue', this.add)
+
+                    this.add = ''
                 },
                 // @event livewire filter-select:removeValue  When the remove button is clicked. Has the key as parameter.
                 // @event js filter-select:removeValue  When the remove button is clicked. Has the key as parameter.
