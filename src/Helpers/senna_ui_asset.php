@@ -1,4 +1,3 @@
-
 <?php
 
 function senna_ui_asset($path, $prependSennaDir = true) {
