@@ -20,7 +20,7 @@
      */
     'type' => 'button',
     /**
-     * @param string size The size of the button. 'sm' or 'lg' or 'xl'. default: 'lg'
+     * @param string size The size of the button. 'xs', 'sm' or 'lg' or 'xl'. default: 'lg'
      */
     'size' => 'lg',
     /**
@@ -40,17 +40,22 @@
         shadow-lg
     ";
 
-    $sizeClass = "px-6 py-3";
-    switch($size) {
-        case "sm":
-            $sizeClass = "px-3 py-2 text-sm";
-            break;
-        case "lg":
-            $sizeClass = "px-6 py-3";
+    if (!$sizeClass) {
+        $sizeClass = "px-6 py-3";
+        switch($size) {
+            case "xs":
+                $sizeClass = "px-2 py-1 text-xs";
                 break;
-        case "xl":
-            $sizeClass = "px-7 py-4 text-lg";
-            break;
+            case "sm":
+                $sizeClass = "px-3 py-2 text-sm";
+                break;
+            case "lg":
+                $sizeClass = "px-6 py-3";
+                    break;
+            case "xl":
+                $sizeClass = "px-7 py-4 text-lg";
+                break;
+        }
     }
 
     $circleClass = $circle ? "p-2 rounded-full justify-center" : $sizeClass . " rounded-md";

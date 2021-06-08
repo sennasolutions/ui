@@ -25,15 +25,15 @@
     }
 @endphp
 
-<div {{$attributes->merge(['class' => 'bg-success-color text-white p-3 flex rounded shadow-lg']) }}>
+<div {{$attributes->merge(['class' => $bg . ' text-white p-3 flex rounded shadow-lg']) }}>
     @if ($type === "success")
-        <x-senna.icon class="w-5 mr-2" name="ho-check"></x-senna.icon>
+        <x-senna.icon class="w-6 mr-3" name="ho-check"></x-senna.icon>
     @endif
     @if ($type === "error")
-        <x-senna.icon class="w-5 mr-2" name="ho-exclamation"></x-senna.icon>
+        <x-senna.icon class="w-6 mr-3" name="ho-exclamation"></x-senna.icon>
     @endif
     @if ($type === "info")
-        <x-senna.icon class="w-5 mr-2" name="ho-information-circle"></x-senna.icon>
+        <x-senna.icon class="w-6 mr-3" name="ho-information-circle"></x-senna.icon>
     @endif
     <div>
         {{ $slot }}
