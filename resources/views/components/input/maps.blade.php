@@ -49,9 +49,9 @@
     /**
      * @param array value The initial value, if wire:model is not used. The value is the google maps place object. place.geometry.location.lat, place.geometry.location.lng, place.formatted_address are required.
      */
-    'value' => null
+    'value' => null,
+    'placeholder' => __('Enter a location'),
 ])
-
 
 @if(!config('senna.ui.maps.apiKey'))
     <div>
@@ -60,14 +60,14 @@
 @else
 
 <div wire:ignore {{ $attributes->merge(['class' => 'sn-input-maps rounded ' . ($showMap ? 'border' : 'border-none') ])->only('class') }} x-data="initMap(@safe_entangle($attributes->wire('model')))"
-    x-init='init(@json($mapsConfig), @json($autocompleteConfig))' >
+    x-init='init(@json($mapsConfig), @json($autocompleteConfig), $watch)' >
     <div x-ref="search" class="{{ $showMap ? 'p-3' : '' }}">
         <x-senna.input.group :label="$label">
             <div class="sn-input-text flex-grow relative block">
                 <div class="{{ class_concat('absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-black opacity-70 sm:text-sm') }}">
                     <x-senna.icon class="w-5 h-5 -mt-1" name="hs-location-marker"></x-senna.icon>
                 </div>
-                <input type="text" x-ref="input" class="{{ class_concat(default_input_chrome($size, $error), $inputClass, "pl-10" ) }}"/>
+                <input placeholder="{{ $placeholder }}" type="text" x-ref="input" class="{{ class_concat(default_input_chrome($size, $error), $inputClass, "pl-10" ) }}"/>
             </div>
         </x-senna.input.group>
     </div>
@@ -99,9 +99,7 @@
             markers: [],
             mapsConfig: {},
             autocompleteConfig: {},
-            init(mapsConfig, autocompleteConfig, wireId) {
-
-
+            init(mapsConfig, autocompleteConfig, $watch) {
                 this.mapsConfig = mapsConfig
                 this.autocompleteConfig = autocompleteConfig
 
@@ -116,6 +114,18 @@
                     this.onReady();
                 }
 
+                $watch('value', (newValue) => {
+                    this.updateValue(newValue)
+                })
+
+                if (window.is_lwd) {
+                    Livewire.hook('message.processed', (msg, component) => {
+                        if (component.id === @this.__instance.id) {
+
+                        }
+                    })
+                }
+
                 Alpine.mapComponents.push(this);
             },
             onReady() {
@@ -124,7 +134,7 @@
                 }
 
                 if (this.value) {
-                    this.addMarkerFromValue(this.value)
+                    this.updateValue(this.value)
                 }
 
                 this.initSearch()
@@ -201,7 +211,12 @@
                     this.value = JSON.parse(JSON.stringify(place))
                 }
             },
-            addMarkerFromValue(value) {
+            updateValue(value) {
+                if (!value) {
+                    this.clearMarkers();
+                    this.$search.value = '';
+                    return;
+                }
 
                 if (value.formatted_address) {
                     this.$search.value = value.formatted_address

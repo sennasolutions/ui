@@ -67,7 +67,7 @@
 
 <div
     x-data="createFilterSelect(@safe_entangle($attributes->wire("model")))"
-    x-init='init($dispatch, {{ $wireId }}, @json($identifier))'
+    x-init='init($dispatch, {!! $wireId !!}, @json($identifier))'
     {{ $attributes->merge(['class' => 'relative flex flex-col p-3 border border-gray-200 rounded-md shadow-sm']) }}
     >
     @if($showFilter)
