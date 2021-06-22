@@ -1,1 +1,5 @@
-<link rel="stylesheet" href="{{ senna_ui_asset('css/ui.css') }}">
+<script>
+    window.is_lwd = typeof Livewire !== 'undefined';
+</script>
+
+@stack("senna-ui-scripts")
