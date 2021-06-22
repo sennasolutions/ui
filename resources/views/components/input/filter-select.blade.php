@@ -60,14 +60,12 @@
      'error' => false,
 ])
 
-@php
+{{-- @php
     $wireId = isset($_instance) && $_instance->id ? '"' .$_instance->id . '"' : 'null';
-@endphp
-
+@endphp --}}
 
 <div
-    x-data="createFilterSelect(@safe_entangle($attributes->wire("model")))"
-    x-init='init($dispatch, {!! $wireId !!}, @json($identifier))'
+    x-data="createFilterSelect(@safe_entangle($attributes->wire("model")), `{{ $identifier }}`)"
     {{ $attributes->merge(['class' => 'relative flex flex-col p-3 border border-gray-200 rounded-md shadow-sm']) }}
     >
     @if($showFilter)
@@ -105,21 +103,19 @@
 @once
     @push('senna-ui-scripts')
     <script>
-        function createFilterSelect(selected) {
+        function createFilterSelect(selected, identifier) {
             return {
                 search: '',
                 add: '',
                 visible: [],
                 selected: selected,
+                identifier: identifier,
                 allNames: ['bike', 'car', 'boat'],
                 selectAll() { this.selected = this.getItems() },
                 unselectAll() { this.selected = []},
-                init($dispatch, wireId, identifier) {
-                    this.$dispatch = $dispatch
-                    this.identifier = identifier
+                init() {
                     this.identifierEvent = identifier ? indentifier + ":" : "";
-                    this.$wire = (window.Livewire) ? window.Livewire.find(wireId) : null;
-
+               
                     this.$watch('search', search => {
                         this.filter()
                     })

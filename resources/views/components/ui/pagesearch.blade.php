@@ -26,6 +26,21 @@
 @once
     @push('senna-ui-scripts')
     <script>
+        // x-html has been removed in alpinejs 3 :(
+        document.addEventListener('alpine:initializing', () => {
+            Alpine.directive('html', (el, { expression }, { evaluateLater, effect }) => {
+                let getHtml = evaluateLater(expression)
+
+                effect(() => {
+                    getHtml(html => {
+                        el.innerHTML = html
+                    })
+                })
+            })
+        })
+    </script>
+
+    <script>
         function initPageSearch() {
             return {
                 currentValue: '',

@@ -39,8 +39,9 @@
 
 <div
     x-data="initDatepicker(@safe_entangle($attributes->wire('model')))"
-    x-init='init(@json($config))'
-    {{ ($isInline) ? 'wire:ignore' : 'wire:ignore.self' }}
+    x-init='start(@json($config))'
+    wire:ignore
+    {{-- {{ ($isInline) ? 'wire:ignore' : 'wire:ignore' }} --}}
     {{ $attributes->merge(['class' => 'sn-input-date relative block'])->only('class') }}
     >
     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none {{ $prefixClass }}">
@@ -50,7 +51,7 @@
     </div>
 
     <input style="{{ $isInline ? 'display: none !important;' : '' }}" x-ref="flatpicker" class="{{ $inputClass }}" {{ $attributes->merge([
-        'value' => $value,
+        // 'value' => $value,
         'type' => $type
     ])->except('class') }}>
 </div>
@@ -63,29 +64,38 @@
 
     @push('senna-ui-scripts')
     <script src="{{ senna_ui_asset('js/flatpicker.min.js') }}"></script>
+    <script src="{{ senna_ui_asset('js/flatpicker.nl.min.js') }}"></script>
     <script>
+        flatpickr.localize(flatpickr.l10ns.nl);
+        
         function initDatepicker(currentValue) {
             return {
                 currentValue: currentValue,
-                init(config) {
+                start(config) {
                     this.config = config
-                    this.initDatepicker();
+                    this.initDatepicker(this.currentValue);
 
-                    console.log(JSON.stringify(this.config.enable))
+                    // console.log(JSON.stringify(this.config.enable))
+                    // console.log(this.currentValue)
 
                     // Listen to changes from livewire and set it on Choices
                     // this.$watch('currentValue', (value) => this.setValue(value))
 
-                    if (window.is_lwd) {
-                        Livewire.hook('message.processed', (msg, component) => {
-                            if (component.id === @this.__instance.id) {
-                                // On update reinitialize
-                                this.initDatepicker();
-                            }
-                        })
-                    }
+                    // if (window.is_lwd) {
+                    //     Livewire.hook('message.processed', (msg, component) => {
+                    //         if (component.id === @this.__instance.id) {
+                    //             // On update reinitialize
+                    //             this.initDatepicker();
+                    //         }
+                    //     })
+                    // }
+
+                    this.$watch('currentValue', value => {
+                        // On update reinitialize
+                        this.initDatepicker(value)
+                    })
                 },
-                initDatepicker() {
+                initDatepicker(value) {
                     if(!this.$refs.flatpicker) return;
 
                     let localConfig = @json(config('senna.ui.datepicker'))
@@ -93,11 +103,9 @@
                     this.instance = flatpickr(this.$refs.flatpicker, {
                         ...localConfig,
                         ...this.config,
+                        defaultDate: value
                     });
                 },
-                setValue(value) {
-
-                }
             }
         }
     </script>
