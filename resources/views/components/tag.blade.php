@@ -18,6 +18,10 @@
      * @param string sizeClass The classes applied to override the size.
      */
     'sizeClass' => null,
+    /**
+     * @param string tag The tag to use (default: span)
+     */
+    'tag' => 'span'
 ])
 
 @php
@@ -38,6 +42,6 @@
 @endphp
 
 
-<span {{ $attributes->merge(['class' => class_concat('rounded', $colorClass, $sizeClass)]) }}>
+<{{ $tag }} {{ $attributes->merge(['class' => class_concat('rounded', $colorClass, $sizeClass)]) }}>
     {{ $slot }}
-</span>
+</{{ $tag }}>

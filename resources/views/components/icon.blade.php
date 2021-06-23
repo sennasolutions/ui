@@ -14,6 +14,7 @@
 
 @php
     $isHeroicon = str_contains($name, "ho-") || str_contains($name, "hs-");
+    $isFontAwesome = str_contains($name, "fas-");
 
     $component = "senna.icon." . $name;
 
@@ -23,6 +24,10 @@
         $icon = str_replace("ho-", "", $icon);
 
         $component = "heroicon-" . ($outline ? 'o' : 's') . "-" . $icon;
+    }
+
+    if($isFontAwesome) {
+        $component = $name;
     }
 @endphp
 
