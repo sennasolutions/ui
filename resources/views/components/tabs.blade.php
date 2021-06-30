@@ -11,7 +11,6 @@ if (isset($active)) $value = $active;
 <div
     {{ $attributes->merge(['class' => 'w-full'])->only('class') }}
     x-data="initTabs(@safe_entangle($attributes->wire('model')) )"
-    x-init='init'
 >
     <div class="mb-3 border-b"
          role="tablist"
@@ -47,20 +46,27 @@ if (isset($active)) $value = $active;
                 tabHeadings: [],
                 activeTab: activeTab,
                 init() {
-                    this.tabs = [...this.$refs.tabs.children];
-                    this.tabHeadings = this.tabs.map((tab, index) => {
-                        tab.__x.$data.id = (index + 1);
-                        return tab.__x.$data.name;
-                    });
-                    console.log(activeTab)
-                    if (!this.activeTab) {
-                        this.activeTab = this.tabHeadings[0] ?? null;
-                    }
-                    this.toggleTabs();
+
+                    this.$nextTick(() => {
+                        this.tabs = [...this.$refs.tabs.children];
+                        this.tabHeadings = this.getTabs().map((tab, index) => {
+                            tab._x_dataStack[0].id = (index + 1);
+                            // tab.__x.$data.id = (index + 1);
+                            return tab._x_dataStack[0].name;
+                        });
+                        console.log(activeTab)
+                        if (!this.activeTab) {
+                            this.activeTab = this.tabHeadings[0] ?? null;
+                        }
+                        this.toggleTabs();
+                    })
+                },
+                getTabs() {
+                    return this.tabs.filter(x => typeof x._x_dataStack !== 'undefined');
                 },
                 toggleTabs() {
-                    this.tabs.forEach(
-                        tab => tab.__x.$data.showIfActive(this.activeTab)
+                    this.getTabs().forEach(
+                        tab => tab._x_dataStack[0].showIfActive(this.activeTab)
                     );
                 },
                 tabClick(tab, $dispatch, $nextTick) {

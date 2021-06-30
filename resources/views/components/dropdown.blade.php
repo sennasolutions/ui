@@ -13,7 +13,7 @@ switch ($align) {
         $alignmentClasses = 'origin-top-left left-0';
         break;
     case 'top':
-        $alignmentClasses = 'origin-top';
+        $alignmentClasses = 'origin-top bottom-full right-0';
         break;
     case 'none':
     case 'false':

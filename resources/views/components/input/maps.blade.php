@@ -59,8 +59,13 @@
     </div>
 @else
 
-<div wire:ignore {{ $attributes->merge(['class' => 'sn-input-maps rounded ' . ($showMap ? 'border' : 'border-none') ])->only('class') }} x-data="initMap(@safe_entangle($attributes->wire('model')))"
-    x-init='init(@json($mapsConfig), @json($autocompleteConfig), $watch)' >
+<div wire:ignore {{ $attributes->merge(['class' => 'sn-input-maps rounded ' . ($showMap ? 'border' : 'border-none') ])->only('class') }}
+    x-data="initMap(@safe_entangle($attributes->wire('model')))"
+    x-json='@json([
+        'mapsConfig' => $mapsConfig,
+        'autocompleteConfig' => $autocompleteConfig
+    ])'
+    >
     <div x-ref="search" class="{{ $showMap ? 'p-3' : '' }}">
         <x-senna.input.group :label="$label">
             <div class="sn-input-text flex-grow relative block">
@@ -99,9 +104,11 @@
             markers: [],
             mapsConfig: {},
             autocompleteConfig: {},
-            init(mapsConfig, autocompleteConfig, $watch) {
-                this.mapsConfig = mapsConfig
-                this.autocompleteConfig = autocompleteConfig
+            init() {
+                let json = JSON.parse(this.$el.getAttribute('x-json'))
+
+                this.mapsConfig = json.mapsConfig
+                this.autocompleteConfig = json.autocompleteConfig
 
                 if (typeof Alpine.mapComponents === 'undefined') {
                     Alpine.mapComponents = [];
@@ -114,17 +121,17 @@
                     this.onReady();
                 }
 
-                $watch('value', (newValue) => {
+                this.$watch('value', (newValue) => {
                     this.updateValue(newValue)
                 })
 
-                if (window.is_lwd) {
-                    Livewire.hook('message.processed', (msg, component) => {
-                        if (component.id === @this.__instance.id) {
+                // if (window.is_lwd) {
+                //     Livewire.hook('message.processed', (msg, component) => {
+                //         if (component.id === @this.__instance.id) {
 
-                        }
-                    })
-                }
+                //         }
+                //     })
+                // }
 
                 Alpine.mapComponents.push(this);
             },
