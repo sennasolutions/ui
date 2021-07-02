@@ -7,7 +7,9 @@
 ])
 
 <x-senna.panel {{ $attributes->merge(['class' => '!p-0'])->only('class') }}>
+    @if($formTag)
     <{{ $formTag }} {{ $attributes->except('class') }}>
+    @endif
         <div class="p-7 {{ $paddingClass }}">
             {{ $slot }}
         </div>
@@ -22,5 +24,7 @@
             {{ $footer }}
         </div>
         @endif
+    @if($formTag)
     </{{ $formTag }}>
+    @endif
 </x-senna.panel>
