@@ -12,6 +12,8 @@ use Senna\UI\Console\ExtendCommand;
 use Senna\UI\Console\InstallCommand;
 use Senna\UI\Console\LinkCommand;
 use Senna\UI\Console\ThemeCommand;
+use Senna\UI\View\Components\Delegate;
+use Senna\UI\View\Components\FormCreator;
 
 class UIServiceProvider extends ServiceProvider {
 
@@ -118,6 +120,9 @@ EOT;
 
     protected function configureComponents()
     {
+        // Blade::component(Delegate::class, 'senna.delegate2');
+        
+
         $this->callAfterResolving(BladeCompiler::class, function () {
             foreach (File::allFiles(__DIR__ . "/../resources/views/components") as $file) {
                 $component = $file->getRelativePathname();
@@ -125,6 +130,8 @@ EOT;
                 $this->registerComponent($component);
             }
         });
+
+        Blade::component(Delegate::class, 'senna.delegate');
     }
 
     /**

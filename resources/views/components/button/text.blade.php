@@ -1,4 +1,4 @@
-@php
+{{-- @php
 /**
  * @name Text Button
  * @description A text button
@@ -22,4 +22,5 @@
 
 <{{ $tag }} type="{{ $type }}" {{ $attributes->merge(['class' => "sn-button-text font-semibold $colorClass hover:underline" ]) }}>
     {{ $slot }}
-</{{ $tag }}>
+</{{ $tag }}> --}}
+<x-senna.button {{ $attributes }} :textButton="true" colorClass="">{{ $slot }}</x-button.base>

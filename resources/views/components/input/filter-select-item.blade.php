@@ -1,5 +1,5 @@
 @props([
-    'key' => '',
+    'key' => null,
     'label' => '',
     'name' => '',
     'showDeleteButton' => false,
@@ -11,7 +11,7 @@
 if (!$label && isset($slot)) {
     $label = $slot->toHtml();
 }
-if (!$key) {
+if ($key === null) {
     $key = $label;
 }
 

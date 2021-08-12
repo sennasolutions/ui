@@ -9,6 +9,7 @@ if (isset($active)) $value = $active;
 @endphp
 
 <div
+    data-sn='tabs'
     {{ $attributes->merge(['class' => 'w-full'])->only('class') }}
     x-data="initTabs(@safe_entangle($attributes->wire('model')) )"
 >
@@ -21,7 +22,7 @@ if (isset($active)) $value = $active;
             <button x-text="tab"
                     type="button"
                     x-on:click="tabClick(tab, $dispatch, $nextTick)"
-                    class='transition duration-50 ease-in-out -mb-px px-4 uppercase text-gray-900 text-xs font-bold rounded-none py-2 focus:outline-none {{ $tabClasses }}'
+                    class='transition duration-50 ease-in-out -mb-px px-4 uppercase tracking-wide text-gray-900 text-sm font-bold rounded-none py-2 focus:outline-none {{ $tabClasses }}'
                     {{ $attributes->except('class') }}
                     :class="tab === activeTab ? 'active border-b-2 border-primary-color' : 'text-gray-400'"
                     :id="`tab-${index + 1}`"
@@ -54,7 +55,6 @@ if (isset($active)) $value = $active;
                             // tab.__x.$data.id = (index + 1);
                             return tab._x_dataStack[0].name;
                         });
-                        console.log(activeTab)
                         if (!this.activeTab) {
                             this.activeTab = this.tabHeadings[0] ?? null;
                         }

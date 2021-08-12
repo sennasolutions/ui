@@ -248,9 +248,9 @@
                         var originalMaxZoom = this.map.maxZoom;
                         this.map.setOptions({maxZoom: 14});
                         this.map.fitBounds(bounds, 100);
-                        setTimeout(() => {
-                            this.map.setOptions({maxZoom: originalMaxZoom});
-                        }, 1000)
+                        // setTimeout(() => {
+                        //     this.map.setOptions({maxZoom: originalMaxZoom});
+                        // }, 1000)
                     }
                 }
             },

@@ -65,7 +65,10 @@
 @endphp --}}
 
 <div
-    x-data="createFilterSelect(@safe_entangle($attributes->wire("model")), `{{ $identifier }}`)"
+    x-data="createFilterSelect(@safe_entangle($attributes->wire("model")))"
+    x-json='@json([
+        'identifier' => $identifier
+    ])'
     {{ $attributes->merge(['class' => 'relative flex flex-col p-3 border border-gray-200 rounded-md shadow-sm']) }}
     >
     @if($showFilter)
@@ -114,8 +117,10 @@
                 selectAll() { this.selected = this.getItems() },
                 unselectAll() { this.selected = []},
                 init() {
-                    this.identifierEvent = identifier ? indentifier + ":" : "";
-               
+                    let json = JSON.parse(this.$el.getAttribute('x-json'))
+
+                    this.identifierEvent = json.identifier ? json.indentifier + ":" : "";
+
                     this.$watch('search', search => {
                         this.filter()
                     })

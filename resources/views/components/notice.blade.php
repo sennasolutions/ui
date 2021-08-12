@@ -25,7 +25,7 @@
     }
 @endphp
 
-<div {{$attributes->merge(['class' => $bg . ' text-white p-3 flex rounded shadow-lg']) }}>
+<div data-sn='notice' {{$attributes->merge(['class' => $bg . ' text-white p-3 flex rounded shadow-lg']) }}>
     @if ($type === "success")
         <x-senna.icon class="w-6 mr-3" name="ho-check"></x-senna.icon>
     @endif

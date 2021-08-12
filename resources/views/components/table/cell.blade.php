@@ -36,7 +36,7 @@
 @php
     $sticky = is_string($sticky) ? $sticky : 'right-0';
 @endphp
-<{{ $tag }} {{ $attributes->merge(['class' => $sticky . ' sticky p-0']) }}>
+<{{ $tag }} {{ $attributes->merge(['class' => $sticky . ' bg-white sticky p-0']) }}>
     <div class="{{ $paddingClass }} {{ $stickyClass }}">
         {{ $slot }}
     </div>

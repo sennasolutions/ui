@@ -1,4 +1,24 @@
-@props(['id', 'maxWidth', 'value' => null, 'backdrop' => true])
+@php
+/**
+ * @name Modal
+ * @description The modal component that is the foundation for modal.panel
+ */
+@endphp
+
+@props([
+    /**
+     * @param string maxWidth The maximum width of the modal. One of: 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'
+     */
+    'maxWidth',
+    /**
+     * @param bool backdrop Whether to show a backdrop
+     */
+    'backdrop' => true,
+    /**
+     * @param string value The value given via this attribute or via the slot if not supplied by wire:model
+     */
+     'value' => null,
+])
 
 @php
 // $id = $id ?? md5($attributes->wire('model'));
@@ -17,28 +37,28 @@ $maxWidth = [
 @endphp
 
 <div
+    data-sn="modal"
     x-data="initModal(@safe_entangle($attributes->wire('model')))"
     x-on:close.stop="showMe = false"
     x-on:keydown.escape.window="showMe = false"
     x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
     x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
     x-show="showMe"
-    {{-- id="{{ $id }}" --}}
-    class="sn-modal fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
+    class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
     style="display: none;"
 >
     @if($backdrop)
-    <div x-show="showMe" class="sn-modal-backdrop fixed inset-0 transform transition-all" x-on:click="showMe = false" x-transition:enter="ease-out duration-300"
+    <div data-sn="modal-backdrop" x-show="showMe" class="fixed inset-0 transform transition-all" x-on:click="showMe = false" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0"
                     x-transition:enter-end="opacity-100"
                     x-transitioutn:leave="ease-in duration-200"
                     x-transition:leave-start="opacity-100"
                     x-transition:leave-end="opacity-0">
-        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        <div class="absolute inset-0 bg-gray-900 opacity-60"></div>
     </div>
     @endif
 
-    <div x-show="showMe" {{ $attributes->merge(['class' => "sn-modal-inner relative transition-all sm:w-full sm:mx-auto " . $maxWidth ])->except('wire:model') }}
+    <div data-sn="modal-contents" x-show="showMe" {{ $attributes->merge(['class' => "relative transition-all sm:w-full sm:mx-auto " . $maxWidth ])->except('wire:model') }}
                     x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"

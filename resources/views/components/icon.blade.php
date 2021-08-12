@@ -31,4 +31,4 @@
     }
 @endphp
 
-<x-dynamic-component :component="$component" {{ $attributes }}></x-dynamic-component>
+<x-dynamic-component data-sn='icon' :component="$component" {{ $attributes }}></x-dynamic-component>

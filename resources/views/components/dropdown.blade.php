@@ -27,7 +27,7 @@ switch ($align) {
 
 @endphp
 
-<div {{ $attributes->merge(['class' => 'relative']) }} x-data="{ open: {{ $open ? 'true' : 'false' }} }" @click.away="open = false" @close.stop="open = false">
+<div data-sn='dropdown' {{ $attributes->merge(['class' => 'relative']) }} x-data="{ open: {{ $open ? 'true' : 'false' }} }" @click.away="open = false" @close.stop="open = false">
     <div @click="open = ! open">
         {{ $trigger }}
     </div>

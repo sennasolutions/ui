@@ -40,7 +40,7 @@
     $shortcutAttriubtes = $shortcut ? 'x-on:keydown.window.' . $shortcut . '.prevent="$refs.input.focus(); $refs.input.select()" x-on:keydown.escape="$refs.input.blur()"' : '';
 @endphp
 
-<div {!! $shortcutAttriubtes !!} {{ $attributes->merge(['class' => 'sn-input-text flex-grow relative block', 'x-data' => '{}'])->only('class') }}>
+<div data-sn='input' {!! $shortcutAttriubtes !!} {{ $attributes->merge(['class' => 'sn-input-text flex-grow relative block', 'x-data' => '{}'])->only('class') }}>
     @if($prefix)
         <div class="{{ class_concat('absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-black opacity-70 sm:text-sm', $prefixClass) }}">
             {{ $prefix }}

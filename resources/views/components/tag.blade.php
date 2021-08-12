@@ -42,6 +42,6 @@
 @endphp
 
 
-<{{ $tag }} {{ $attributes->merge(['class' => class_concat('rounded', $colorClass, $sizeClass)]) }}>
+<{{ $tag }} data-sn='tag' {{ $attributes->merge(['class' => class_concat('rounded', $colorClass, $sizeClass)]) }}>
     {{ $slot }}
 </{{ $tag }}>
