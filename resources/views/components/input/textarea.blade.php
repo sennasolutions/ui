@@ -24,6 +24,6 @@
     $inputClass = "" . default_input_chrome($size, $error) . " " . $inputClass;
 @endphp
 
-<div class="{{ $attributes->merge(['class' => 'relative block' ])->only('class') }}">
+<div data-sn="input.textarea" class="{{ $attributes->merge(['class' => 'relative block' ])->only('class') }}">
     <textarea class="{{ $inputClass }}" {{ $attributes->except('class') }}>{{ $slot }}</textarea>
 </div>

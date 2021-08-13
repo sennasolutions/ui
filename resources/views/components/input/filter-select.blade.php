@@ -65,6 +65,7 @@
 @endphp --}}
 
 <div
+    x-data-sn="input.filter-select"
     x-data="createFilterSelect(@safe_entangle($attributes->wire("model")))"
     x-json='@json([
         'identifier' => $identifier

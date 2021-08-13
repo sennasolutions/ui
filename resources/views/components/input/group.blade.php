@@ -40,6 +40,10 @@
      */
     'helpClass' => '',
     /**
+     * @param string slotClass String of classes applied to the slot element
+     */
+    'slotClass' => '',
+    /**
      * @param string suffixClass String of classes applied to the suffix element
      */
     'suffixClass' => '',
@@ -52,36 +56,34 @@
     $isHor = $stack === "horizontal";
 @endphp
 
-<div {{ $attributes->merge(['class' => 'sn-input-group' ]) }}>
+<div x-data-sn="input.group" {{ $attributes->merge(['class' => '' ]) }}>
     <div class="{{ class_concat($stackClass, "flex space-y-1 flex-col", (!$isHor ? "sm:flex-row sm:space-x-4 sm:items-center" : "")) }}">
         @if($label)
-        <label @if(isset($for))for="{{ $for }}"@endif class="{{ class_concat($labelClass, 'dark:text-gray-200 cursor-pointer flex-shrink-0', (!$isHor ? "w-32" : "") ) }}">{{ $label }}</label>
+        <label @if(isset($for))for="{{ $for }}"@endif class="{{ class_concat($labelClass, 'mb-2 dark:text-gray-200 cursor-pointer flex-shrink-0', (!$isHor ? "w-32" : "") ) }}">{{ $label }}</label>
         @endif
         @if($isHor && ($error || $helpText))
-        <div class="{{ $suffixClass }}">
-            @if ($error)
-            <div class="text-error-color items-center flex gap-1 text-sm {{ $errorClass }}">
-                <x-senna.icon class="w-4" name="hs-exclamation"></x-senna.icon>
-                <span>{{ $error }}</span>
-            </div>
-            @endif
-
+        <div class="mb-2 {{ $suffixClass }}">
             @if ($helpText)
                 <p class="text-sm text-gray-500 {{ $helpClass }}">{{ $helpText }}</p>
             @endif
+
+            @if ($error)
+            <x-senna.notice.validation type="error" class="{{ $errorClass }}">
+                {{ $error }}
+            </x-senna.notice.validation>
+            @endif
         </div>
         @endif
-        <div class="flex-grow pt-2">
+        <div class="flex-grow {{ $slotClass }}">
             {{ $slot }}
         </div>
     </div>
     @if(!$isHor && ($error || $helpText))
     <div class="{{ $suffixClass }} sm:pl-36">
         @if ($error)
-        <div class="mt-2 text-error-color items-center flex gap-1 text-sm {{ $errorClass }}">
-            <x-senna.icon class="w-4" name="hs-exclamation"></x-senna.icon>
-            <span>{{ $error }}</span>
-        </div>
+        <x-senna.notice.validation type="error" class="!mt-2 {{ $errorClass }}">
+            {{ $error }}
+        </x-senna.notice.validation>
         @endif
 
         @if ($helpText)
