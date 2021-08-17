@@ -1,7 +1,7 @@
 @props(['id' => null, 'maxWidth' => null])
 
-<x-senna.modal.basic :id="$id" :maxWidth="$maxWidth" {{ $attributes }}>
-    <div class="bg-white w-full">
+<x-senna.modal :id="$id" :maxWidth="$maxWidth" {{ $attributes }}>
+    <div class="bg-white w-full rounded">
         <div class="flex space-x-3 items-center  p-7">
             <div class="text-red-600 rounded-full bg-red-100 p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -65,18 +65,20 @@
 @endphp --}}
 
 <div
-    x-data-sn="input.filter-select"
+    data-sn="input.filter-select"
     x-data="createFilterSelect(@safe_entangle($attributes->wire("model")))"
     x-json='@json([
         'identifier' => $identifier
     ])'
-    {{ $attributes->merge(['class' => 'relative flex flex-col p-3 border border-gray-200 rounded-md shadow-sm']) }}
+    wire:ignore.self
+    wire:key="{{ $attributes->wire("model")->value() }}"
+    {{ $attributes->merge(['class' => 'relative flex flex-col p-3 border space-y-2 border-gray-200 rounded-md shadow-sm'])->whereDoesntStartWith('wire:model') }}
     >
     @if($showFilter)
     <input class="{{ default_input_chrome($size, $error) }}" x-ref="search" x-model="search" type="text" placeholder="{{ $placeholder }}">
     @endif
     @if($showButtons)
-    <div class="flex w-full mt-2 opacity-50 text-sm">
+    <div class="flex w-full opacity-50 text-sm">
         <button type="button" x-show="Array.isArray(selected)" x-on:click.prevent="selectAll">{{ __('Select all') }}</button>
         <button type="button" class="ml-auto" x-show="Array.isArray(selected)" x-on:click.prevent="unselectAll">{{ __('Deselect all') }}</button>
     </div>
@@ -107,13 +109,12 @@
 @once
     @push('senna-ui-scripts')
     <script>
-        function createFilterSelect(selected, identifier) {
+        function createFilterSelect(selected) {
             return {
                 search: '',
                 add: '',
                 visible: [],
                 selected: selected,
-                identifier: identifier,
                 allNames: ['bike', 'car', 'boat'],
                 selectAll() { this.selected = this.getItems() },
                 unselectAll() { this.selected = []},

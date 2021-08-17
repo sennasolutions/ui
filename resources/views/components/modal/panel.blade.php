@@ -2,7 +2,7 @@
     /**
      * @param string maxWidth The maximum width of the modal. One of: 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'
      */
-     'maxWidth',
+     'maxWidth' => '3xl',
     /**
      * @param bool backdrop Whether to show a backdrop
      */

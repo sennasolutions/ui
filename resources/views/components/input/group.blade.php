@@ -56,7 +56,7 @@
     $isHor = $stack === "horizontal";
 @endphp
 
-<div x-data-sn="input.group" {{ $attributes->merge(['class' => '' ]) }}>
+<div data-sn="input.group" {{ $attributes->merge(['class' => '' ]) }}>
     <div class="{{ class_concat($stackClass, "flex space-y-1 flex-col", (!$isHor ? "sm:flex-row sm:space-x-4 sm:items-center" : "")) }}">
         @if($label)
         <label @if(isset($for))for="{{ $for }}"@endif class="{{ class_concat($labelClass, 'mb-2 dark:text-gray-200 cursor-pointer flex-shrink-0', (!$isHor ? "w-32" : "") ) }}">{{ $label }}</label>

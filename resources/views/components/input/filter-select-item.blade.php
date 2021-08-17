@@ -19,13 +19,13 @@ $id = $name . str_replace(" ", "", $label) . $key;
 
 @endphp
 
-<div x-data-sn="input.filter-select-item" class="flex items-center content-center" x-show="search.length === 0 || visible.indexOf(`{{ ($key) }}`) >= 0">
+<div data-sn="input.filter-select-item" class="flex items-center content-center" x-show="search.length === 0 || visible.indexOf(`{{ ($key) }}`) >= 0">
     @if($showCheckRadio)
     <template x-if="Array.isArray(selected)">
-        <x-senna.input.checkbox  id="{{ $id }}" name="{{ $name }}" class="mr-1" value="{{ $key }}" x-model="selected" />
+        <x-senna.input.checkbox wire:key="check-{{ $id }}" id="{{ $id }}" name="{{ $name }}" class="mr-1" value="{{ $key }}" x-model="selected" />
     </template>
     <template x-if="!Array.isArray(selected)">
-        <x-senna.input.radio {{ $attributes }} name="{{ $name }}" class="mr-3" id="{{ $id }}" value="{{ $key }}" x-model="selected" />
+        <x-senna.input.radio {{ $attributes }} wire:key="radio-{{ $id }}" name="{{ $name }}" class="mr-3" id="{{ $id }}" value="{{ $key }}" x-model="selected" />
     </template>
     @else
         <label>{{ $name }}</label>

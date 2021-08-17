@@ -38,8 +38,9 @@
 @endphp
 
 <div
+    data-sn="input.date"
     x-data="initDatepicker(@safe_entangle($attributes->wire('model')))"
-    x-init='start(@json($config))'
+    x-json='@json($config)'
     wire:ignore
     {{-- {{ ($isInline) ? 'wire:ignore' : 'wire:ignore' }} --}}
     {{ $attributes->merge(['class' => 'sn-input-date relative block'])->only('class') }}
@@ -67,12 +68,12 @@
     <script src="{{ senna_ui_asset('js/flatpicker.nl.min.js') }}"></script>
     <script>
         flatpickr.localize(flatpickr.l10ns.nl);
-        
+
         function initDatepicker(currentValue) {
             return {
                 currentValue: currentValue,
-                start(config) {
-                    this.config = config
+                init() {
+                    this.config = JSON.parse(this.$el.getAttribute('x-json'))
                     this.initDatepicker(this.currentValue);
 
                     // console.log(JSON.stringify(this.config.enable))
