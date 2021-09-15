@@ -35,7 +35,7 @@ class UIServiceProvider extends ServiceProvider {
         $this->configureComponents();
         $this->includeHelpers();
 
-        // Uses the $val property if Livewire is not available in the project
+        // Uses the $value property if Livewire is not available in the project
         Blade::directive('safe_entangle', function ($expression) {
             $entangle = class_exists(Livewire::class) ? "<?php if(count(\$attributes->thatStartWith('wire:model')->getAttributes()) > 0): ?>" . \Livewire\LivewireBladeDirectives::entangle($expression) . "<?php endif; ?>" : '';
             return <<<EOT

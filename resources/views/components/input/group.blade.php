@@ -61,27 +61,24 @@
         @if($label)
         <label @if(isset($for))for="{{ $for }}"@endif class="{{ class_concat($labelClass, 'mb-2 dark:text-gray-200 cursor-pointer flex-shrink-0', (!$isHor ? "w-32" : "") ) }}">{{ $label }}</label>
         @endif
-        @if($isHor && ($error || $helpText))
+        @if($isHor && ($helpText))
         <div class="mb-2 {{ $suffixClass }}">
-            @if ($helpText)
-                <p class="text-sm text-gray-500 {{ $helpClass }}">{{ $helpText }}</p>
-            @endif
-
-            @if ($error)
-            <x-senna.notice.validation type="error" class="{{ $errorClass }}">
-                {{ $error }}
-            </x-senna.notice.validation>
-            @endif
+            <p class="text-sm text-gray-500 {{ $helpClass }}">{{ $helpText }}</p>
         </div>
         @endif
         <div class="flex-grow {{ $slotClass }}">
             {{ $slot }}
         </div>
+        @if($isHor && ($error))
+        <x-senna.notice.validation wire:key="error" type="error" class="{{ $errorClass }}">
+            {{ $error }}
+        </x-senna.notice.validation>
+        @endif
     </div>
     @if(!$isHor && ($error || $helpText))
     <div class="{{ $suffixClass }} sm:pl-36">
         @if ($error)
-        <x-senna.notice.validation type="error" class="!mt-2 {{ $errorClass }}">
+        <x-senna.notice.validation  wire:key="error" type="error" class="!mt-2 {{ $errorClass }}">
             {{ $error }}
         </x-senna.notice.validation>
         @endif

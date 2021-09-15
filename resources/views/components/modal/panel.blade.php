@@ -54,7 +54,7 @@
             @if(isset($close))
             {{ $close}}
             @else
-            <button x-on:click="$dispatch('close')" class="absolute right-0 top-0 p-5">
+            <button type="button" x-on:click="$dispatch('close')" class="absolute right-0 top-0 p-5">
                 <x-senna.icon name="hs-x" class="w-6"></x-senna.icon>
             </button>
             @endif
@@ -67,7 +67,7 @@
             @if(isset($footer))
                 {{ $footer}}
             @else
-                <x-senna.button.text colorClass="text-gray-700" x-on:click="$dispatch('close')">
+                <x-senna.button.text type="button" colorClass="text-gray-700" x-on:click="$dispatch('close')">
                     {{ __('Cancel') }}
                 </x-senna.button.text>
 
