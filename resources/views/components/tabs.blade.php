@@ -24,7 +24,7 @@ if (isset($active)) $value = $active;
                     x-on:click="tabClick(tab, $dispatch, $nextTick)"
                     class='transition duration-50 ease-in-out -mb-px px-4 uppercase tracking-wide text-gray-900 text-sm font-bold rounded-none py-2 focus:outline-none {{ $tabClasses }}'
                     {{ $attributes->except('class') }}
-                    :class="tab === activeTab ? 'active border-b-2 border-primary-color' : 'text-gray-400'"
+                    :class="tab === activeTab ? 'active border-b-2 border-sui-first' : 'text-gray-400'"
                     :id="`tab-${index + 1}`"
                     role="tab"
                     :aria-selected="(tab === activeTab).toString()"

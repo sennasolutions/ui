@@ -1,8 +1,8 @@
 {
     "files.exclude": {
-        "vendor": true,
-        ".vscode": true,
-        "node_modules": true
+        "vendor": false,
+        ".vscode": false,
+        "node_modules": false
     },
     "workspace.isHidden": false
 }

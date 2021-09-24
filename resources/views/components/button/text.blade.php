@@ -11,9 +11,9 @@
      */
     'tag' => 'button',
     /**
-     * @param string colorClass String of color classes applied to the button. default: text-primary-color
+     * @param string colorClass String of color classes applied to the button. default: text-sui-first
      */
-    'colorClass' => 'text-primary-color',
+    'colorClass' => 'text-sui-first',
     /**
      * @param string type Type that is used for this button. For example 'submit' or 'button'. default: 'button'
      */

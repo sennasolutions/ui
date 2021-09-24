@@ -71,9 +71,9 @@
                     {{ __('Cancel') }}
                 </x-senna.button.text>
 
-                <x-senna.button.primary type="submit">
+                <x-senna.button.first type="submit">
                     {{ __('Save' )}}
-                </x-senna.button.primary>
+                </x-senna.button.first>
             @endif
         </x-slot>
         @endif

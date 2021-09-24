@@ -24,7 +24,7 @@
 
 @php
     if($isSelected) {
-        $stickyClass .= ' bg-selected-color';
+        $stickyClass .= ' bg-sui-selected';
     }
 @endphp
 

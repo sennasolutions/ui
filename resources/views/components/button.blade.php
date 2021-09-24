@@ -80,7 +80,7 @@
 
 
 @php
-    $buttonClass = "sn-button font-semibold hover:underline text-primary-color";
+    $buttonClass = "sn-button font-semibold hover:underline text-sui-first";
     $sizeClass = "";
 
     if(!$textButton) {

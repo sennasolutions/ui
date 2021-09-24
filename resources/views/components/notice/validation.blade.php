@@ -13,14 +13,14 @@
 ])
 
 @php
-    $text = "text-success-color";
+    $text = "text-sui-success";
 
     if ($type === "error") {
-        $text = "text-error-color";
+        $text = "text-sui-danger";
     }
 
     if ($type === "info") {
-        $text = "text-info-color";
+        $text = "text-sui-info";
     }
 @endphp
 

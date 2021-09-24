@@ -13,8 +13,8 @@
     $suffix = $suffix ?? false;
     $_inputClass = "
         block w-full px-4 py-2.5 text-gray-700 border-gray-300 rounded-md
-        dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:focus:border-primary-color
-        ocus:ring-primary-color-20 focus:border-primary-color-50
+        dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:focus:border-sui-first
+        ocus:ring-sui-first-20 focus:border-sui-first-50
         placeholder-gray-400 focus:placeholder-gray-300
     ";
 

@@ -562,11 +562,11 @@
   .flatpickr-day.selected.nextMonthDay,
   .flatpickr-day.startRange.nextMonthDay,
   .flatpickr-day.endRange.nextMonthDay {
-    background: var(--primary-color-100);
+    background: var(--sui-first-100);
     -webkit-box-shadow: none;
             box-shadow: none;
     color: #fff;
-    border-color: var(--primary-color-100);
+    border-color: var(--sui-first-100);
   }
   .flatpickr-day.selected.startRange,
   .flatpickr-day.startRange.startRange,
@@ -867,7 +867,7 @@
   .hasWeeks .flatpickr-days {
     border-right: 0;
   }
-  
+
       @media screen and (min-width:0\0) and (min-resolution: +72dpi) {
           span.flatpickr-day {
               display: block;
@@ -877,4 +877,3 @@
                       flex: 1 0 auto;
           }
       }
-  

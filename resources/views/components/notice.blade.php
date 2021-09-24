@@ -14,14 +14,14 @@
 ])
 
 @php
-    $bg = "bg-success-color";
+    $bg = "bg-sui-success";
 
     if ($type === "error") {
-        $bg = "bg-error-color";
+        $bg = "bg-sui-danger";
     }
 
     if ($type === "info") {
-        $bg = "bg-info-color";
+        $bg = "bg-sui-info";
     }
 @endphp
 
