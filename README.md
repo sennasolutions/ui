@@ -48,8 +48,10 @@ Change your tailwind.config.js like this:
     ],
     theme: {
         extend: {
-            // ADD THIS LINE The senna/ui colors path:
-            ...require('./vendor/senna/ui/tailwind.colors'),
+            colors: {
+                // ADD THIS LINE The senna/ui colors path:
+                ...require('./vendor/senna/ui/tailwind.colors'),
+            }
         },
     },
     ..
