@@ -80,30 +80,30 @@ EOT;
 
         if ($this->app->runningInConsole()) {
             // Publish views
-            // php artisan vendor:publish --provider="Senna\Core\SennaServiceProvider" --tag="views"
+            // php artisan vendor:publish --provider="Senna\Admin\SennaServiceProvider" --tag="views"
             // $this->publishes([
             //     __DIR__ . '/../resources/views' => resource_path('views/vendor/senna'),
             // ], 'views');
 
             // Publish assets
-            // php artisan vendor:publish --provider="Senna\Core\SennaServiceProvider" --tag="assets"
+            // php artisan vendor:publish --provider="Senna\Admin\SennaServiceProvider" --tag="assets"
             // dd(__DIR__.'/../dist/');
             // $this->publishes([
             //     __DIR__.'/../dist/' => public_path('senna-ui'),
             // ], 'assets');
 
-            // php artisan vendor:publish --provider="Senna\Core\SennaServiceProvider" --tag="routes"
+            // php artisan vendor:publish --provider="Senna\Admin\SennaServiceProvider" --tag="routes"
             // $this->publishes([
             //     __DIR__.'/../routes/' => public_path('senna'),
             // ], 'routes');
 
-            // php artisan vendor:publish --provider="Senna\Core\SennaServiceProvider" --tag="senna.users"
+            // php artisan vendor:publish --provider="Senna\Admin\SennaServiceProvider" --tag="senna.users"
             // $this->publishes([
             //     // __DIR__. '/Http/Livewire/Senna/UsersAdmin.php' => app_path('Http/Livewire/Senna/UsersAdmin.php'),
             //     __DIR__. '/../resources/views/livewire/senna/users-admin.blade.php' => resource_path('views/vendor/senna/livewire/senna/users-admin.blade.php'),
             // ], 'senna.users');
 
-            // php artisan vendor:publish --provider="Senna\Core\SennaServiceProvider" --tag="install"
+            // php artisan vendor:publish --provider="Senna\Admin\SennaServiceProvider" --tag="install"
             $this->publishes([
                 __DIR__ . '/../resources/views/components/ui/theme.blade.php' => resource_path('views/vendor/senna.ui/components/ui/theme.blade.php'),
             ], 'theme');
