@@ -28,7 +28,12 @@ class LinkCommand extends Command
     public function handle()
     {
         $from = realpath(__DIR__ . "/../../resources/views/components");
+        $componentsDir = resource_path('views/components');
         $to = resource_path('views/components/senna');
+
+        if (!is_dir($componentsDir)) {
+            mkdir($componentsDir, 0755, true);
+        }
 
         $this->relativeLink($from, $to);
         $this->info('Created link: ' . $from . ' => ' . $to . PHP_EOL);

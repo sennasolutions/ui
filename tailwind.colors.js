@@ -10,7 +10,7 @@ module.exports = {
     "sui-success-ring": "var(--sui-success-ring)",
     "sui-info": "var(--sui-info)",
     "sui-info-ring": "var(--sui-info-ring)",
-    
+
     "sui-first-100": "var(--sui-first-100)",
     "sui-first-90": "var(--sui-first-90)",
     "sui-first-80": "var(--sui-first-80)",

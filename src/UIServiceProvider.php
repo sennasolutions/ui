@@ -105,7 +105,7 @@ EOT;
 
             // php artisan vendor:publish --provider="Senna\Admin\SennaServiceProvider" --tag="install"
             $this->publishes([
-                __DIR__ . '/../resources/views/components/ui/theme.blade.php' => resource_path('views/vendor/senna.ui/components/ui/theme.blade.php'),
+                __DIR__ . '/../resources/views/theme.blade.php' => resource_path('views/vendor/senna.ui/components/ui/theme.blade.php'),
             ], 'theme');
 
             // Export the migrations
