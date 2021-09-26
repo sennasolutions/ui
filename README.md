@@ -10,7 +10,7 @@ Install the package with composer and publish the assets with the senna-ui:insta
 ```
 composer require senna/ui
 ```
-```
+```bash
 php artisan senna-ui:install     # Copies the config file, and creates a symlinkt assets in public dir
 php artisan senna-ui:link        # (Optional) Makes a link to resources/components/senna so that vscode "goto view" plugin can navigate to the component
 ```
