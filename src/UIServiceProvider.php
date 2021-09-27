@@ -11,6 +11,7 @@ use Livewire\Livewire;
 use Senna\UI\Console\ExtendCommand;
 use Senna\UI\Console\InstallCommand;
 use Senna\UI\Console\LinkCommand;
+use Senna\UI\Console\PublishCommand;
 use Senna\UI\Console\ThemeCommand;
 use Senna\UI\View\Components\Delegate;
 use Senna\UI\View\Components\FormCreator;
@@ -21,6 +22,7 @@ class UIServiceProvider extends ServiceProvider {
     {
         $this->commands([
             InstallCommand::class,
+            PublishCommand::class,
             LinkCommand::class,
             ThemeCommand::class,
             ExtendCommand::class

@@ -35,13 +35,8 @@ class LinkCommand extends Command
             mkdir($componentsDir, 0755, true);
         }
 
-        $this->relativeLink($from, $to);
+        relative_link($from, $to);
         $this->info('Created link: ' . $from . ' => ' . $to . PHP_EOL);
 
-    }
-
-    public function relativeLink($from, $to) {
-        $relativeFrom = get_relative_path($to, $from);
-        return $this->fs->link($relativeFrom, $to);
     }
 }
