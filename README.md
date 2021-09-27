@@ -57,7 +57,7 @@ Change your tailwind.config.js like this:
     ..
 ```
 
-Ryn ``yarn dev`` or ``yarn watch``
+Run ``yarn dev`` or ``yarn watch``
 
 ## Documentation
 
