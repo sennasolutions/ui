@@ -16,7 +16,7 @@
 @php
     $bg = "bg-sui-success";
 
-    if ($type === "error") {
+    if ($type === "error" || $type === "danger") {
         $bg = "bg-sui-danger";
     }
 
@@ -25,15 +25,15 @@
     }
 @endphp
 
-<div data-sn='notice' {{$attributes->merge(['class' => $bg . ' text-white p-3 flex rounded shadow-lg']) }}>
+<div data-sn='notice' {{$attributes->merge(['class' => $bg . ' text-white p-4 pr-6 flex rounded shadow-lg']) }}>
     @if ($type === "success")
-        <x-senna.icon class="w-6 mr-3" name="ho-check"></x-senna.icon>
+        <x-senna.icon class="w-10 mr-6 ml-3 flex-shrink-0" name="ho-check"></x-senna.icon>
     @endif
     @if ($type === "error")
-        <x-senna.icon class="w-6 mr-3" name="ho-exclamation"></x-senna.icon>
+        <x-senna.icon class="w-10 mr-6 ml-3 flex-shrink-0" name="ho-exclamation"></x-senna.icon>
     @endif
     @if ($type === "info")
-        <x-senna.icon class="w-6 mr-3" name="ho-information-circle"></x-senna.icon>
+        <x-senna.icon class="w-10 mr-6 ml-3 flex-shrink-0" name="ho-information-circle"></x-senna.icon>
     @endif
     <div>
         {{ $slot }}

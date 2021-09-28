@@ -3,7 +3,7 @@
         --sui-selected: rgb(229, 244, 245);
 
         --sui-danger: rgb(255, 102, 0);
-        --sui-danger-ring: rgb(255, 204, 204);
+        --sui-danger-ring: rgb(250, 238, 229);
         --sui-success: rgb(5, 150, 160);
         --sui-success-ring: rgb(198, 242, 245);
         --sui-info: rgb(30, 105, 204);

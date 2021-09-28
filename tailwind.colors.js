@@ -1,8 +1,5 @@
 module.exports = {
     "sui-selected": "var(--sui-selected)",
-    "sui-first": "var(--sui-first-100)",
-    "sui-second": "var(--sui-second-100)",
-    "sui-third": "var(--sui-third-100)",
 
     "sui-danger": "var(--sui-danger)",
     "sui-danger-ring": "var(--sui-danger-ring)",
@@ -11,6 +8,7 @@ module.exports = {
     "sui-info": "var(--sui-info)",
     "sui-info-ring": "var(--sui-info-ring)",
 
+    "sui-first": "var(--sui-first-100)",
     "sui-first-100": "var(--sui-first-100)",
     "sui-first-90": "var(--sui-first-90)",
     "sui-first-80": "var(--sui-first-80)",
@@ -22,6 +20,7 @@ module.exports = {
     "sui-first-20": "var(--sui-first-20)",
     "sui-first-10": "var(--sui-first-10)",
 
+    "sui-second": "var(--sui-second-100)",
     "sui-second-100": "var(--sui-second-100)",
     "sui-second-90": "var(--sui-second-90)",
     "sui-second-80": "var(--sui-second-80)",
@@ -33,6 +32,7 @@ module.exports = {
     "sui-second-20": "var(--sui-second-20)",
     "sui-second-10": "var(--sui-second-10)",
 
+    "sui-third": "var(--sui-third-100)",
     "sui-third-100": "var(--sui-third-100)",
     "sui-third-90": "var(--sui-third-90)",
     "sui-third-80": "var(--sui-third-80)",
@@ -44,6 +44,7 @@ module.exports = {
     "sui-third-20": "var(--sui-third-20)",
     "sui-third-10": "var(--sui-third-10)",
 
+    "sui-fourth": "var(--sui-fourth)",
     "sui-fourth-100": "var(--sui-fourth-100)",
     "sui-fourth-90": "var(--sui-fourth-90)",
     "sui-fourth-80": "var(--sui-fourth-80)",
@@ -54,6 +55,7 @@ module.exports = {
     "sui-fourth-30": "var(--sui-fourth-30)",
     "sui-fourth-20": "var(--sui-fourth-20)",
     "sui-fourth-10": "var(--sui-fourth-10)",
+    
 
     "sui-dark": "var(--sui-dark-100)",
     "sui-dark-100": "var(--sui-dark-100)",

@@ -30,55 +30,6 @@
     'sizeClass' => null,
 ])
 
-
-@once
-<style>
-    [data-sn='button'].loading {
-        position: relative;
-        text-indent: 200%;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-
-    [data-sn='button'].loading::after {
-        display: block;
-        content: "";
-        width: 20px;
-        height: 20px;
-        background-color: currentColor;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-left: -10px;
-        margin-top: -10px;
-
-        border-radius: 100%;
-        -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
-        animation: sk-scaleout 1.0s infinite ease-in-out;
-    }
-
-    @-webkit-keyframes sk-scaleout {
-        0% { -webkit-transform: scale(0) }
-        100% {
-            -webkit-transform: scale(1.0);
-            opacity: 0;
-        }
-    }
-
-    @keyframes sk-scaleout {
-        0% {
-            -webkit-transform: scale(0);
-            transform: scale(0);
-        } 100% {
-            -webkit-transform: scale(1.0);
-            transform: scale(1.0);
-            opacity: 0;
-        }
-    }
-</style>
-@endonce
-
-
 @php
     $buttonClass = "sn-button font-semibold hover:underline text-sui-first";
     $sizeClass = "";
@@ -127,6 +78,53 @@
     }
 @endphp
 
-<{{ $tag }} data-sn="button" {{ $tag == "button" ? 'type="' . $type . '"' : '' }} {{ $attributes->merge(['class' => class_concat($buttonClass, $circleClass, $colorClass) ]) }}>
+<{{ $tag }} data-sn="button" {{ $tag == "button" ? 'type=' . $type . '' : '' }} {{ $attributes->merge(['class' => class_concat($buttonClass, $circleClass, $colorClass) ]) }}>
     {{ $slot }}
 </{{ $tag }}>
+
+@once
+<style>
+    [data-sn='button'].loading {
+        position: relative;
+        text-indent: 200%;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    [data-sn='button'].loading::after {
+        display: block;
+        content: "";
+        width: 20px;
+        height: 20px;
+        background-color: currentColor;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -10px;
+        margin-top: -10px;
+
+        border-radius: 100%;
+        -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+        animation: sk-scaleout 1.0s infinite ease-in-out;
+    }
+
+    @-webkit-keyframes sk-scaleout {
+        0% { -webkit-transform: scale(0) }
+        100% {
+            -webkit-transform: scale(1.0);
+            opacity: 0;
+        }
+    }
+
+    @keyframes sk-scaleout {
+        0% {
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        } 100% {
+            -webkit-transform: scale(1.0);
+            transform: scale(1.0);
+            opacity: 0;
+        }
+    }
+</style>
+@endonce
