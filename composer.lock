@@ -22,7 +22,7 @@
             },
             "require": {
                 "blade-ui-kit/blade-icons": "^1.0",
-                "illuminate/support": "^8.0",
+                "illuminate/support": "^7.4|^8.0",
                 "php": "^7.4|^8.0"
             },
             "require-dev": {
@@ -90,10 +90,10 @@
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^8.0",
-                "illuminate/filesystem": "^8.0",
-                "illuminate/support": "^8.0",
-                "illuminate/view": "^8.0",
+                "illuminate/contracts": "^7.4|^8.0",
+                "illuminate/filesystem": "^7.4|^8.0",
+                "illuminate/support": "^7.4|^8.0",
+                "illuminate/view": "^7.4|^8.0",
                 "php": "^7.4|^8.0"
             },
             "require-dev": {
@@ -1267,7 +1267,7 @@
             },
             "require": {
                 "blade-ui-kit/blade-icons": "^1.0",
-                "illuminate/support": "^8.0",
+                "illuminate/support": "^7.4|^8.0",
                 "php": "^7.4 || ^8.0"
             },
             "require-dev": {
@@ -4278,7 +4278,7 @@
                 "php": "^7.1 || ^8.0"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^8.0",
+                "doctrine/coding-standard": "^7.4|^8.0",
                 "ext-pdo": "*",
                 "ext-phar": "*",
                 "phpbench/phpbench": "^0.13 || 1.0.0-alpha2",
