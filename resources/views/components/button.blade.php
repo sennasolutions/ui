@@ -81,7 +81,7 @@
 <{{ $tag }} data-sn="button" {{ $tag == "button" ? 'type=' . $type . '' : '' }} {{ $attributes->merge(['class' => class_concat($buttonClass, $circleClass, $colorClass) ]) }}>
     {{ $slot }}
 </{{ $tag }}>
-
+{{-- 
 @once
 <style>
     [data-sn='button'].loading {
@@ -127,4 +127,4 @@
         }
     }
 </style>
-@endonce
+@endonce --}}

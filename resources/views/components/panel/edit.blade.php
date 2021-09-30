@@ -6,7 +6,7 @@
     'formTag' => 'form'
 ])
 
-<x-senna.panel {{ $attributes->merge(['class' => '!p-0'])->only('class') }}>
+<x-senna.panel mainClass="" {{ $attributes->only('class') }}>
     @if($formTag)
     <{{ $formTag }} {{ $attributes->except('class') }}>
     @endif
