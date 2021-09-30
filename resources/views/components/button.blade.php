@@ -40,7 +40,7 @@
             leading-5 transform
             focus:outline-none focus:ring
             font-semibold
-            inline-flex space-x-2 items-center
+            inline-flex space-x-2 items-center justify-center
             focus:transform active:scale-95 hover:opacity-90
             shadow-lg
         ";

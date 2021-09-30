@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "410349585de9f2d5468000520b34d156",
+    "content-hash": "22bb3b543aa028c2824eef7e6f1fe157",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -1747,6 +1747,61 @@
                 }
             ],
             "time": "2020-08-18T17:17:46+00:00"
+        },
+        {
+            "name": "senna/utils",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../utils",
+                "reference": "aef5375ec09ac8b31daad00e60f4eb1caef2ccfa"
+            },
+            "require": {
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Senna\\Utils\\UtilsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Senna\\Utils\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Senna\\Tests\\": "tests"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit --testdox"
+                ],
+                "test-f": [
+                    "vendor/bin/phpunit --filter"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lennard",
+                    "email": "packagist@spring.nl"
+                }
+            ],
+            "description": "Shared for Senna",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -7335,8 +7390,10 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "senna/utils": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

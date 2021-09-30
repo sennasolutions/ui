@@ -214,7 +214,6 @@
             },
             setValueFromPlace(place) {
                 if (place && place.geometry && place.geometry.location) {
-                    // console.log(JSON.stringify(place))
                     this.value = JSON.parse(JSON.stringify(place))
                 }
             },
@@ -232,7 +231,12 @@
                 if (this.map) {
 
                     this.clearMarkers();
+
                     let point = {lat:value.geometry.location.lat, lng:value.geometry.location.lng};
+
+                    if (!point.lat || !point.lng) {
+                        return;
+                    }
 
                     this.addMarker({
                         position: point,
