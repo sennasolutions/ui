@@ -36,11 +36,12 @@
 @php
     $prefix = $prefix ?? false;
     $suffix = $suffix ?? false;
+    // $isAutofocus = $attributes['autofocus'] ?? false;
     $inputChrome = default_input_chrome($size, $error);
     $shortcutAttriubtes = $shortcut ? 'x-on:keydown.window.' . $shortcut . '.prevent="$refs.input.focus(); $refs.input.select()" x-on:keydown.escape="$refs.input.blur()"' : '';
 @endphp
 
-<div data-sn='input' {!! $shortcutAttriubtes !!} {{ $attributes->merge(['class' => 'sn-input-text flex-grow relative block', 'x-data' => '{}'])->only('class') }}>
+<div data-sn='input' x-data="{}" x-init="$nextTick(() => $refs.input.attributes.autofocus && $refs.input.focus() )" {!! $shortcutAttriubtes !!} {{ $attributes->merge(['class' => 'sn-input-text flex-grow relative block'])->only('class') }}>
     @if($prefix)
         <div class="{{ class_concat('absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-black opacity-70 sm:text-sm', $prefixClass) }}">
             {{ $prefix }}
