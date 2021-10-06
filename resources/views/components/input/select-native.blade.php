@@ -33,7 +33,7 @@
 @endphp
 
 <div {{ $attributes->merge(['class' => 'sn-input-select-native'])->only('class') }}>
-  <select class="form-select {{ $defaultChrome }} {{ $inputClass }}" {{ $attributes->except('class') }}>
+  <select x-ref="select" class="form-select {{ $defaultChrome }} {{ $inputClass }}" {{ $attributes->except('class') }}>
     @if ($placeholder)
         <option disabled value="">{{ $placeholder }}</option>
     @endif
