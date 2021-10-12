@@ -12,4 +12,5 @@
 @component($component, array_merge($data, [
     'attributes' => new Illuminate\View\ComponentAttributeBag($data)
 ]))
+{{ $slot }}
 @endcomponent

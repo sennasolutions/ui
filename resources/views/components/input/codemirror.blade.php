@@ -25,10 +25,12 @@
 ])
 
 @php
- $value = $value ?? ($slot ? $slot->toHtml() : "");
+ $slotContents = $slot->toHtml();
+ $value = $value ?? ($slot && $slotContents ? $slotContents : null);
 @endphp
 
 <div
+    {{-- x-data="initCodemirror(@safe_entangle($attributes->wire('model')))" --}}
     x-data="initCodemirror(@safe_entangle($attributes->wire('model')))"
     x-init='init(@json($config))'
     x-on:cm-refresh.window="refresh"
@@ -61,10 +63,11 @@
     @push('senna-ui-scripts')
     <script src="{{ senna_ui_asset('js/codemirror.js') }}"></script>
     <script>
-        function initCodemirror(currentValue) {
+        function initCodemirror(value) {
             return {
                 copied: false,
-                currentValue: currentValue,
+                config: {},
+                currentValue: value,
                 copy() {
                     console.log(this.$refs.container)
                     let textarea = this.$refs.container.querySelector('textarea')
@@ -79,8 +82,19 @@
                     this.editor.refresh();
                 },
                 init(config) {
+                    console.log(this.currentValue);
                     this.config = config
                     this.initCodemirror();
+
+                    this.$watch('currentValue', (contents) => {
+                       this.refresh();
+                       if (this.editor.getValue() !== contents) {
+                           this.editor.setValue(contents)
+                        //    this.$nextTick(() => {
+                        //     })
+                            // this.editor.setValue(contents)
+                        }
+                    })
                     // if (window.is_lwd) {
                     //     Livewire.hook('message.processed', (msg, component) => {
                     //         if (component.id === @this.__instance.id) {
@@ -100,11 +114,11 @@
                         indentWithTabs: false,
                         tabSize: 2,
                         theme: 'dark',
-                        value: this.currentValue,
+                        value: "" + this.currentValue,
                         mode: 'xml',
                         theme: 'generator',
                         keyMap: 'sublime',
-                        readOnly: true,
+                        readOnly: false,
                         ...localConfig,
                         ...this.config,
                     });

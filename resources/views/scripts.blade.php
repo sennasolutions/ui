@@ -1,1 +1,1 @@
-@stack("senna-ui-styles")
+@stack("senna-ui-scripts")

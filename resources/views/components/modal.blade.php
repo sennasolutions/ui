@@ -34,6 +34,7 @@ $maxWidth = [
     '5xl' => 'sm:max-w-5xl',
     '6xl' => 'sm:max-w-6xl',
 ][$maxWidth ?? '2xl'];
+
 @endphp
 
 <div
