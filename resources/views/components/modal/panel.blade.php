@@ -29,6 +29,10 @@
      */
      'headerClass' => 'px-6 py-4 border-b',
     /**
+     * @param string headerText The header text
+     */
+     'headerText' => __('Header'),
+    /**
      * @param string mainClass String of classes applied to main slot. default: p-6
      */
     'mainClass' => 'p-6',
@@ -45,7 +49,7 @@
             @if(isset($header))
             {{ $header }}
             @else
-            <h3>Header</h3>
+            <h3>{{ $headerText }}</h3>
             @endif
         </x-slot>
         @endif
