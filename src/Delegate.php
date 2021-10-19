@@ -1,12 +1,17 @@
 <?php
 
-namespace Senna\UI\View\Components;
+namespace Senna\UI;
 
+use Closure;
 use Exception;
+use Hamcrest\Core\IsTypeOf;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
 use Illuminate\View\Component;
 use Illuminate\Support\Str;
-
+/**
+ * Render some parts on the delegate via @delegate @enddelegate tags
+ */
 class Delegate extends Component
 {
     protected $name;
@@ -61,6 +66,11 @@ class Delegate extends Component
         ]);
     }
 
+    /**
+     * Check the view for @delegate and @enddelegate
+     *
+     * @param [type] $slug
+     */
     public function checkViewForTemplate($slug) {
         $cache = &self::$delegateCache[$this->delegate];
 
@@ -84,6 +94,11 @@ class Delegate extends Component
         return $cache['delegateSubviews'][$slug] ?? null;
     }
 
+    /**
+     * Render the extracted template
+     *
+     * @param array $options
+     */
     public function renderOnDelegate($options = ['data' => [], 'fallback' => '']) {
         extract($options);
 
@@ -100,41 +115,25 @@ class Delegate extends Component
 
         $identifierPrefix = $this->identifier ? $this->identifier . ":" : "";
 
-
         if ($this->delegate) {
             $name = $identifierPrefix . $name;
 
             foreach($data as $key => $item) {
                 if (!is_string($item)) continue;
                 $name = str_replace("{" . $key . "}", $item, $name);
-                // $baseMethod = str_replace("{" . $key . "}", "", $baseMethod);
-                // $method = str_replace("{" . $key . "}", $studlySlug($item), $method);
             }
 
             // Check for row:slug on view
             $template = $this->checkViewForTemplate($name);
 
-            // if (!$template) {
-            //     // Check for renderRowSlug on view
-            //     $template = $this->checkViewForTemplate($method);
-            // }
-
             if (!$template) {
                 // Check for renderRowSlug on delegate class
                 if ($method === "render") return;
                 if ($baseMethod === "render") return;
-                
 
-                $template = $this->delegateAction($name);
-
-
-                // if (method_exists($this->delegate, $method)) {
-                //     $template = $this->delegate::$method($data);
-                // }
-                // // Check for renderRow on delegate class
-                // else if (method_exists($this->delegate, $baseMethod)) {
-                //     $template = $this->delegate::$baseMethod($slug, $data);
-                // }
+                $listeners = self::findDelegateListeners($this->delegate, $name);
+                $lastListener = $listeners[count($listeners) - 1] ?? fn($x) => null;
+                $template = $lastListener($name);
             }
         }
 
@@ -148,29 +147,61 @@ class Delegate extends Component
         return $template;
     }
 
-    public function delegateAction($name, $args = [], $returnFirstArgumentOnFail = true) {
-        // dump($this->delegate::$delegateListeners);
-        if ($this->delegate) {
-            $delegateListeners = $this->delegate::$delegateListeners ?? [];
+    public function runAction($name, $args = [], $returnFirstArgumentOnFail = true)
+    {
+        return static::runActionOnDelegate($this->delegate, $name, $args, $returnFirstArgumentOnFail);
+    }
 
-            if (isset($delegateListeners[$name]) && method_exists($this->delegate, $delegateListeners[$name])) {
-                $method = $delegateListeners[$name];
-                return $this->delegate::$method(...$args);
+    /**
+     * Run an action on the delegate class
+     *
+     * @param [type] $name
+     * @param array $args
+     * @param boolean $returnFirstArgumentOnFail
+     * @return void
+     */
+    public static function runActionOnDelegate($delegate, $name, $args = [], $returnFirstArgumentOnFail = true) {
+        $output = $returnFirstArgumentOnFail ? ($args[0] ?? null) : null;
+
+        foreach(self::findDelegateListeners($delegate, $name) as $listener) {
+            $output = $listener(...$args);
+        }
+
+        return $output;
+    }
+
+    public static function findDelegateListeners($delegate, $name, &$output = [], $maxDepth = 1, $depth = -1)
+    {
+        $depth++;
+
+        if ($delegate) {
+            $parent = get_parent_class($delegate);
+
+            if ($parent && $depth < $maxDepth) {
+                $output = self::findDelegateListeners($parent, $name, $output, $maxDepth, $depth);
+            }
+
+            $delegateListeners = $delegate::$delegateListeners ?? [];
+
+            if (method_exists($delegate, 'delegateListeners')) {
+                $delegateListeners = $delegate::delegateListeners();
+            }
+
+            if (isset($delegateListeners[$name])) {
+                $delegateAction = $delegateListeners[$name];
+
+                if ($delegateAction instanceof Closure) {
+                    $output[] = $delegateAction;
+                }
+    
+                if (is_string($delegateAction) && method_exists($delegate, $delegateAction)) {
+                    $method = $delegateAction;
+                    $output[] = fn(...$args) => $delegate::$method(...$args);
+                }
             }
         }
 
-        return $returnFirstArgumentOnFail ? ($args[0] ?? null) : null;
+        return $output;
     }
-
-    public function callDelegate($name, $args = [], $returnFirstArgumentOnFail = true) {
-        if ($this->delegate) {
-            if (type_exists($this->delegate, $name)) {
-                return $this->delegate::$name(...$args);
-            }
-        }
-
-        return $returnFirstArgumentOnFail ? ($args[0] ?? null) : null;
-    }
-
 
 }

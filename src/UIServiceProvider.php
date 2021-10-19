@@ -13,8 +13,7 @@ use Senna\UI\Console\InstallCommand;
 use Senna\UI\Console\LinkCommand;
 use Senna\UI\Console\PublishCommand;
 use Senna\UI\Console\ThemeCommand;
-use Senna\UI\View\Components\Delegate;
-use Senna\UI\View\Components\FormCreator;
+use Senna\UI\Delegate;
 
 class UIServiceProvider extends ServiceProvider {
 
