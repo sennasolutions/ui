@@ -41,10 +41,27 @@
         "test-f": "vendor/bin/phpunit --filter"
     },
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "repositories": [
         {
             "type": "path",
             "url": "../utils"
+        },
+        {
+            "type": "path",
+            "url": "../datatable"
+        },
+        {
+            "type": "path",
+            "url": "../cms"
+        },
+        {
+            "type": "path",
+            "url": "../media"
+        },
+        {
+            "type": "path",
+            "url": "../admin"
         }
     ]
 }
