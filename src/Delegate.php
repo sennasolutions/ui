@@ -184,7 +184,7 @@ class Delegate extends Component
             $delegateListeners = $delegate::$delegateListeners ?? [];
 
             if (method_exists($delegate, 'delegateListeners')) {
-                $delegateListeners = $delegate::delegateListeners();
+                $delegateListeners = array_merge($delegateListeners, $delegate::delegateListeners());
             }
 
             if (isset($delegateListeners[$name])) {
