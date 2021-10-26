@@ -14,12 +14,12 @@ function default_input_chrome($size = "lg", $error = false) {
             break;
     }
 
-    $errorClass = $error ? "ring !ring-sui-danger-ring border !border-sui-danger" : "";
+    $errorClass = $error ? "ring !ring-danger-ring border !border-danger" : "";
 
     return "$sizeClass $errorClass transition duration-50 ease-in-out
     block w-full  text-gray-700 bg-white border border-gray-300 rounded-md
-    dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:focus:border-sui-first
-    focus:ring focus:ring-sui-first-20 focus:border-sui-first-50
+    dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:focus:border-primary
+    focus:ring focus:ring-primary-20 focus:border-primary-50
     placeholder-gray-400 focus:placeholder-gray-300";
 }
 

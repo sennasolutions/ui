@@ -13,14 +13,14 @@
 ])
 
 @php
-    $text = "text-sui-success";
+    $text = "text-success";
 
     if ($type === "error") {
-        $text = "text-sui-danger";
+        $text = "text-danger";
     }
 
     if ($type === "info") {
-        $text = "text-sui-info";
+        $text = "text-info";
     }
 @endphp
 

@@ -52,10 +52,10 @@
 
         @if(isset($contents))
         <div x-cloak x-data="{ open: false }" class="mb-6">
-            <x-senna.button.first size="sm" x-on:click="open = !open; $nextTick(() => $dispatch('cm-refresh'))">
+            <x-senna.button.primary size="sm" x-on:click="open = !open; $nextTick(() => $dispatch('cm-refresh'))">
                 <div x-show="!open">Show code</div>
                 <div x-show="open">Hide code</div>
-            </x-senna.button.first>
+            </x-senna.button.primary>
             <div x-show="open" class="mt-4">
                 <x-senna.panel.window-dark class="mb-7">
                     <x-senna.input.codemirror :value="$contents" copyClass="-top-9 right-2" :showCopyButton="true"></x-senna.input.codemirror>

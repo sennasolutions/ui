@@ -1111,8 +1111,8 @@ select {
 .senna-ui .\!border-none {
 	border-style: none !important;
 }
-.senna-ui .border-sui-first {
-	border-color: var(--sui-first-100);
+.senna-ui .border-primary {
+	border-color: var(--primary-100);
 }
 .senna-ui .border-gray-100 {
 	--tw-border-opacity: 1;
@@ -1130,8 +1130,8 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(55, 65, 81, var(--tw-border-opacity));
 }
-.senna-ui .\!border-sui-danger {
-	border-color: var(--sui-danger) !important;
+.senna-ui .\!border-danger {
+	border-color: var(--danger) !important;
 }
 .senna-ui .border-opacity-60 {
 	--tw-border-opacity: 0.6;
@@ -1168,18 +1168,18 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(209, 213, 219, var(--tw-bg-opacity));
 }
-.senna-ui .bg-sui-first {
-	background-color: var(--sui-first-100);
+.senna-ui .bg-primary {
+	background-color: var(--primary-100);
 }
 .senna-ui .bg-red-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(220, 38, 38, var(--tw-bg-opacity));
 }
-.senna-ui .bg-sui-second {
-	background-color: var(--sui-second-100);
+.senna-ui .bg-secondary {
+	background-color: var(--secondary-100);
 }
-.senna-ui .bg-sui-third {
-	background-color: var(--sui-third-100);
+.senna-ui .bg-primary {
+	background-color: var(--primary-100);
 }
 .senna-ui .\!bg-transparent {
 	background-color: transparent !important;
@@ -1208,21 +1208,21 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(52, 211, 153, var(--tw-bg-opacity));
 }
-.senna-ui .bg-sui-selected {
-	background-color: var(--sui-selected);
+.senna-ui .bg-selected {
+	background-color: var(--selected);
 }
 .senna-ui .bg-gray-200 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
 }
-.senna-ui .bg-sui-first-20 {
-	background-color: var(--sui-first-20);
+.senna-ui .bg-primary-20 {
+	background-color: var(--primary-20);
 }
-.senna-ui .bg-sui-third-20 {
-	background-color: var(--sui-third-20);
+.senna-ui .bg-primary-20 {
+	background-color: var(--primary-20);
 }
-.senna-ui .bg-sui-second-20 {
-	background-color: var(--sui-second-20);
+.senna-ui .bg-secondary-20 {
+	background-color: var(--secondary-20);
 }
 .senna-ui .bg-gradient-to-br {
 	background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
@@ -1424,11 +1424,11 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(249, 250, 251, var(--tw-text-opacity));
 }
-.senna-ui .text-sui-first {
-	color: var(--sui-first-100);
+.senna-ui .text-primary {
+	color: var(--primary-100);
 }
-.senna-ui .text-sui-danger {
-	color: var(--sui-danger);
+.senna-ui .text-danger {
+	color: var(--danger);
 }
 .senna-ui .text-gray-500 {
 	--tw-text-opacity: 1;
@@ -1446,14 +1446,14 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(238, 242, 255, var(--tw-text-opacity));
 }
-.senna-ui .text-sui-first-80 {
-	color: var(--sui-first-80);
+.senna-ui .text-primary-80 {
+	color: var(--primary-80);
 }
-.senna-ui .text-sui-third-80 {
-	color: var(--sui-third-80);
+.senna-ui .text-primary-80 {
+	color: var(--primary-80);
 }
-.senna-ui .text-sui-second-80 {
-	color: var(--sui-second-80);
+.senna-ui .text-secondary-80 {
+	color: var(--secondary-80);
 }
 .senna-ui .placeholder-gray-400::-moz-placeholder {
 	--tw-placeholder-opacity: 1;
@@ -1534,21 +1534,21 @@ select {
 	--tw-ring-opacity: 1;
 	--tw-ring-color: rgba(199, 210, 254, var(--tw-ring-opacity));
 }
-.senna-ui .ring-sui-first-30 {
-	--tw-ring-color: var(--sui-first-30);
+.senna-ui .ring-primary-30 {
+	--tw-ring-color: var(--primary-30);
 }
 .senna-ui .ring-red-200 {
 	--tw-ring-opacity: 1;
 	--tw-ring-color: rgba(254, 202, 202, var(--tw-ring-opacity));
 }
-.senna-ui .ring-sui-second-30 {
-	--tw-ring-color: var(--sui-second-30);
+.senna-ui .ring-secondary-30 {
+	--tw-ring-color: var(--secondary-30);
 }
-.senna-ui .ring-sui-third-30 {
-	--tw-ring-color: var(--sui-third-30);
+.senna-ui .ring-primary-30 {
+	--tw-ring-color: var(--primary-30);
 }
-.senna-ui .\!ring-sui-danger-ring {
-	--tw-ring-color: var(--sui-danger-ring) !important;
+.senna-ui .\!ring-danger-ring {
+	--tw-ring-color: var(--danger-ring) !important;
 }
 .senna-ui .ring-opacity-30 {
 	--tw-ring-opacity: 0.3;
@@ -1632,8 +1632,8 @@ select {
 	--tw-scale-y: 1;
 	transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
-.senna-ui .focus\:border-sui-first-50:focus {
-	border-color: var(--sui-first-50);
+.senna-ui .focus\:border-primary-50:focus {
+	border-color: var(--primary-50);
 }
 .senna-ui .focus\:bg-gray-100:focus {
 	--tw-bg-opacity: 1;
@@ -1669,11 +1669,11 @@ select {
 	--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
 	box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
-.senna-ui .focus\:ring-sui-first-30:focus {
-	--tw-ring-color: var(--sui-first-30);
+.senna-ui .focus\:ring-primary-30:focus {
+	--tw-ring-color: var(--primary-30);
 }
-.senna-ui .focus\:ring-sui-first-20:focus {
-	--tw-ring-color: var(--sui-first-20);
+.senna-ui .focus\:ring-primary-20:focus {
+	--tw-ring-color: var(--primary-20);
 }
 .senna-ui .active\:scale-95:active {
 	--tw-scale-x: .95;

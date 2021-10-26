@@ -11,9 +11,9 @@
      */
     'tag' => 'button',
     /**
-     * @param string colorClass String of color classes applied to the button. default: text-sui-first
+     * @param string colorClass String of color classes applied to the button. default: text-primary
      */
-    'colorClass' => 'text-sui-first',
+    'colorClass' => 'text-primary',
     /**
      * @param string type Type that is used for this button. For example 'submit' or 'button'. default: 'button'
      */
@@ -23,4 +23,4 @@
 <{{ $tag }} type="{{ $type }}" {{ $attributes->merge(['class' => "sn-button-text font-semibold $colorClass hover:underline" ]) }}>
     {{ $slot }}
 </{{ $tag }}> --}}
-<x-senna.button {{ $attributes }} :textButton="true" colorClass="">{{ $slot }}</x-button.base>
+<x-senna.button {{ $attributes->merge(['class' => '!text-primary']) }} :textButton="true" colorClass="">{{ $slot }}</x-button.base>

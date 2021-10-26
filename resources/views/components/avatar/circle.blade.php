@@ -11,13 +11,13 @@
      */
     'img' => '',
     /**
-     * @param string textColor Textcolor of the fallback SVG. default: var(--sui-first-90)
+     * @param string textColor Textcolor of the fallback SVG. default: var(--primary-900)
      */
-    'textColor' => 'var(--sui-first-90)',
+    'textColor' => 'var(--primary-900)',
     /**
-     * @param string bgColor background of the fallback SVG. default: var(--sui-first-20)
+     * @param string bgColor background of the fallback SVG. default: var(--primary-200)
      */
-    'bgColor' => 'var(--sui-first-20)',
+    'bgColor' => 'var(--primary-200)',
     /**
      * @param string sizeClass Specify the classes for the size
      */

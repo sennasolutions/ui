@@ -1,1 +1,1 @@
-<x-senna.button {{ $attributes }} colorClass="text-white bg-sui-dark-70 ring-sui-dark-20">{{ $slot }}</x-button.base>
+<x-senna.button {{ $attributes }} colorClass="text-white bg-dark-700 ring-dark-200">{{ $slot }}</x-button.base>

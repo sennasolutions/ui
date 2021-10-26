@@ -21,7 +21,7 @@
 ])
 
 <label {{ $attributes->merge(['class' => 'sn-input-check cursor-pointer inline-flex space-x-2 items-center'])->only('class') }}>
-    <input type="radio" class="cursor-pointer transition duration-50 ease-in-out  text-sui-first checked:border-none focus:ring-sui-first-30 border-gray-300 rounded-full shadow-sm focus:ring {{ $inputClass }}" {!! $attributes->except('class') !!}>
+    <input type="radio" class="cursor-pointer transition duration-50 ease-in-out  text-primary checked:border-none focus:ring-primary-300 border-gray-300 rounded-full shadow-sm focus:ring {{ $inputClass }}" {!! $attributes->except('class') !!}>
     <span class="{{ class_merge($labelClass) }}">
         {{ $label ?? $slot }}
     </span>

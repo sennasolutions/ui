@@ -203,7 +203,7 @@
     font-weight: 500;
     margin-right: 3.75px;
     margin-bottom: 3.75px;
-    background-color: var(--sui-first-100);
+    background-color: var(--primary-100);
     /* border: 1px solid #00a5bb; */
     color: #ffffff;
     word-break: break-all;
@@ -306,7 +306,7 @@
   }
 
   .choices__list--dropdown .choices__item--selectable.is-highlighted {
-    background-color: var(--sui-first-100);
+    background-color: var(--primary-100);
     color: #fff;
   }
 

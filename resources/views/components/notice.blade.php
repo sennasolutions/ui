@@ -14,14 +14,14 @@
 ])
 
 @php
-    $bg = "bg-sui-success";
+    $bg = "bg-success";
 
     if ($type === "error" || $type === "danger") {
-        $bg = "bg-sui-danger";
+        $bg = "bg-danger";
     }
 
     if ($type === "info") {
-        $bg = "bg-sui-info";
+        $bg = "bg-info";
     }
 @endphp
 

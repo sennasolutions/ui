@@ -4,8 +4,8 @@
 
 @php
     $color = "bg-gray-300";
-    $color = $mode === "success" ? 'bg-sui-success' : $color; 
-    $color = $mode === "danger" ? 'bg-sui-danger' : $color; 
+    $color = $mode === "success" ? 'bg-success' : $color; 
+    $color = $mode === "danger" ? 'bg-danger' : $color; 
     $color = $mode === "info" ? 'bg-gray-300' : $color; 
 @endphp
 

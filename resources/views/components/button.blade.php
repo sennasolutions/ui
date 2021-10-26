@@ -31,7 +31,7 @@
 ])
 
 @php
-    $buttonClass = "sn-button font-semibold hover:underline text-sui-first";
+    $buttonClass = "sn-button font-semibold hover:underline text-primary";
     $sizeClass = "";
 
     if(!$textButton) {
