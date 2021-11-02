@@ -3,6 +3,7 @@
     'rotate' => false,
     'whitelist' => null,
     'blacklist' => null,
+    'html' => false
 ])
 
 @if(!$data)
@@ -62,7 +63,7 @@
         <x-senna.table.body>
             @foreach($props as $prop)
                 <x-senna.table.row>
-                    <x-senna.table.heading paddingClass="py-2 p-4 w-32">
+                    <x-senna.table.heading paddingClass="py-2 p-4 ">
                         {{ $prop}}
                     </x-senna.table.heading>
                     @foreach($data as $key => $row)
@@ -78,7 +79,7 @@
                                 @if (!is_scalar($value))
                                     <pre class="bg-gray-100 rounded p-5 overflow-y-auto">{{ json_encode($value, JSON_PRETTY_PRINT) }}</pre>
                                 @else
-                                    {{ $value }}
+                                    @if($html) {!! $value !!} @else {{ $value }} @endif
                                 @endif
                             @endif
                         </x-senna.table.cell>
@@ -113,7 +114,7 @@
                             @if (!is_scalar($value))
                                 <pre class="bg-gray-100 rounded p-5 overflow-y-auto">{{ json_encode($value, JSON_PRETTY_PRINT) }}</pre>
                             @else
-                                {{ $value }}
+                                @if($html) {!! $value !!} @else {{ $value }} @endif
                             @endif
                         @endif
                     </x-senna.table.cell>
