@@ -158,7 +158,6 @@ class Delegate extends Component
      * @param [type] $name
      * @param array $args
      * @param boolean $returnFirstArgumentOnFail
-     * @return void
      */
     public static function runActionOnDelegate($delegate, $name, $args = [], $returnFirstArgumentOnFail = true) {
         $output = $returnFirstArgumentOnFail ? ($args[0] ?? null) : null;

@@ -70,7 +70,7 @@
             {{ $slot }}
         </div>
         @if($isHor && ($error))
-        <x-senna.notice.validation wire:key="error" type="error" class="{{ $errorClass }}">
+        <x-senna.notice.validation type="error" class="{{ $errorClass }}">
             {{ $error }}
         </x-senna.notice.validation>
         @endif
@@ -78,7 +78,7 @@
     @if(!$isHor && ($error || $helpText))
     <div class="{{ $suffixClass }} sm:pl-36">
         @if ($error)
-        <x-senna.notice.validation  wire:key="error" type="error" class="!mt-2 {{ $errorClass }}">
+        <x-senna.notice.validation  type="error" class="!mt-2 {{ $errorClass }}">
             {{ $error }}
         </x-senna.notice.validation>
         @endif
