@@ -63,7 +63,7 @@
         @endif
         @if($isHor && ($helpText))
         <div class="mb-2 {{ $suffixClass }}">
-            <p class="text-sm text-gray-500 {{ $helpClass }}">{{ $helpText }}</p>
+            <p class="text-sm text-gray-500 {{ $helpClass }}">{!! $helpText !!}</p>
         </div>
         @endif
         <div class="flex-grow {{ $slotClass }}">
