@@ -21,7 +21,8 @@
     @endpush
 
     @push('senna-ui-scripts')
-        <script src="https://cdn.tiny.cloud/1/{{ $api_key }}/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="https://cdn.tiny.cloud/1/{{ $api_key }}/tinymce/5/tinymce.min.js" referrerpolicy="origin" ></script>
+        
 
         <script>
             function initTinymce(value) {
