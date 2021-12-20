@@ -18,6 +18,7 @@
      * @param string label The label text
      */
     'label' => null,
+    
 ])
 
 <label {{ $attributes->merge(['class' => 'sn-input-check cursor-pointer inline-flex space-x-2 items-center'])->only('class') }}>

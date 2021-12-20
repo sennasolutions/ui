@@ -17,7 +17,7 @@
     /**
      * @param string label Contents of the label
      */
-    'label' => null,
+    'label' => null
 ])
 
 <label {{ $attributes->merge(['class' => 'sn-input-check cursor-pointer inline-flex space-x-2 items-center'])->only(['class', 'wire:key']) }}>

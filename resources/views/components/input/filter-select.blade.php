@@ -58,6 +58,10 @@
      * @param string error Whether to show an error border on the input
      */
      'error' => false,
+     /**
+     * @param bool allowHtml Do not escape the label and show as html
+     */
+     'allowHtml' => false
 ])
 
 {{-- @php
@@ -87,7 +91,7 @@
     <div x-ref="slot" class="max-h-32 overflow-y-auto w-full p-1.5 rounded">
         @if($items !== null)
             @forelse($items as $key => $value)
-                <x-senna.input.filter-select-item :showCheckRadio="$showCheckRadio" :showDeleteButton="$showDeleteButtons" :key="$key" :label="$value" />
+                <x-senna.input.filter-select-item :allowHtml="$allowHtml" :showCheckRadio="$showCheckRadio" :showDeleteButton="$showDeleteButtons" :key="$key" :label="$value" />
             @empty
                 <span>{{ $noItemsText }}</span>
             @endforelse
