@@ -80,7 +80,7 @@ $maxWidth = [
                         // All focusable element types...
                         let selector = 'a, button, input:not([type=\'hidden\'], textarea, select, details, [tabindex]:not([tabindex=\'-1\'])'
 
-                        return [...$el.querySelectorAll(selector)]
+                        return [...this.$el.querySelectorAll(selector)]
                             // All non-disabled elements...
                             .filter(el => ! el.hasAttribute('disabled'))
                     },
