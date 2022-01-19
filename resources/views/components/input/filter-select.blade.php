@@ -67,10 +67,12 @@
      * @param string inputClass String of classes applied to the input element
      */
     'inputClass' => '',
+    'slotClass' => '',
 ])
 
 @php
     $inputClass = "-inner --$size " . ($error ? '--error' : '') . ' ' . $inputClass;
+    $contentAttributes = isset($content) ? $content->attributes : new Illuminate\View\ComponentAttributeBag();
 @endphp
 
 <div
@@ -93,7 +95,7 @@
     </div>
     @endif
 
-    <div x-ref="slot" class="max-h-32 overflow-y-auto w-full p-1.5 rounded">
+    <div x-ref="slot" {{ $contentAttributes->merge(['class' => "max-h-32 overflow-y-auto w-full p-1.5 rounded"]) }}>
         @if($items !== null)
             @forelse($items as $key => $value)
                 <x-senna.input.filter-select-item :allowHtml="$allowHtml" :showCheckRadio="$showCheckRadio" :showDeleteButton="$showDeleteButtons" :key="$key" :label="$value" />
@@ -101,7 +103,7 @@
                 <span>{{ $noItemsText }}</span>
             @endforelse
         @else
-            {{ $slot }}
+            {{ $content ?? $slot }}
         @endif
     </div>
 

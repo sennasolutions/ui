@@ -31,40 +31,14 @@
 ])
 
 @php
-    $buttonClass = "sn-button font-semibold hover:underline text-primary";
-    $sizeClass = "";
-
-    if(!$textButton) {
-        $buttonClass = "
-            transition duration-100 ease-in-out
-            leading-5 transform
-            focus:outline-none focus:ring
-            font-semibold
-            inline-flex space-x-2 items-center justify-center
-            focus:transform active:scale-95 hover:opacity-90
-            shadow-lg
-        ";
-
-        if (!$sizeClass) {
-            $sizeClass = "px-6 py-3";
-            switch($size) {
-                case "xs":
-                    $sizeClass = "px-2 py-1 text-xs";
-                    break;
-                case "sm":
-                    $sizeClass = "px-3 py-2 text-sm";
-                    break;
-                case "lg":
-                    $sizeClass = "px-6 py-3";
-                        break;
-                case "xl":
-                    $sizeClass = "px-7 py-4 text-lg";
-                    break;
-            }
-        }
-    }
-
-    $circleClass = $circle ? "p-2 rounded-full justify-center" : $sizeClass . " rounded-md";
+    $buttonClass = join(' ', [
+        '-outer',
+        $textButton ? '--text' : '',
+        !$sizeClass ? '--' . $size : $sizeClass,
+        $circle ? '--circle' : '',
+        $textButton || $colorClass ? $colorClass : '--default',
+        'focus:transform active:scale-95 hover:opacity-90' // Didnt work in class
+    ]);
 
     // Automatic loading
     $atts = $attributes->getAttributes();
@@ -78,7 +52,9 @@
     }
 @endphp
 
-<{{ $tag }} data-sn="button" {{ $tag == "button" ? 'type=' . $type . '' : '' }} {{ $attributes->merge(['class' => class_concat($buttonClass, $circleClass, $colorClass) ]) }}>
+<{{ $tag }} 
+    {{ $tag == "button" ? 'type=' . $type . '' : '' }} 
+    {{ $attributes->merge(['data-sn' => 'button', 'class' => $buttonClass ]) }}>
     {{ $slot }}
 </{{ $tag }}>
 {{-- 

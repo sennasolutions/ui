@@ -57,6 +57,7 @@
                     var swiper = new Swiper(this.$el, {
                         pagination: {  
                             el: this.$el.querySelector(".swiper-pagination"),
+                            clickable: true,
                         },
                     });
                 }
