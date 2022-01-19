@@ -37,21 +37,28 @@
     $prefix = $prefix ?? false;
     $suffix = $suffix ?? false;
     // $isAutofocus = $attributes['autofocus'] ?? false;
-    $inputChrome = default_input_chrome($size, $error);
+    // $inputChrome = default_input_chrome($size, $error);
+    $inputClass = "-inner --$size " . ($error ? '--error' : '') . " " . $inputClass;
+
     $shortcutAttriubtes = $shortcut ? 'x-on:keydown.window.' . $shortcut . '.prevent="$refs.input.focus(); $refs.input.select()" x-on:keydown.escape="$refs.input.blur()"' : '';
 @endphp
 
-<div data-sn='input' x-data="{}" x-init="$nextTick(() => $refs.input.attributes.autofocus && $refs.input.focus() )" {!! $shortcutAttriubtes !!} {{ $attributes->merge(['class' => 'sn-input-text flex-grow relative block'])->only('class') }}>
+<div 
+    x-data="{}" 
+    x-init="$nextTick(() => $refs.input.attributes.autofocus && $refs.input.focus() )" 
+    {!! $shortcutAttriubtes !!} 
+    {{ $attributes->merge(['class' => '-outer', 'data-sn' => 'input.text'])->only(['class', 'data-sn']) }}>
+
     @if($prefix)
-        <div class="{{ class_concat('absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-black opacity-70 sm:text-sm', $prefixClass) }}">
+        <div class="{{ class_concat('-prefix', $prefixClass) }}">
             {{ $prefix }}
         </div>
     @endif
-    <input x-ref="input" class="{{ class_concat($inputChrome, $inputClass, ($prefix ? "pl-8" : ""), ($suffix ? "pr-8" : "")) }}"
-        {{ $attributes->merge(['type' => $type])->except('class') }}
+    <input x-ref="input" class="{{ class_concat($inputClass, ($prefix ? "--prefixed" : ""), ($suffix ? "--suffixed" : "")) }}"
+        {{ $attributes->merge(['type' => $type])->except(['class', 'data-sn']) }}
     />
     @if($suffix)
-        <div class="{{ class_concat('absolute inset-y-0 right-0 flex items-center pr-3 text-black opacity-70 sm:text-sm', $suffixClass) }}">
+        <div class="{{ class_concat('-suffix', $suffixClass) }}">
             {{ $suffix }}
         </div>
     @endif

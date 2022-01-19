@@ -61,12 +61,17 @@
      /**
      * @param bool allowHtml Do not escape the label and show as html
      */
-     'allowHtml' => false
+     'allowHtml' => false,
+
+    /**
+     * @param string inputClass String of classes applied to the input element
+     */
+    'inputClass' => '',
 ])
 
-{{-- @php
-    $wireId = isset($_instance) && $_instance->id ? '"' .$_instance->id . '"' : 'null';
-@endphp --}}
+@php
+    $inputClass = "-inner --$size " . ($error ? '--error' : '') . ' ' . $inputClass;
+@endphp
 
 <div
     data-sn="input.filter-select"
@@ -76,10 +81,10 @@
     ])'
     wire:ignore.self
     wire:key="{{ $attributes->wire("model")->value() }}"
-    {{ $attributes->merge(['class' => 'relative flex flex-col p-3 border space-y-2 border-gray-200 rounded-md shadow-sm'])->whereDoesntStartWith('wire:model') }}
+    {{ $attributes->merge(['class' => '-outer flex flex-col p-3 border space-y-2 border-gray-200 rounded-md shadow-sm'])->whereDoesntStartWith('wire:model') }}
     >
     @if($showFilter)
-    <input class="{{ default_input_chrome($size, $error) }}" x-ref="search" x-model="search" type="text" placeholder="{{ $placeholder }}">
+    <input class="{{ $inputClass }}" x-ref="search" x-model="search" type="text" placeholder="{{ $placeholder }}">
     @endif
     @if($showButtons)
     <div class="flex w-full opacity-50 text-sm">

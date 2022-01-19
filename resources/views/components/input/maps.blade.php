@@ -53,13 +53,17 @@
     'placeholder' => __('Enter a location'),
 ])
 
+@php
+    $inputClass = "-inner --prefixed --$size " . ($error ? '--error' : '') . ' ' . $inputClass;
+@endphp
+
 @if(!config('senna.ui.maps.apiKey'))
     <div>
         {{ __('Please set a google API Key in the config file (maps.apiKey)') }}
     </div>
 @else
 
-<div wire:ignore {{ $attributes->merge(['class' => 'sn-input-maps rounded ' . ($showMap ? 'border' : 'border-none') ])->only('class') }}
+<div data-sn="input.maps" wire:ignore {{ $attributes->merge(['class' => '-outer rounded ' . ($showMap ? 'border' : 'border-none') ])->only('class') }}
     x-data="initMap(@safe_entangle($attributes->wire('model')))"
     x-json='@json([
         'mapsConfig' => $mapsConfig,
@@ -69,10 +73,10 @@
     <div x-ref="search" class="{{ $showMap ? 'p-3' : '' }}">
         <x-senna.input.group :label="$label">
             <div class="sn-input-text flex-grow relative block">
-                <div class="{{ class_concat('absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-black opacity-70 sm:text-sm') }}">
+                <div class="-prefix">
                     <x-senna.icon class="w-5 h-5 -mt-1" name="hs-location-marker"></x-senna.icon>
                 </div>
-                <input placeholder="{{ $placeholder }}" type="text" x-ref="input" class="{{ class_concat(default_input_chrome($size, $error), $inputClass, "pl-10" ) }}"/>
+                <input placeholder="{{ $placeholder }}" type="text" x-ref="input" class="{{ $inputClass }}"/>
             </div>
         </x-senna.input.group>
     </div>

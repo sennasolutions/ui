@@ -1,6 +1,7 @@
 module.exports = {
-    mode: 'jit',
+    // mode: 'jit',
     important: '.senna-ui',
+    darkMode: 'class', // or 'media' or 'class'
     purge: [
         ...require('./tailwind.purge')
     ],

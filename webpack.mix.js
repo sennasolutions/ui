@@ -11,10 +11,14 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/apline.js', './dist/js')
+mix.js('resources/js/alpine.js', './dist/js')
     .js('resources/js/codemirror.js', './dist/js')
     .postCss('resources/css/codemirror.css', './dist/css')
     .postCss('resources/css/tailwind.css', './dist/css', [
         require('postcss-import'),
         require('tailwindcss'),
-]);
+    ])
+    .postCss('resources/css/ui.css', './dist/css', [
+        require('postcss-import'),
+        require('tailwindcss'),
+    ]);

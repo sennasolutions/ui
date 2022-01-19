@@ -29,11 +29,11 @@
 ])
 
 @php
-    $defaultChrome = default_input_chrome($size, $error);
+    $inputClass = "-inner --$size " . ($error ? '--error' : '') . ' ' . $inputClass;
 @endphp
 
-<div {{ $attributes->merge(['class' => 'sn-input-select-native'])->only('class') }}>
-  <select x-ref="select" class="form-select {{ $defaultChrome }} {{ $inputClass }}" {{ $attributes->except('class') }}>
+<div {{ $attributes->merge(['class' => '-outer', 'data-sn' => 'input.select-native'])->only(['class', 'data-sn']) }}>
+  <select x-ref="select" class="form-select {{ $inputClass }}" {{ $attributes->except(['class', 'data-sn']) }}>
     @if ($placeholder)
         <option disabled value="">{{ $placeholder }}</option>
     @endif

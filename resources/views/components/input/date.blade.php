@@ -29,11 +29,16 @@
     /**
      * @param string error Whether to show an error border on the input
      */
-     'error' => false
+     'error' => false,
+     /**
+     * @param string inputClass String of classes applied to the input element
+     */
+    'inputClass' => '',
 ])
 
 @php
-    $inputClass = "" . default_input_chrome($size, $error) . " pl-9";
+    $inputClass = "-inner --$size " . ($error ? '--error' : '') . ' ' . $inputClass;
+
     $isInline = ($config['inline'] ?? false);
 @endphp
 
@@ -43,12 +48,10 @@
     x-json='@json($config)'
     wire:ignore
     {{-- {{ ($isInline) ? 'wire:ignore' : 'wire:ignore' }} --}}
-    {{ $attributes->merge(['class' => 'sn-input-date relative block'])->only('class') }}
+    {{ $attributes->merge(['class' => '-outer'])->only('class') }}
     >
-    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none {{ $prefixClass }}">
-        <span class="opacity-60 sm:text-sm">
-            <x-heroicon-s-calendar class="w-4" />
-        </span>
+    <div class="-prefix {{ $prefixClass }}">
+        <x-heroicon-s-calendar class="w-4" />
     </div>
 
     <input style="{{ $isInline ? 'display: none !important;' : '' }}" x-ref="flatpicker" class="{{ $inputClass }}" {{ $attributes->merge([

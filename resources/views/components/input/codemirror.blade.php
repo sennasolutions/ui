@@ -30,6 +30,7 @@
 @endphp
 
 <div
+    data-sn="input.codemirror"
     {{-- x-data="initCodemirror(@safe_entangle($attributes->wire('model')))" --}}
     x-data="initCodemirror(@safe_entangle($attributes->wire('model')))"
     x-init='init(@json($config))'

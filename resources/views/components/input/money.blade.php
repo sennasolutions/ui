@@ -16,7 +16,7 @@
     'currency' => '&euro;'
 ])
 
-<x-senna.input {{ $attributes}} type="number" step="{{ $step }}">
+<x-senna.input {{ $attributes }} data-sn="input.money" type="number" step="{{ $step }}">
     <x-slot name="prefix">
         {!! $currency !!}
     </x-slot>
