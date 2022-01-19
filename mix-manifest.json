@@ -2,6 +2,6 @@
     "/dist/js/alpine.js": "/dist/js/alpine.js",
     "/dist/js/codemirror.js": "/dist/js/codemirror.js",
     "/dist/css/codemirror.css": "/dist/css/codemirror.css",
-    "/dist/css/tailwind.css": "/dist/css/tailwind.css",
-    "/dist/css/ui.css": "/dist/css/ui.css"
+    "/dist/css/ui.css": "/dist/css/ui.css",
+    "/dist/css/tailwind.css": "/dist/css/tailwind.css"
 }
