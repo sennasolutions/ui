@@ -110,19 +110,19 @@
         @apply hover:underline;
     }
 
-    [data-sn^="button"] .-outer.--xs {
+    [data-sn^="button"].-outer.--xs {
         @apply px-2 py-1 text-xs;
     }
 
-    [data-sn^="button"] .-outer.--sm {
+    [data-sn^="button"].-outer.--sm {
         @apply px-3 py-2 text-sm;
     }
 
-    [data-sn^="button"] .-outer.--lg {
+    [data-sn^="button"].-outer.--lg {
         @apply px-6 py-3;
     }
 
-    [data-sn^="button"] .-outer.--xl {
+    [data-sn^="button"].-outer.--xl {
         @apply px-7 py-4 text-lg;
     }
 
