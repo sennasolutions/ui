@@ -94,7 +94,7 @@
     }
 
     [data-sn^="button"].--default  {
-        @apply text-white bg-gray-800 ring-gray-800 ring-opacity-30;
+        @apply text-white bg-gray-800 ring-gray-800;
     }
 
     [data-sn^="button"].-outer:not(.--text) {
@@ -105,10 +105,9 @@
         @apply inline-flex space-x-2 items-center justify-center;
         @apply shadow-lg;
         @apply px-6 py-3;
+        @apply ring-opacity-30;
     }
-    [data-sn^="button"].-outer.--text {
-        @apply hover:underline;
-    }
+ 
 
     [data-sn^="button"].-outer.--xs {
         @apply px-2 py-1 text-xs;
@@ -124,6 +123,10 @@
 
     [data-sn^="button"].-outer.--xl {
         @apply px-7 py-4 text-lg;
+    }
+
+    [data-sn^="button"].-outer.--text {
+        @apply p-0;
     }
 
     [data-sn^="button"].-outer.--circle {
