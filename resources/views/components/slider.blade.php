@@ -2,7 +2,7 @@
     'hasPagination' => true
 ])
 
-<div {{ $attributes->merge(['class' => "sn-slider h-96"]) }}>
+<div {{ $attributes->merge(['data-sn' => 'slider', 'class' => "h-96"]) }}>
     <div class="swiper" x-data="createSwiper">
       <div class="swiper-wrapper">
         {{ $slot }}
