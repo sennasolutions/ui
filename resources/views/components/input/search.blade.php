@@ -9,11 +9,12 @@
     /**
      * @param string transparent Whether to show a borderless search field.
      */
-    'transparent' => true,
+    'transparent' => false,
+    'inputClass' => ''
 ])
 
 @php
-    $attributes = $attributes->merge(['inputClass' => $transparent ? '--transparent' : '']);
+    $attributes = $attributes->merge(['inputClass' => $inputClass . ' ' . ($transparent ? '--transparent' : '')]);
 @endphp
 
 <x-senna.input {{ $attributes }} data-sn="input.search">

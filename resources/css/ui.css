@@ -79,7 +79,7 @@
         @apply !pl-10;
     }
     [data-sn^="input.search"] .-inner.--transparent {
-        @apply !pl-12 focus:ring-0 !border-none !bg-transparent;
+        @apply !pl-12 focus:ring-0 !border-none !bg-transparent !outline-none;
     }
 
 
