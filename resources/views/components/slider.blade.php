@@ -1,14 +1,20 @@
 @props([
-    'hasPagination' => true
+    'showPagination' => true,
+    'showNavigation' => false,
+    'options' => []
 ])
 
 <div {{ $attributes->merge(['data-sn' => 'slider', 'class' => "h-96"]) }}>
-    <div class="swiper" x-data="createSwiper">
-      <div class="swiper-wrapper">
+    <div class="swiper h-full" x-data="createSwiper(@js($options))">
+      <div class="swiper-wrapper flex h-full">
         {{ $slot }}
       </div>
-      @if($hasPagination)
-      <div class="swiper-pagination"></div>
+      @if($showPagination)
+        <div class="swiper-pagination"></div>
+      @endif
+      @if($showNavigation)
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
       @endif
     </div>
 </div>
@@ -51,13 +57,19 @@
         <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
 
         <script>
-        function createSwiper() {
+        function createSwiper(options) {
             return {
                 init() {
                     var swiper = new Swiper(this.$el, {
+                        ...options,
                         pagination: {  
                             el: this.$el.querySelector(".swiper-pagination"),
                             clickable: true,
+                            ...options.pagination
+                        },
+                        navigation: {
+                          nextEl: '.swiper-button-next',
+                          prevEl: '.swiper-button-prev',
                         },
                     });
                 }
