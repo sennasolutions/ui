@@ -8,7 +8,7 @@
 
 <div>
     <textarea x-ref="textarea" x-data="initTinymce(@safe_entangle($attributes->wire('model')))">
-        <p>Contents</p>
+        <p></p>
     </textarea>
 </div>
 

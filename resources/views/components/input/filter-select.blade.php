@@ -157,13 +157,15 @@
                     this.$dispatch('filter-select:' + this.identifierEvent + 'deleteValue', key)
                 },
                 filter() {
+
                     this.visible = this.getItems()
                 },
                 getItems() {
-                    return Array.from(this.$refs.slot.children)
+                    return Array.from(this.$refs.slot.querySelectorAll('input, [data-sn="input.filter-select-item"]'))
                         .filter(x => x.textContent.toLowerCase().indexOf(this.search.toLowerCase()) >= 0)
                         // .map(x => {console.log(x.textContent.trim(), x.querySelector('[value]').value); return x})
-                        .map(x => x.querySelector('[value]').value)
+                        .map(x => x.querySelector('[value]')?.value)
+                        .filter(x => x)
                 }
             }
         }
