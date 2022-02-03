@@ -22,7 +22,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Senna\\Tests\\": "tests"
+            "Senna\\UI\\Tests\\": "tests"
         }
     },
     "require-dev": {
