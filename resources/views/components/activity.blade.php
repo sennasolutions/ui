@@ -3,10 +3,12 @@
 ])
 
 @php
+    use Senna\Activity\Enums\ActivityType;
+
     $color = "bg-gray-300";
-    $color = $mode === "success" ? 'bg-success' : $color; 
-    $color = $mode === "danger" ? 'bg-danger' : $color; 
-    $color = $mode === "info" ? 'bg-gray-300' : $color; 
+    $color = $mode === ActivityType::Success ? 'bg-success' : $color; 
+    $color = $mode === ActivityType::Error ? 'bg-danger' : $color; 
+    $color = $mode === ActivityType::Info ? 'bg-gray-300' : $color; 
 @endphp
 
 <div {{ $attributes->merge(['class' => 'relative pl-4 pb-6']) }}>

@@ -8,7 +8,7 @@
 
 <div>
     <textarea x-ref="textarea" x-data="initTinymce(@safe_entangle($attributes->wire('model')))">
-    <p>Dit is eentest </p>
+        <p>Contents</p>
     </textarea>
 </div>
 
@@ -22,7 +22,6 @@
 
     @push('senna-ui-scripts')
         <script src="https://cdn.tiny.cloud/1/{{ $api_key }}/tinymce/5/tinymce.min.js" referrerpolicy="origin" ></script>
-        
 
         <script>
             function initTinymce(value) {

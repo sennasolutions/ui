@@ -17,7 +17,7 @@
     /**
      * @param string footerClass String of classes applied to footer slot. default: px-6 mt-4 py-4 bg-gray-50 flex justify-end items-center space-x-4 rounded-md
      */
-    'footerClass' => 'px-6 mt-4 py-4 bg-gray-50 flex justify-end items-center space-x-4 rounded-md',
+    'footerClass' => 'px-6 mt-4 py-4 flex justify-end items-center space-x-4 rounded-md',
 ])
 
 @php

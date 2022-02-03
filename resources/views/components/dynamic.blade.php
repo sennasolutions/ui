@@ -1,6 +1,7 @@
 @props([
     'component' => null,
-    'data' => []
+    'data' => [],
+    'slots' => []
 ])
 
 @php
@@ -10,7 +11,7 @@
 @endphp
 
 @component($component, array_merge($data, [
-    'attributes' => new Illuminate\View\ComponentAttributeBag($data)
-]))
+    'attributes' => new Illuminate\View\ComponentAttributeBag($data),
+], $slots))
 {{ $slot }}
 @endcomponent

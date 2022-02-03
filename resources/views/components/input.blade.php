@@ -40,14 +40,17 @@
     // $inputChrome = default_input_chrome($size, $error);
     $inputClass = "-inner --$size " . ($error ? '--error' : '') . " " . $inputClass;
 
-    $shortcutAttriubtes = $shortcut ? 'x-on:keydown.window.' . $shortcut . '.prevent="$refs.input.focus(); $refs.input.select()" x-on:keydown.escape="$refs.input.blur()"' : '';
+    $shortcutsAttr = $shortcut ? 'x-on:keydown.window.' . $shortcut . '.prevent="$refs.input.focus(); $refs.input.select()" x-on:keydown.escape="$refs.input.blur()"' : '';
 @endphp
 
-<div 
-    x-data="{}" 
-    x-init="$nextTick(() => $refs.input.attributes.autofocus && $refs.input.focus() )" 
-    {!! $shortcutAttriubtes !!} 
-    {{ $attributes->merge(['class' => '-outer', 'data-sn' => 'input.text'])->only(['class', 'data-sn']) }}>
+<div
+    {!! $shortcutsAttr !!} 
+    {{ $attributes->merge([
+        'x-data' => '{}', 
+        'x-init' => '$nextTick(() => $refs.input.attributes.autofocus && $refs.input.focus() )', 
+        'class' => '-outer', 
+        'data-sn' => 'input.text'
+        ])->only(['class', 'data-sn', 'x-data', 'x-init']) }}>
 
     @if($prefix)
         <div class="{{ class_concat('-prefix', $prefixClass) }}">
@@ -55,7 +58,7 @@
         </div>
     @endif
     <input x-ref="input" class="{{ class_concat($inputClass, ($prefix ? "--prefixed" : ""), ($suffix ? "--suffixed" : "")) }}"
-        {{ $attributes->merge(['type' => $type])->except(['class', 'data-sn']) }}
+        {{ $attributes->merge(['type' => $type])->except(['class', 'data-sn', 'x-data', 'x-init']) }}
     />
     @if($suffix)
         <div class="{{ class_concat('-suffix', $suffixClass) }}">
