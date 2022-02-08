@@ -9,7 +9,12 @@ trait WithDelegate
     public $delegate = [];
  
     public function delegateAction($name, $args = [], $returnFirstArgumentOnFail = true) {
-        return Delegate::runActionOnDelegate($this->delegate['_class'], $name, $args, $returnFirstArgumentOnFail);
+        return Delegate::runActionOnDelegate($this->getDelegate(), $name, $args, $returnFirstArgumentOnFail);
+    }
+
+    public function getDelegate()
+    {
+        return $this->delegate['_class'] ?? null;
     }
 
     public function mountWithDelegate($delegate = null) {

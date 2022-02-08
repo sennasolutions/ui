@@ -1,4 +1,10 @@
-@props(['id', 'maxWidth', 'value' => null, 'backdrop' => true])
+@props([
+    'id', 
+    'maxWidth', 
+    'value' => null,
+    'backdrop' => true,
+    'wrapperClass' => ""
+])
 
 @php
 // $id = $id ?? md5($attributes->wire('model'));
@@ -23,7 +29,7 @@ $maxWidth = [
     x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
     x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
     x-show="showMe"
-    class="sn-modal fixed inset-0 overflow-y-auto px-4 py-0 sm:px-0 z-50"
+    class="sn-modal fixed inset-0 overflow-y-auto px-4 py-0 sm:px-0 z-50 {{ $wrapperClass }}"
     {{ $attributes->only('wire:key') }}
     style="display: none;"
 >

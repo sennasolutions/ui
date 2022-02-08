@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
 use Illuminate\View\Component;
 use Illuminate\Support\Str;
+
+use function Senna\Utils\Helpers\snap;
+
 /**
  * Render some parts on the delegate via @delegate @enddelegate tags
  */
@@ -35,18 +38,18 @@ class Delegate extends Component
         $this->identifier = $identifier;
         $this->withAttributes($data);
 
-        if (!$delegate) {
-            throw new Exception("Please provide a delegate class");
-        }
+        if ($delegate) {
+            $this->delegate = $delegate = is_string($delegate) ? $delegate : get_class($delegate);
 
-        $this->delegate = $delegate = is_string($delegate) ? $delegate : get_class($delegate);
-
-        if ( !isset(self::$delegateCache[$delegate]) ) {
-            self::$delegateCache[$delegate] = [
-                'delegateViewPath' => str_replace(base_path(), "///-/", realpath( ((new $delegate())->render()->getPath() ) )),
-                'delegateView' => null,
-                'delegateSubviews' => null,
-            ];
+            if ( !isset(self::$delegateCache[$delegate]) ) {
+                self::$delegateCache[$delegate] = [
+                    'delegateViewPath' => str_replace(base_path(), "///-/", realpath( ((new $delegate())->render()->getPath() ) )),
+                    'delegateView' => null,
+                    'delegateSubviews' => null,
+                ];
+            }
+        } else {
+            $this->delegate = null;
         }
 
         $this->name = $name;
@@ -60,6 +63,10 @@ class Delegate extends Component
      */
     public function render()
     {
+        if(!$this->delegate) {
+            return view('senna.ui::components.delegate');
+        }
+        
         return $this->renderOnDelegate([
             'data' => $this->data,
             'fallback' => view('senna.ui::components.delegate')
@@ -147,10 +154,10 @@ class Delegate extends Component
         return $template;
     }
 
-    public function runAction($name, $args = [], $returnFirstArgumentOnFail = true)
-    {
-        return static::runActionOnDelegate($this->delegate, $name, $args, $returnFirstArgumentOnFail);
-    }
+    // public function runAction($name, $args = [], $returnFirstArgumentOnFail = true)
+    // {
+    //     return static::runActionOnDelegate($this->delegate, $name, $args, $returnFirstArgumentOnFail);
+    // }
 
     /**
      * Run an action on the delegate class
@@ -161,9 +168,14 @@ class Delegate extends Component
      */
     public static function runActionOnDelegate($delegate, $name, $args = [], $returnFirstArgumentOnFail = true) {
         $output = $returnFirstArgumentOnFail ? ($args[0] ?? null) : null;
+        // $delegate = $caller->getDelegate();
+        
+        if ($delegate) {
+            $listeners = snap(fn() => self::findDelegateListeners($delegate, $name), "findDelegateListeners" . $delegate . $name);
 
-        foreach(self::findDelegateListeners($delegate, $name) as $listener) {
-            $output = $listener(...$args);
+            foreach($listeners as $listener) {
+                $output = $listener(...$args);
+            }
         }
 
         return $output;

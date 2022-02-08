@@ -127,8 +127,21 @@
                 visible: [],
                 selected: selected,
                 allNames: ['bike', 'car', 'boat'],
-                selectAll() { this.selected = this.getItems() },
-                unselectAll() { this.selected = []},
+                selectAll(search = null) { 
+                    this.selected = this.getItems() 
+                },
+                append(search = null) { 
+                    let searchBackup = this.search
+                    if (search) {
+                        this.search = search
+                    }
+                    this.selected = this.selected.concat(this.getItems())
+                        .filter((item, index, self) => self.indexOf(item) === index)
+                    if (search) {
+                        this.search = searchBackup
+                    }
+                },
+                unselectAll() { this.selected = this.selected.filter(s => !this.getItems().includes(s)) },
                 init() {
                     let json = JSON.parse(this.$el.getAttribute('x-json'))
 
@@ -162,7 +175,8 @@
                 },
                 getItems() {
                     return Array.from(this.$refs.slot.querySelectorAll('input, [data-sn="input.filter-select-item"]'))
-                        .filter(x => x.textContent.toLowerCase().indexOf(this.search.toLowerCase()) >= 0)
+                        .filter(x => x.textContent.toLowerCase().indexOf(this.search.toLowerCase()) >= 0 ||
+                                     x.title.indexOf(this.search.toLowerCase()) >= 0)
                         // .map(x => {console.log(x.textContent.trim(), x.querySelector('[value]').value); return x})
                         .map(x => x.querySelector('[value]')?.value)
                         .filter(x => x)
