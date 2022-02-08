@@ -109,6 +109,7 @@
             mapsConfig: {},
             autocompleteConfig: {},
             init() {
+                
                 let json = JSON.parse(this.$el.getAttribute('x-json'))
 
                 this.mapsConfig = json.mapsConfig
@@ -126,6 +127,7 @@
                 }
 
                 this.$watch('value', (newValue) => {
+                    console.log('new value', newValue);
                     this.updateValue(newValue)
                 })
 
