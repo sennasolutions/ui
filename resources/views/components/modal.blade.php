@@ -42,8 +42,8 @@ $maxWidth = [
     x-data="initModal(@safe_entangle($attributes->wire('model')))"
     x-on:close.stop="showMe = false"
     x-on:keydown.escape.window="showMe = false"
-    x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
-    x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
+    {{-- x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()" --}}
+    {{-- x-on:keydown.shift.tab.prevent="prevFocusable().focus()" --}}
     x-show="showMe"
     class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
     style="display: none;"
@@ -77,6 +77,7 @@ $maxWidth = [
                 return {
                     showMe: value,
                     focusables() {
+                        debugger
                         // All focusable element types...
                         let selector = 'a, button, input:not([type=\'hidden\'], textarea, select, details, [tabindex]:not([tabindex=\'-1\'])'
 

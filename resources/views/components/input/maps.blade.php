@@ -55,6 +55,7 @@
 
 @php
     $inputClass = "-inner --prefixed --$size " . ($error ? '--error' : '') . ' ' . $inputClass;
+
 @endphp
 
 @if(!config('senna.ui.maps.apiKey'))
@@ -109,6 +110,7 @@
             mapsConfig: {},
             autocompleteConfig: {},
             init() {
+                console.log('init value', value)
                 
                 let json = JSON.parse(this.$el.getAttribute('x-json'))
 
@@ -224,6 +226,7 @@
                 }
             },
             updateValue(value) {
+                console.log('update value', value)
                 if (!value) {
                     this.clearMarkers();
                     this.$search.value = '';

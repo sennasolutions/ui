@@ -1,5 +1,5 @@
 @props([
-    'api_key' => config('senna.ui.tinymce.apiKey', 'no-api-key'),
+    'options' => [],
     /**
      * @param string value The value given via this attribute or via the slot if not supplied by wire:model
      */
@@ -7,8 +7,8 @@
 ])
 
 <div>
-    <textarea x-ref="textarea" x-data="initTinymce(@safe_entangle($attributes->wire('model')))">
-        <p></p>
+    <textarea x-ref="textarea" x-data="initTinymce(@safe_entangle($attributes->wire('model')), @js($options))">
+
     </textarea>
 </div>
 
@@ -21,10 +21,10 @@
     @endpush
 
     @push('senna-ui-scripts')
-        <script src="https://cdn.tiny.cloud/1/{{ $api_key }}/tinymce/5/tinymce.min.js" referrerpolicy="origin" ></script>
+        <script src="{{ senna_ui_asset('js/tinymce/tinymce.min.js') }}"></script>
 
         <script>
-            function initTinymce(value) {
+            function initTinymce(value, options) {
                 return {
                     currentValue: value,
                     init() {
@@ -36,10 +36,16 @@
                             height: 300,
                             menubar: false,
                             plugins: [
-                                'lists wordcount',
+                                'lists wordcount paste link autolink',
                             ],
-                            toolbar: 'bold italic | bullist numlist | removeformat',
+                            block_formats: 'Paragraaf=p; Kop=h3',
+                            toolbar: 'undo redo | formatselect | bold italic | bullist numlist | removeformat link',
                             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:15px }',
+                            paste_block_drop: true,
+                            default_link_target: '_blank',
+                            link_assume_external_targets: true,
+
+                            ...options,
                             setup: (editor) => {
                                 editor.on('init', (ev) => {
                                     console.log('EDITOR INIT')
