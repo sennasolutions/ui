@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\View\Component;
 use Illuminate\Support\Str;
 
+use function Senna\Utils\Helpers\get_view_paths;
 use function Senna\Utils\Helpers\snap;
 
 /**
@@ -18,38 +19,53 @@ use function Senna\Utils\Helpers\snap;
 class Delegate extends Component
 {
     protected $name;
-    protected $delegate;
+
+    // protected $delegate;
+    protected $delegateClass;
+    // protected $delegateViewPath;
+
     protected $data;
     protected $identifier;
 
-    protected $delegateViewPath;
-    protected $delegateView;
-    protected $delegateSubviews;
+    protected $delegateViewContents;
+    protected $delegateBlocks;
 
     public static $delegateCache = [];
+
+    public function getViewPathFromDelegate($delegate)
+    {
+        $viewPath = null;
+
+        if ($delegate['view'] ?? null) {
+            $viewPath = get_view_paths($delegate['view'])[0] ?? null;
+            $viewPath .= ".blade.php";
+        }
+        
+        return $viewPath ?? str_replace(base_path(), "///-/", realpath( ((new $delegate['class'])->render()->getPath() ) ));
+    }
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($identifier = '', $name = null, $delegate = null, $data = [])
+    public function __construct($identifier = '', $name = null, ?array $delegate = null, $data = [])
     {
         $this->identifier = $identifier;
         $this->withAttributes($data);
 
         if ($delegate) {
-            $this->delegate = $delegate = is_string($delegate) ? $delegate : get_class($delegate);
+            $this->delegateClass = $delegate['class'] ?? null;
 
-            if ( !isset(self::$delegateCache[$delegate]) ) {
-                self::$delegateCache[$delegate] = [
-                    'delegateViewPath' => str_replace(base_path(), "///-/", realpath( ((new $delegate())->render()->getPath() ) )),
-                    'delegateView' => null,
-                    'delegateSubviews' => null,
+            if ( !isset(self::$delegateCache[$this->delegateClass]) ) {
+                self::$delegateCache[$this->delegateClass] = [
+                    'delegateViewPath' => $this->getViewPathFromDelegate($delegate),
+                    'delegateViewContents' => null,
+                    'delegateBlocks' => null,
                 ];
             }
         } else {
-            $this->delegate = null;
+            $this->delegateClass = null;
         }
 
         $this->name = $name;
@@ -63,7 +79,7 @@ class Delegate extends Component
      */
     public function render()
     {
-        if(!$this->delegate) {
+        if(!$this->delegateClass) {
             return view('senna.ui::components.delegate');
         }
         
@@ -79,26 +95,25 @@ class Delegate extends Component
      * @param [type] $slug
      */
     public function checkViewForTemplate($slug) {
-        $cache = &self::$delegateCache[$this->delegate];
+        $cache = &self::$delegateCache[$this->delegateClass];
 
         if (!$cache['delegateViewPath']) return;
 
-        if (!$cache['delegateView']) {
-
+        if (!$cache['delegateViewContents']) {
             $view = str_replace('///-/', base_path(), $cache['delegateViewPath']);
-            $cache['delegateView'] = File::get($view);
+            $cache['delegateViewContents'] = File::get($view);
         }
 
-        if (!$cache['delegateSubviews']) {
+        if (!$cache['delegateBlocks']) {
             // Remove comments
-            $cache['delegateView'] = preg_replace('/{{--[\s\S]*?--}}/s', "", $cache['delegateView']);
+            $cache['delegateViewContents'] = preg_replace('/{{--[\s\S]*?--}}/s', "", $cache['delegateViewContents']);
 
             // Find @delegate blocks and extract them
-            preg_match_all('/@delegate\(\s*[\'"](.*?)[\'"]\s*\)(.*?)@enddelegate/s', $cache['delegateView'], $output_array);
+            preg_match_all('/@delegate\(\s*[\'"](.*?)[\'"]\s*\)(.*?)@enddelegate/s', $cache['delegateViewContents'], $output_array);
     
-            $cache['delegateSubviews'] = array_combine($output_array[1], $output_array[2]);
+            $cache['delegateBlocks'] = array_combine($output_array[1], $output_array[2]);
         }
-        return $cache['delegateSubviews'][$slug] ?? null;
+        return $cache['delegateBlocks'][$slug] ?? null;
     }
 
     /**
@@ -122,7 +137,7 @@ class Delegate extends Component
 
         $identifierPrefix = $this->identifier ? $this->identifier . ":" : "";
 
-        if ($this->delegate) {
+        if ($this->delegateClass) {
             $name = $identifierPrefix . $name;
 
             foreach($data as $key => $item) {
@@ -138,7 +153,7 @@ class Delegate extends Component
                 if ($method === "render") return;
                 if ($baseMethod === "render") return;
 
-                $listeners = self::findDelegateListeners($this->delegate, $name);
+                $listeners = self::findDelegateListeners($this->delegateClass, $name);
                 $lastListener = $listeners[count($listeners) - 1] ?? fn($x) => null;
                 $template = $lastListener($name);
             }
@@ -156,7 +171,7 @@ class Delegate extends Component
 
     // public function runAction($name, $args = [], $returnFirstArgumentOnFail = true)
     // {
-    //     return static::runActionOnDelegate($this->delegate, $name, $args, $returnFirstArgumentOnFail);
+    //     return static::runActionOnDelegate($this->delegateClass, $name, $args, $returnFirstArgumentOnFail);
     // }
 
     /**
@@ -166,12 +181,12 @@ class Delegate extends Component
      * @param array $args
      * @param boolean $returnFirstArgumentOnFail
      */
-    public static function runActionOnDelegate($delegate, $name, $args = [], $returnFirstArgumentOnFail = true) {
+    public static function runActionOnDelegate($delegateClass, $name, $args = [], $returnFirstArgumentOnFail = true) {
         $output = $returnFirstArgumentOnFail ? ($args[0] ?? null) : null;
-        // $delegate = $caller->getDelegate();
+        // $delegate = $caller->getDelegateClass();
         
-        if ($delegate) {
-            $listeners = snap(fn() => self::findDelegateListeners($delegate, $name), "findDelegateListeners" . $delegate . $name);
+        if ($delegateClass) {
+            $listeners = snap(fn() => self::findDelegateListeners($delegateClass, $name), "findDelegateListeners" . $delegateClass . $name);
 
             foreach($listeners as $listener) {
                 $output = $listener(...$args);
@@ -181,21 +196,21 @@ class Delegate extends Component
         return $output;
     }
 
-    public static function findDelegateListeners($delegate, $name, &$output = [], $maxDepth = 1, $depth = -1)
+    public static function findDelegateListeners($delegateClass, $name, &$output = [], $maxDepth = 1, $depth = -1)
     {
         $depth++;
 
-        if ($delegate) {
-            $parent = get_parent_class($delegate);
+        if ($delegateClass) {
+            $parent = get_parent_class($delegateClass);
 
             if ($parent && $depth < $maxDepth) {
                 $output = self::findDelegateListeners($parent, $name, $output, $maxDepth, $depth);
             }
 
-            $delegateListeners = $delegate::$delegateListeners ?? [];
+            $delegateListeners = $delegateClass::$delegateListeners ?? [];
 
-            if (method_exists($delegate, 'delegateListeners')) {
-                $delegateListeners = array_merge($delegateListeners, $delegate::delegateListeners());
+            if (method_exists($delegateClass, 'delegateListeners')) {
+                $delegateListeners = array_merge($delegateListeners, $delegateClass::delegateListeners());
             }
 
             if (isset($delegateListeners[$name])) {
@@ -205,9 +220,9 @@ class Delegate extends Component
                     $output[] = $delegateAction;
                 }
     
-                if (is_string($delegateAction) && method_exists($delegate, $delegateAction)) {
+                if (is_string($delegateAction) && method_exists($delegateClass, $delegateAction)) {
                     $method = $delegateAction;
-                    $output[] = fn(...$args) => $delegate::$method(...$args);
+                    $output[] = fn(...$args) => $delegateClass::$method(...$args);
                 }
             }
         }
