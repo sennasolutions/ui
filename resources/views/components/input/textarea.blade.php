@@ -24,6 +24,6 @@
     $inputClass = "-inner --$size " . ($error ? '--error' : '') . ' ' . $inputClass;
 @endphp
 
-<div data-sn="input.textarea" class="{{ $attributes->merge(['class' => '-outer' ])->only('class') }}">
+<div data-sn="input.textarea" {{ $attributes->merge(['class' => '-outer' ])->only('class') }}>
     <textarea class="{{ $inputClass }}" {{ $attributes->except('class') }}>{{ $slot }}</textarea>
 </div>
