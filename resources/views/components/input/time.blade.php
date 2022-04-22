@@ -14,7 +14,7 @@
         'noCalendar' => true,
         'enableTime' => true,
         'dateFormat' => 'H:i',
-        'inline' => false
+        'inline' => true
     ],
     /**
      * @param array value The initial value, if wire:model is not used
