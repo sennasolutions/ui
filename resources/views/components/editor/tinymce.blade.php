@@ -16,7 +16,7 @@
 @once
     @push('senna-ui-styles')
         <style>
-           
+
         </style>
     @endpush
 
@@ -35,11 +35,12 @@
                             themes: 'modern',
                             height: 300,
                             menubar: false,
+                            cleanup: true,
                             plugins: [
-                                'lists wordcount paste link autolink',
+                                'lists wordcount paste link autolink code',
                             ],
                             block_formats: 'Paragraaf=p; Kop=h3',
-                            toolbar: 'undo redo | formatselect | bold italic | bullist numlist | removeformat link',
+                            toolbar: 'undo redo | formatselect | bold italic | bullist numlist | removeformat link | code',
                             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:15px }',
                             paste_block_drop: true,
                             default_link_target: '_blank',
@@ -78,7 +79,7 @@
                 }
             }
 
-            
+
       </script>
     @endpush
 @endonce
