@@ -2,6 +2,7 @@
 
 namespace Senna\UI;
 
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
@@ -9,18 +10,54 @@ use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 use Senna\UI\Console\ExtendCommand;
-use Senna\UI\Console\InstallCommand;
+// use Senna\UI\Console\InstallCommand;
 use Senna\UI\Console\LinkCommand;
 use Senna\UI\Console\PublishCommand;
 use Senna\UI\Console\ThemeCommand;
 use Senna\UI\Delegate;
+use Senna\Utils\Addons\Addons;
+use Senna\Utils\Addons\AddonServiceProvider;
 
-class UIServiceProvider extends ServiceProvider {
+class UIServiceProvider extends AddonServiceProvider {
+
+    public function getName() : string { return 'Senna UI'; }
+    public function getSlug() : string {  return 'ui'; }
+    public function getAssetsDir() : string { return __DIR__ . '/../dist/'; }
+    public static function getPluginDir($filePath = "") : string { return realpath(__DIR__ . '/../' . $filePath); }
+
+    /**
+     * Run the install from senna:install
+     *
+     * @return void
+     */
+    public function install(Command $command, array $extra = []) : bool
+    {
+        $this->publish('config');
+        // $command->call('vendor:publish', ['--provider' => 'Senna\\UI\\UIServiceProvider', '--tag' => 'config']);
+
+        $from = realpath(static::getPluginDir('dist'));
+        $to = public_path(config('senna.ui.asset_dir'));
+
+        File::delete($to);
+
+        $this->relativeLink($from, $to);
+
+        $command->info('(Re)created link: ' . $from . ' => ' . $to . PHP_EOL);
+
+        return true;
+    }
+
+    public function relativeLink($from, $to) {
+        $relativeFrom = get_relative_path($to, $from);
+        return File::link($relativeFrom, $to);
+    }
 
     public function register()
     {
+        Addons::register($this, 10);
+
         $this->commands([
-            InstallCommand::class,
+            // InstallCommand::class,
             PublishCommand::class,
             LinkCommand::class,
             ThemeCommand::class,
@@ -34,7 +71,7 @@ class UIServiceProvider extends ServiceProvider {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'senna.ui');
         $this->configurePublishing();
         $this->configureComponents();
-        $this->includeHelpers();
+        $this->includeHelpers(__DIR__ . "/Helpers");
 
         // Uses the $value property if Livewire is not available in the project
         Blade::directive('safe_entangle', function ($expression) {
@@ -51,24 +88,6 @@ EOT;
             Blade::directive('this', function () {
                 return "{}";
             });
-        }
-    }
-
-    public function includeHelpers() {
-        foreach (scandir(__DIR__ . "/Helpers") as $helperFile) {
-            $path = __DIR__ . "/Helpers/" . $helperFile;
-
-            if (! is_file($path)) {
-                continue;
-            }
-
-            $function = Str::before($helperFile, '.php');
-
-            if (function_exists($function)) {
-                continue;
-            }
-
-            require_once $path;
         }
     }
 
