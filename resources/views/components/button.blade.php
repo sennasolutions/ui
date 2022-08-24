@@ -28,11 +28,16 @@
      * @param string sizeClass The classes applied to override the size.
      */
     'sizeClass' => null,
+    /**
+     * @param string|bool wire:indicator If true, will show a loading indicator. Provide a string to specify the loading target (wire:click)
+     */
+    // 'wire:indicator' => false // it's implemented in the code
 ])
 
 @php
     $buttonClass = join(' ', [
         '-outer',
+        // 'loading',
         $textButton ? '--text' : '',
         !$sizeClass ? '--' . $size : $sizeClass,
         $circle ? '--circle' : '',
@@ -41,13 +46,28 @@
     ]);
 
     // Automatic loading
-    $atts = $attributes->getAttributes();
-    $wireClick = $atts['wire:click'] ?? false;
+    $wireIndicator = $attributes->get('wire:indicator', false);
 
-    if ($wireClick) {
-        // wire:target="saveLocation" wire:loading.delay.class="loading"
+    if ($wireIndicator) {
+        $atts = $attributes->getAttributes();
+
+        $loadingTarget = is_string($wireIndicator) ? $wireIndicator : $atts['wire:click'] ?? false;
+
         $atts['wire:loading.delay.class'] = "loading";
-        // $atts['wire:target'] = $wireClick;
+        $atts['x-data'] = "{ loading: false }";
+
+        if ($loadingTarget) {
+            $atts['wire:target'] = $loadingTarget;
+
+            if (str($loadingTarget)->startsWith('event:') ) {
+                $loadingTarget = (string) str($loadingTarget)->replace('event:', '');
+
+                $atts['x-on:click'] = "loading=true";
+                $atts['x-init'] = "Livewire.on('$loadingTarget', () => { loading = false })";
+                $atts['x-bind:class'] = "loading ? 'loading' : ''";
+            }
+        }
+
         $attributes->setAttributes($atts);
     }
 @endphp
@@ -57,14 +77,16 @@
     {{ $attributes->merge(['data-sn' => 'button', 'class' => $buttonClass ]) }}>
     {{ $slot }}
 </{{ $tag }}>
-{{-- 
+
 @once
+@push('senna-styles')
 <style>
     [data-sn='button'].loading {
         position: relative;
         text-indent: 200%;
         white-space: nowrap;
         overflow: hidden;
+        pointer-events: none;
     }
 
     [data-sn='button'].loading::after {
@@ -103,4 +125,5 @@
         }
     }
 </style>
-@endonce --}}
+@endpush
+@endonce
