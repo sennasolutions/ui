@@ -3,7 +3,8 @@
     'rotate' => false,
     'whitelist' => null,
     'blacklist' => null,
-    'html' => false
+    'html' => false,
+    'cols' => []
 ])
 
 @if(!$data)
@@ -44,7 +45,7 @@
                     $carry[$prop] = 1;
                 }
             }
-            
+
             return $carry;
         }, collect())->keys();
 
@@ -63,16 +64,17 @@
         <x-senna.table.body>
             @foreach($props as $prop)
                 <x-senna.table.row>
-                    <x-senna.table.heading paddingClass="py-2 p-4 ">
+
+                    <x-senna.table.heading paddingClass="py-2 p-4" style="width: {{ $cols[0]['width'] ?? 'auto' }}">
                         {{ $prop}}
                     </x-senna.table.heading>
                     @foreach($data as $key => $row)
                         @php $id = "$key.$prop" @endphp
-                        <x-senna.table.cell paddingClass="p-1.5 px-4" :data-slot="$id">
-                            @if(isset($slots[$id])) 
+                        <x-senna.table.cell paddingClass="p-1.5 px-4" :data-slot="$id" style="width: {{ $cols[$key+1]['width'] ?? 'auto' }}">
+                            @if(isset($slots[$id]))
                                 {{ $slots[$id] }}
                             @else
-                                @php 
+                                @php
                                     $value = $getRowProp($row, $prop);
                                 @endphp
 
@@ -91,8 +93,8 @@
     @else
     <x-senna.table class="w-full !whitespace-normal">
         <x-senna.table.header>
-            @foreach($props as $prop)
-                <x-senna.table.heading paddingClass="py-2 p-4">
+            @foreach($props as $key => $prop)
+                <x-senna.table.heading paddingClass="py-2 p-4" style="width: {{ $cols[$key]['width'] ?? 'auto' }}">
                     {{ $prop}}
                 </x-senna.table.heading>
             @endforeach
@@ -104,10 +106,10 @@
                 @foreach($props as $key => $prop)
                     @php $id = "$key.$prop" @endphp
                     <x-senna.table.cell paddingClass="p-1.5 px-4" :data-slot="$id">
-                        @if(isset($slots[$id])) 
+                        @if(isset($slots[$id]))
                             {{ $slots[$id] }}
                         @else
-                            @php 
+                            @php
                                 $value = $getRowProp($row, $prop);
                             @endphp
 

@@ -40,15 +40,15 @@
     }
 @endphp
 
-<th {!! $sortBy ? "wire:click=\"sortBy('$sortBy')\"" : "" !!} {{ $attributes->merge(['class' => $paddingClass . ' text-gray-900 text-left text-[0.92rem] ' .  $stickyProps, 'scope' => 'col'])->only('class') }}>
+<th {!! $sortBy ? "wire:click=\"sortBy('$sortBy')\"" : "" !!} {{ $attributes->merge(['class' => $paddingClass . ' text-gray-900 text-left text-[0.92rem] ' .  $stickyProps, 'scope' => 'col'])->only(['class','style']) }}>
     @if($sticky)
     <div class="{{ $paddingClass }} {{ $stickyClass }}">
     @endif
     @unless ($sortBy)
-        <span {{ $attributes->except('class') }}>{{ $slot }} </span>
+        <span {{ $attributes->except(['class','style']) }}>{{ $slot }} </span>
     @else
         <span class="flex space-x-1 cursor-pointer">
-            <span {{ $attributes->except('class') }}>{{ $slot }}</span>
+            <span {{ $attributes->except(['class','style']) }}>{{ $slot }}</span>
 
             <span class="relative flex items-center">
                 @if ($sortDirection === 'asc')
