@@ -25,12 +25,12 @@ $id = str($name)->slug() . str($label)->slug() . $key;
 
 <div data-sn="input.filter-select-item" {{ $attributes->merge(['class' => "flex items-center content-center"]) }} x-show="search.length === 0 || visible.indexOf(`{{ ($key) }}`) >= 0">
     @if($showCheckRadio)
-    <template wire:key="tplc-{{ $id }}" x-if="Array.isArray(selected)">
-        <x-senna.input.checkbox :allowHtml="$allowHtml" wire:key="check-{{ $id }}" id="{{ $id }}" name="{{ $name }}" class="mr-1" value="{{ $key }}" x-model="selected" />
-    </template>
-    <template wire:key="tplr-{{ $id }}" x-if="!Array.isArray(selected)">
-        <x-senna.input.radio :allowHtml="$allowHtml" wire:key="radio-{{ $id }}" name="{{ $name }}" class="mr-3" id="{{ $id }}" value="{{ $key }}" x-model="selected" />
-    </template>
+        <template wire:key="tplc-{{ $id }}" x-if="Array.isArray(selected)">
+            <input wire:key="check-{{ $id }}" id="{{ $id }}" name="{{ $name }}" value="{{ $key }}" x-model="selected" type="checkbox" class="-checkbox-inner mr-3">
+        </template>
+        <template wire:key="tplr-{{ $id }}" x-if="!Array.isArray(selected)">
+            <input wire:key="radio-{{ $id }}" name="{{ $name }}" id="{{ $id }}" value="{{ $key }}" x-model="selected" type="radio" class="mr-3 cursor-pointer transition duration-50 ease-in-out  text-primary checked:border-none focus:ring-primary-300 border-gray-300 rounded-full shadow-sm focus:ring">
+        </template>
     @else
         <label wire:key="label1-{{ $id }}" class="w-full">
             @if($allowHtml){!! $name !!}@else{{ $name }}@endif

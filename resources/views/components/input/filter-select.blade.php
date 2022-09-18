@@ -143,12 +143,16 @@
                 },
                 unselectAll() { this.selected = this.selected.filter(s => !this.getItems().includes(s)) },
                 init() {
+                    console.log('init')
                     let json = JSON.parse(this.$el.getAttribute('x-json'))
 
                     this.identifierEvent = json.identifier ? json.indentifier + ":" : "";
 
                     this.$watch('search', search => {
                         this.filter()
+                    })
+                    this.$watch('selected', selected => {
+                        console.log(selected)
                     })
                 },
                 // @event livewire wire:filter-select:addValue  When the add button is clicked. Has the value as parameter.
@@ -170,7 +174,6 @@
                     this.$dispatch('filter-select:' + this.identifierEvent + 'deleteValue', key)
                 },
                 filter() {
-
                     this.visible = this.getItems()
                 },
                 getItems() {
