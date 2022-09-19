@@ -98,7 +98,11 @@
     <div x-ref="slot" {{ $contentAttributes->merge(['class' => "max-h-32 overflow-y-auto w-full p-1.5 rounded"]) }}>
         @if($items !== null)
             @forelse($items as $key => $value)
+                @if($value['key'] ?? null && $value['label'] ?? null)
+                <x-senna.input.filter-select-item :allowHtml="$allowHtml" :showCheckRadio="$showCheckRadio" :showDeleteButton="$showDeleteButtons" :key="$value['key']" :label="$value['label']" />
+                @else
                 <x-senna.input.filter-select-item :allowHtml="$allowHtml" :showCheckRadio="$showCheckRadio" :showDeleteButton="$showDeleteButtons" :key="$key" :label="$value" />
+                @endif
             @empty
                 <span>{{ $noItemsText }}</span>
             @endforelse
