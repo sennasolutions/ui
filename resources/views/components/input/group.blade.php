@@ -59,7 +59,7 @@
 <div data-sn="input.group" {{ $attributes->merge(['class' => '' ]) }}>
     <div class="{{ class_concat($stackClass, "flex space-y-2 flex-col", (!$isHor ? "sm:flex-row sm:space-x-4 sm:items-center" : "")) }}">
         @if($label)
-        <label @if(isset($for))for="{{ $for }}"@endif class="{{ class_concat($labelClass, ' dark:text-gray-200 cursor-pointer flex-shrink-0', (!$isHor ? "w-32" : "") ) }}">{!! $label !!}</label>
+        <label @if(isset($for))for="{{ $for }}"@endif class="{{ class_concat($labelClass, ' dark:text-gray-200 cursor-pointer shrink-0', (!$isHor ? "w-32" : "") ) }}">{!! $label !!}</label>
         @endif
         @if($isHor && ($helpText))
         <div class="!mt-0 {{ $suffixClass }}">

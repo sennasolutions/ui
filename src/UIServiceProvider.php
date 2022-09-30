@@ -3,11 +3,14 @@
 namespace Senna\UI;
 
 use Illuminate\Console\Command;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\View as FacadesView;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\View\ComponentAttributeBag;
 use Livewire\Livewire;
 use Senna\UI\Console\ExtendCommand;
 // use Senna\UI\Console\InstallCommand;
@@ -74,19 +77,18 @@ class UIServiceProvider extends AddonServiceProvider {
         $this->includeHelpers(__DIR__ . "/Helpers");
 
         // Uses the $value property if Livewire is not available in the project
-        Blade::directive('safe_entangle', function ($expression) {
-            $entangle = class_exists(Livewire::class) ? "<?php if(count(\$attributes->thatStartWith('wire:model')->getAttributes()) > 0): ?>" . \Livewire\LivewireBladeDirectives::entangle($expression) . "<?php endif; ?>" : '';
-            return <<<EOT
-<?php if (isset(\$value) && \$value !== null): ?><?php echo inject_in_javascript(\$value) ?><?php else: ?>{$entangle}<?php endif; ?>
-EOT;
-        });
+        Blade::directive('safe_entangle', [UIBladeDirectives::class, 'safeEntangle']);
+        Blade::directive('safeEntangle', [UIBladeDirectives::class, 'safeEntangle']);;
+        Blade::directive('autowire', [UIBladeDirectives::class, 'autowire']);;
+        // Blade::directive('wiredProps', [UIBladeDirectives::class, 'wiredProps']);;
 
         if (!class_exists(Livewire::class)) {
-            Blade::directive('entangle', function () {
-                return '<?php echo inject_in_javascript(\$value) ?>';
-            });
-            Blade::directive('this', function () {
-                return "{}";
+            Blade::directive('this', [UIBladeDirectives::class, 'this']);;
+        }
+
+        if (method_exists(ComponentAttributeBag::class, 'macro')) {
+            ComponentAttributeBag::macro('count', function () {
+                return count($this->attributes);
             });
         }
     }

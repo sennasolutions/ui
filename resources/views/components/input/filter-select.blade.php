@@ -114,7 +114,7 @@
     @if($showAddOption)
     <form class="flex space-x-2 mt-3" x-on:submit.prevent="addValue">
         <input class="{{ default_input_chrome($size, $error) }}" x-ref="add" x-model="add" type="text" placeholder="{{ $addPlaceholder }}">
-        <x-senna.button  class="flex-shrink-0" type="submit">
+        <x-senna.button  class="shrink-0" type="submit">
             {{ __("Add") }}
         </x-senna.button>
     </form>

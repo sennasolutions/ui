@@ -1,7 +1,7 @@
-@props(['id' => null, 'maxWidth' => null])
+@props(['id' => null, 'maxWidth' => null, 'tag' => 'div'])
 
 <x-senna.modal :id="$id" :maxWidth="$maxWidth" {{ $attributes }}>
-    <div class="bg-white w-full rounded">
+    <{{ $tag }} {{ $footer->attributes->merge(['class' => "bg-white w-full rounded"]) }}>
         <div class="flex space-x-3 items-center  p-7">
             <div class="text-danger rounded-full bg-danger-ring bg-opacity-10 p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -20,5 +20,5 @@
         <div class="bg-gray-100 p-4 space-x-2 flex justify-end rounded-md">
             {{ $footer }}
         </div>
-    </div>
+    </{{ $tag }}>
 </x-modal.basic>

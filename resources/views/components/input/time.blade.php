@@ -42,6 +42,7 @@
     $inputClass = "-inner --$size " . ($error ? '--error' : '') . ' ' . $inputClass;
 
     $isInline = ($config['inline'] ?? false);
+
 @endphp
 
 <div
@@ -81,24 +82,14 @@
                     this.config = JSON.parse(this.$el.getAttribute('x-json'))
                     this.initDatepicker(this.currentValue);
 
-                    // console.log(JSON.stringify(this.config.enable))
-                    // console.log(this.currentValue)
-
-                    // Listen to changes from livewire and set it on Choices
-                    // this.$watch('currentValue', (value) => this.setValue(value))
-
-                    // if (window.is_lwd) {
-                    //     Livewire.hook('message.processed', (msg, component) => {
-                    //         if (component.id === @this.__instance.id) {
-                    //             // On update reinitialize
-                    //             this.initDatepicker();
-                    //         }
-                    //     })
-                    // }
-
                     this.$watch('currentValue', value => {
                         // On update reinitialize
                         this.initDatepicker(value)
+                    })
+
+                    // Set the currentvalue on global form submit
+                    document.addEventListener('submit', (e) => {
+                        this.currentValue = this.$refs.flatpicker.value;
                     })
                 },
                 initDatepicker(value) {
