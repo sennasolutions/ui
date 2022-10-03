@@ -15,7 +15,6 @@ class UIBladeDirectives
                     \$__key = str_replace("wire:", "", \$__key);
                     if (isset(\$\$__key) && isset(\$this) && \$this instanceof \Livewire\Component) {
                         \$\$__key = \$this->{\$__value};
-                        ray(\$__key, \$__value, \$this, \$this->{\$__value});
                     }
                 }
                 unset(\$__key, \$__value);
@@ -48,7 +47,7 @@ class UIBladeDirectives
             $type = "->wire";
         }
 
-        $fallbackExpression = $param === "model" ? "\$model ?? \$value" : "\$" . $param . " ?? null";
+        $fallbackExpression = $param === "model" ? "\$model ?? \$value ?? null" : "\$" . $param . " ?? null";
 
         // Check if Livewire is available
         if (class_exists(Livewire::class)) {
@@ -66,7 +65,7 @@ class UIBladeDirectives
             
             // Check if the wire:something tag is present
             return <<<EOT
-                <?php if(\$attributes && \$attributes->whereStartsWith('wire:{$param}')->count()): ?>
+                <?php if(\$attributes && \$attributes->whereStartsWith('wire:$param')->count()): ?>
                     {$entangled}
                 <?php else: ?>
                     {$nonEntangled}

@@ -8,6 +8,7 @@
 @props([
     /**
      * @param array items Items can be provided as an array (key/value) via this attribute or just by using the option tags in the slot.
+     * @todo refactor in to [ 'label' => ..., 'key' => ... ] this cant be sorted
      */
     'items' => null,
     /**
