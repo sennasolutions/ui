@@ -14,7 +14,7 @@ class UIBladeDirectives
                 foreach(\$attributes->whereStartsWith("wire:")->getAttributes() as \$__key => \$__value) {
                     \$__key = str_replace("wire:", "", \$__key);
                     if (isset(\$\$__key) && isset(\$this) && \$this instanceof \Livewire\Component) {
-                        \$\$__key = \$this->{\$__value};
+                        \$\$__key = Senna\Utils\Helpers\deep_get(\$this, \$__value);
                     }
                 }
                 unset(\$__key, \$__value);
