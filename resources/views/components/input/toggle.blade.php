@@ -1,5 +1,6 @@
 @props([
     'label' => 'Some label',
+    'name' => 'name',
     'value' => false,
     'colors' => []
 ])
@@ -18,34 +19,36 @@
     x-data="{ 
         value: @safeEntangle($attributes->wire('value'))
     }"
-    {{ $attributes->merge(['class' => "flex items-center gap-3"]) }}
-    x-id="['toggle-label']"
+    {{ $attributes->merge(['class' => "flex gap-3 items-center"]) }}
+    x-id="['toggle']"
 >
-    <input type="hidden" name="sendNotifications" :value="value">
+    <input name="{{ $name }}" :value="value" type="hidden">
 
     <button
-        x-ref="toggle"
-        @click="value = ! value"
-        type="button"
         role="switch"
-        :aria-checked="value"
-        :aria-labelledby="$id('toggle-label')"
-        :class="value ? '{{ $colors['bg-primary'] }} border-2 border-white' : 'bg-white border-2 {{ $colors['border-primary'] }}'"
+        type="button"
+
         class="relative inline-flex w-14 rounded-full py-1 px-0"
+        x-bind:class="value ? '{{ $colors['bg-primary'] }} border-2 border-white' : 'bg-white border-2 {{ $colors['border-primary'] }}'"
+        
+        x-ref="toggle"
+        x-on:click="value = ! value"
+        x-bind:aria-checked="value"
+        x-bind:aria-labelledby="$id('toggle')"
     >
         <span
-            :class="value ? 'bg-white translate-x-7' : '{{ $colors['bg-primary'] }} translate-x-1'"
-            class="h-5 w-5 rounded-full transition"
             aria-hidden="true"
+            class="h-5 w-5 rounded-full transition"
+
+            x-bind:class="value ? 'bg-white translate-x-7' : '{{ $colors['bg-primary'] }} translate-x-1'"
         ></span>
     </button>
 
     <label
-        @click="$refs.toggle.click(); $refs.toggle.focus()"
-        :id="$id('toggle-label')"
         class="cursor-pointer"
+        x-bind:id="$id('toggle')"
+        @click="$refs.toggle.click(); $refs.toggle.focus()"
     >
         {{ $label }}
     </label>
-
 </div>
