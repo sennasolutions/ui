@@ -8,7 +8,8 @@
     'multiple' => false,
     'placeholder' => '-- Selecteer --',
     'config' => [
-        'removeItemButton' => false
+        'removeItemButton' => false,
+        'resetScrollPosition' => false,
     ],
 ])
 
@@ -19,17 +20,15 @@
     {{ $attributes->merge(['class' => "w-full"])->whereDoesntStartWith("wire") }}
     wire:ignore
     x-data="{
-        value: @safeEntangle('wire:model'),
+        value: @safeEntangle('wire:value'),
         multiple: @safeEntangle('wire:multiple'),
         options: @safeEntangle('wire:options'),
         search: @safeEntangle('wire:search'),
-        config: {
-            ...@safeEntangle('wire:config'),
-        },
+        config: @safeEntangle('wire:config'),
         instance: null,
         init() {
             this.$nextTick(() => {
-                console.log(this.options)
+                {{-- console.log(this.options) --}}
                 this.initChoices()
                 this.refreshOptions()
 
@@ -42,7 +41,6 @@
                     this.initChoices()
                     this.refreshOptions()
                 })
-
             })
         },
         initChoices() {
@@ -53,16 +51,18 @@
         refreshOptions() {
             let selection = this.multiple ? this.value : [this.value]
 
-            this.instance.clearStore()
+            this.instance.clearChoices()
+
             this.instance.setChoices(this.options.map(({ value, label }) => ({
                 value,
                 label,
                 selected: selection.includes(value),
             })))
+
+            console.log(this.instance)
         },
         onChange() {
             this.value = this.instance.getValue(true)
-            console.log(this.value)
         },
         onSearch(event) {
             // debounce
@@ -75,13 +75,12 @@
     }"
     
 >
-    <select placeholder="This is a placeholder" x-ref="select" :multiple="multiple">
+    <select
+          x-ref="select" 
+          :multiple="multiple"
+        />
         @if($placeholder)
-            @if($config['removeItemButton'] ?? true)
-                <option value="">{{ $placeholder }}</option>
-            @else
-                <option value="" disabled>{{ $placeholder }}</option>
-            @endif
+        <option value="">{{ $placeholder }}</option>
         @endif
     </select>
 </div>
@@ -91,7 +90,7 @@
         {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" /> --}}
         <link rel="stylesheet" href="{{ senna_ui_asset('css/choices.css') }}">
 
-        <style>
+        {{-- <style>
             .choices {
                 color: #000;
                 width: 100%;
@@ -99,7 +98,7 @@
             .choices__list--dropdown {
                 z-index: 100;
             }
-        </style>
+        </style> --}}
 
     @endpush
     @push('senna-ui-scripts')
