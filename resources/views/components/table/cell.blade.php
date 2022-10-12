@@ -14,7 +14,7 @@
     /**
      * @param string paddingClass String of classes applied to the element
      */
-    'paddingClass' => 'px-6 py-4',
+    'paddingClass' => 'px-4 py-2',
      /**
      * @param string stickyClass String of classes applied to the element when sticky
      */

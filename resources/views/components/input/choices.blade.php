@@ -6,31 +6,36 @@
         [ 'value' => 2, 'label' => 'Example 2' ],
     ],
     'multiple' => false,
-    'placeholder' => '-- Selecteer --',
+    'placeholder' =>null,
     'config' => [
         'removeItemButton' => false,
         'resetScrollPosition' => false,
+        'shouldSort' => false
     ],
 ])
 
 {{-- Checks for a wire:multiple etc --}}
-@autowire()
+@wireProps
 
 <div
     {{ $attributes->merge(['class' => "w-full"])->whereDoesntStartWith("wire") }}
     wire:ignore
     x-data="{
-        value: @safeEntangle('wire:value'),
-        multiple: @safeEntangle('wire:multiple'),
-        options: @safeEntangle('wire:options'),
-        search: @safeEntangle('wire:search'),
-        config: @safeEntangle('wire:config'),
+        value: @entangleProp('value'),
+        multiple: @entangleProp('multiple'),
+        options: @entangleProp('options'),
+        search: @entangleProp('search'),
+        config: {
+            ...@entangleProp('config'),
+        },
         instance: null,
         init() {
             this.$nextTick(() => {
                 {{-- console.log(this.options) --}}
                 this.initChoices()
                 this.refreshOptions()
+
+                console.log('zz', this.value)
 
                 this.$refs.select.addEventListener('change', this.onChange.bind(this) )
                 this.$refs.select.addEventListener('search', this.onSearch.bind(this) )
@@ -54,15 +59,18 @@
             this.instance.clearChoices()
 
             this.instance.setChoices(this.options.map(({ value, label }) => ({
-                value,
+                value: value === null ? '' : value,
                 label,
                 selected: selection.includes(value),
             })))
 
+            window.instance = this.instance
+
             console.log(this.instance)
         },
         onChange() {
-            this.value = this.instance.getValue(true)
+            let value = this.instance.getValue(true)
+            this.value = value === '' || value === [''] ? null : value
         },
         onSearch(event) {
             // debounce

@@ -29,6 +29,18 @@
      */
     'sizeClass' => null,
     /**
+     * @param string|null icon Prepend with an icon
+     */
+    'icon' => null,
+    /**
+     * @param string iconPosition Position of the icon, 'left' 'right'
+     */
+    'iconPosition' => 'left',
+    /**
+     * @param string iconClass Classes applied to the icon
+     */
+    'iconClass' => 'w-5 h-5',
+    /**
      * @param string|bool wire:indicator If true, will show a loading indicator. Provide a string to specify the loading target (wire:click)
      */
     // 'wire:indicator' => false // it's implemented in the code
@@ -42,8 +54,10 @@
         !$sizeClass ? '--' . $size : $sizeClass,
         $circle ? '--circle' : '',
         $textButton || $colorClass ? $colorClass : '--default',
-        'focus:transform active:scale-95 hover:opacity-90' // Didnt work in class
+        'focus:transform active:scale-95 hover:opacity-90', // Didnt work in class,
+        $icon ? 'flex items-center gap-1' : '',
     ]);
+
 
     // Automatic loading
     $wireIndicator = $attributes->get('wire:indicator', false);
@@ -75,7 +89,17 @@
 <{{ $tag }} 
     {{ $tag == "button" ? 'type=' . $type . '' : '' }} 
     {{ $attributes->merge(['data-sn' => 'button', 'class' => $buttonClass ]) }}>
-    {{ $slot }}
+    @if($icon)
+        @if($iconPosition == 'left')
+            <x-senna.icon :name="$icon" :class="$iconClass" />
+        @endif
+        <div>{{ $slot }}</div>
+        @if($iconPosition == 'right')
+            <x-senna.icon :name="$icon" :class="$iconClass" />
+        @endif
+    @else
+        {{ $slot }}
+    @endif
 </{{ $tag }}>
 
 @once

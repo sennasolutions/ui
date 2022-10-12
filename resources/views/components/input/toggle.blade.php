@@ -5,36 +5,44 @@
     'colors' => []
 ])
 
-@autowire('label', 'value')
+@wireProps()
 
 @php
     $colors = array_merge([
         'bg-primary' => 'bg-primary',
         'border-primary' => 'border-primary',
-    ], $colors)
+    ], $colors);
+
+    $classes = "";
+    $buttonClasses = "";
+
+    if($attributes->namespace('button')->get('disabled')) {
+        $classes .= " opacity-50";
+        $buttonClasses .= " pointer-events-none";
+    }
 @endphp
 
 <div
-    wire:ignore
+    
     x-data="{ 
-        value: @safeEntangle($attributes->wire('value'))
+        value: @entangleProp('value')
     }"
-    {{ $attributes->merge(['class' => "flex gap-3 items-center"]) }}
+    {{ $attributes->root()->merge(['class' => "flex gap-3 items-center cursor-pointer $classes" ]) }}
     x-id="['toggle']"
 >
-    <input name="{{ $name }}" :value="value" type="hidden">
+    <input  name="{{ $name }}" :value="value" type="hidden">
 
     <button
+        
         role="switch"
         type="button"
-
-        class="relative inline-flex w-14 rounded-full py-1 px-0"
         x-bind:class="value ? '{{ $colors['bg-primary'] }} border-2 border-white' : 'bg-white border-2 {{ $colors['border-primary'] }}'"
-        
         x-ref="toggle"
         x-on:click="value = ! value"
         x-bind:aria-checked="value"
         x-bind:aria-labelledby="$id('toggle')"
+        
+        {{ $attributes->namespace('button')->merge(['class' => "relative inline-flex w-14 rounded-full py-1 px-0 $buttonClasses"]) }}
     >
         <span
             aria-hidden="true"
@@ -45,7 +53,7 @@
     </button>
 
     <label
-        class="cursor-pointer"
+        {{ $attributes->namespace('label')->merge(['class' => "cursor-pointer"]) }}
         x-bind:id="$id('toggle')"
         @click="$refs.toggle.click(); $refs.toggle.focus()"
     >

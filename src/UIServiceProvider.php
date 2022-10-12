@@ -79,7 +79,9 @@ class UIServiceProvider extends AddonServiceProvider {
         // Uses the $value property if Livewire is not available in the project
         Blade::directive('safe_entangle', [UIBladeDirectives::class, 'safeEntangle']);
         Blade::directive('safeEntangle', [UIBladeDirectives::class, 'safeEntangle']);;
-        Blade::directive('autowire', [UIBladeDirectives::class, 'autowire']);;
+        Blade::directive('entangleProp', [UIBladeDirectives::class, 'entangleProp']);;
+        Blade::directive('wireProps', [UIBladeDirectives::class, 'wireProps']);;
+        Blade::directive('wireEvent', [UIBladeDirectives::class, 'wireEvent']);;
         // Blade::directive('wiredProps', [UIBladeDirectives::class, 'wiredProps']);;
 
         if (!class_exists(Livewire::class)) {
@@ -87,8 +89,44 @@ class UIServiceProvider extends AddonServiceProvider {
         }
 
         if (method_exists(ComponentAttributeBag::class, 'macro')) {
+            /**
+             * Count the values in the attribute bag.
+             */
             ComponentAttributeBag::macro('count', function () {
                 return count($this->attributes);
+            });
+            /**
+             * Strip a part of a string from the attribute keys
+             */
+            ComponentAttributeBag::macro('strip', function ($tag) {
+                $that = clone $this;
+
+                foreach($that as $key => $value) {
+                    $that[str_replace($tag, "", $key)] = $value;
+                    unset($that[$key]);
+                }
+
+                return $that;
+            });
+            ComponentAttributeBag::macro('withoutKeysContaining', function ($string) {
+                $that = clone $this;
+
+                foreach($that as $key => $value) {
+                    if (str_contains($key, $string)) {
+                        unset($that[$key]);
+                    }
+                }
+
+                return $that;
+            });
+            ComponentAttributeBag::macro('root', function () {
+                return $this->withoutKeysContaining("::");
+            });
+            ComponentAttributeBag::macro('namespace', function ($namespace = null) {
+                if (!$namespace) {
+                    return $this->root();
+                }
+                return $this->whereStartsWith($namespace . "::")->strip($namespace . "::");
             });
         }
     }
