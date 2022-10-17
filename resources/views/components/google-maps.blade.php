@@ -131,7 +131,7 @@
                 this.setZoom(Math.min(12, this.getZoom())); 
             });
 
-            @wireEvent('onFitMarkers')(this.markers);
+            @wireMethod('onFitMarkers')(this.markers);
         }
     }">
         <div wire:ignore x-ref="map" class="sn-google-maps" ></div>

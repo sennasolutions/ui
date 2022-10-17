@@ -8,7 +8,7 @@
     'multiple' => false,
     'placeholder' =>null,
     'config' => [
-        'removeItemButton' => false,
+        'removeItemButton' => true,
         'resetScrollPosition' => false,
         'shouldSort' => false
     ],
@@ -18,30 +18,43 @@
 @wireProps
 
 <div
+    x-ref="container"
     {{ $attributes->merge(['class' => "w-full"])->whereDoesntStartWith("wire") }}
     wire:ignore
     x-data="{
         value: @entangleProp('value'),
         multiple: @entangleProp('multiple'),
-        options: @entangleProp('options'),
+        options: @js($options),
+        hasOptionsMethod: @js($attributes->has('wire.method:options')),
         search: @entangleProp('search'),
         config: {
             ...@entangleProp('config'),
         },
         instance: null,
+        searchTimeout: null,
+        placeholder: null,
         init() {
             this.$nextTick(() => {
-                {{-- console.log(this.options) --}}
                 this.initChoices()
+
+                // Find and keep the placeholder for later reference
+                this.placeholder = this.instance.config.choices.find(x => x.placeholder)
+
+                this.$refs.select.addEventListener('search', this.onSearch.bind(this) )
+                this.$refs.select.addEventListener('change', this.onChange.bind(this) ) 
+       
+
+                if (this.value && !this.search) {
+                    this.search = this.value
+
+                    this.refreshOptions()
+                }
+                
                 this.refreshOptions()
 
-                console.log('zz', this.value)
+                {{-- this.$watch('value', () => this.refreshOptions()) --}}
+                {{-- this.$watch('options', () => this.refreshOptions()) --}}
 
-                this.$refs.select.addEventListener('change', this.onChange.bind(this) )
-                this.$refs.select.addEventListener('search', this.onSearch.bind(this) )
-                
-                this.$watch('value', () => this.refreshOptions())
-                this.$watch('options', () => this.refreshOptions())
                 this.$watch('config', () => {
                     this.initChoices()
                     this.refreshOptions()
@@ -53,24 +66,46 @@
 
             this.instance = new Choices(this.$refs.select, this.config)
         },
+        {{-- replacePlaceholder() {
+            if (this.placeholder) {
+                this.instance.setChoices([this.placeholder], 'value', 'label', true)
+            }
+        }, --}}
         refreshOptions() {
             let selection = this.multiple ? this.value : [this.value]
 
-            this.instance.clearChoices()
-
-            this.instance.setChoices(this.options.map(({ value, label }) => ({
+            let parseOptions = ({ value, label }) => ({
                 value: value === null ? '' : value,
                 label,
                 selected: selection.includes(value),
-            })))
+            })
 
-            window.instance = this.instance
-
-            console.log(this.instance)
+            this.instance.clearChoices()  
+            this.focusSearch();
+            
+            if(this.hasOptionsMethod) {
+                return this.instance.setChoices(async() => {
+                    return (await @wireMethod('options')(this.search)).map(parseOptions)
+                })
+            } else {
+                return this.instance.setChoices(this.options.map(parseOptions))
+            }
         },
         onChange() {
             let value = this.instance.getValue(true)
             this.value = value === '' || value === [''] ? null : value
+
+            if (!value) {
+                this.initChoices()
+                this.refreshOptions()
+                {{-- this.replacePlaceholder() --}}
+            }
+        },
+        focusSearch() {
+            let input = this.$refs.container.querySelector('input[type=search]');
+            if (input) {
+                input.focus()
+            }
         },
         onSearch(event) {
             // debounce
@@ -78,19 +113,24 @@
 
             this.searchTimeout = setTimeout(() => {
                 this.search = event.detail.value
-            }, 150)
+                this.refreshOptions().then(x => {
+                    this.focusSearch();
+                })
+            }, 500)
         }
     }"
     
->
-    <select
-          x-ref="select" 
-          :multiple="multiple"
-        />
-        @if($placeholder)
-        <option value="">{{ $placeholder }}</option>
-        @endif
-    </select>
+>  
+
+        <select
+            x-ref="select" 
+            :multiple="multiple"
+            />
+            @if($placeholder)
+            <option value="">{{ $placeholder }}</option>
+            @endif
+        </select>
+  
 </div>
 
 @once

@@ -33,12 +33,12 @@ class UIBladeDirectives
         return static::safeEntangle("wire:" . $param);
     }
 
-    public static function wireEvent($expression) {
+    public static function wireMethod($expression) {
         $param = preg_replace('/[\W]/', '', $expression);
 
         return <<<EOT
-            <?php if(\$attributes && \$attributes->has('wire:$param') ): ?>
-                window.livewire.find('{{ \$_instance->id }}').{{ \$attributes->get('wire:$param') }}
+            <?php if(\$attributes && \$attributes->has('wire.method:$param') ): ?>
+                window.livewire.find('{{ \$_instance->id }}').{{ \$attributes->get('wire.method:$param') }}
             <?php endif; ?>
         EOT;
     }
