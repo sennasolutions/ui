@@ -1,6 +1,6 @@
 @props([
     'search' => '',
-    'value' => 1,
+    'value' => null,
     'options' => [
         [ 'value' => 1, 'label' => 'Example' ],
         [ 'value' => 2, 'label' => 'Example 2' ],
@@ -19,6 +19,7 @@
 
 <div
     x-ref="container"
+    
     {{ $attributes->merge(['class' => "w-full"])->whereDoesntStartWith("wire") }}
     wire:ignore
     x-data="{
@@ -66,18 +67,13 @@
 
             this.instance = new Choices(this.$refs.select, this.config)
         },
-        {{-- replacePlaceholder() {
-            if (this.placeholder) {
-                this.instance.setChoices([this.placeholder], 'value', 'label', true)
-            }
-        }, --}}
         refreshOptions() {
             let selection = this.multiple ? this.value : [this.value]
 
             let parseOptions = ({ value, label }) => ({
                 value: value === null ? '' : value,
                 label,
-                selected: selection.includes(value),
+                selected: selection === value || (selection && selection.includes(value)),
             })
 
             this.instance.clearChoices()  
@@ -94,7 +90,7 @@
         onChange() {
             let value = this.instance.getValue(true)
             this.value = value === '' || value === [''] ? null : value
-
+        
             if (!value) {
                 this.initChoices()
                 this.refreshOptions()
@@ -127,7 +123,7 @@
             :multiple="multiple"
             />
             @if($placeholder)
-            <option value="">{{ $placeholder }}</option>
+                <option value="" disabled selected>{{ $placeholder }}</option>
             @endif
         </select>
   
@@ -139,13 +135,9 @@
         <link rel="stylesheet" href="{{ senna_ui_asset('css/choices.css') }}">
 
         {{-- <style>
-            .choices {
-                color: #000;
-                width: 100%;
-            }
-            .choices__list--dropdown {
-                z-index: 100;
-            }
+        .choices__input {
+           width: auto !important;
+        }
         </style> --}}
 
     @endpush

@@ -10,6 +10,10 @@
         @apply flex-grow relative block;
     }
 
+    [data-sn^="input"] .-inner.--focus {
+        @apply ring ring-primary-200 border-primary-500;
+    }
+
     [data-sn^="input"] .-inner {
         @apply px-4 py-2.5;
         @apply duration-150 transition-all ease-in-out;
