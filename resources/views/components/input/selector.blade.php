@@ -110,7 +110,7 @@
             {{-- this.$refs.container.focus() --}}
             this.open = true
             this.isFocused = true
-            this.$refs.search.focus()
+            this.$refs.search?.focus()
         },
         closeDropdown() {
             this.open = false
@@ -123,7 +123,7 @@
             } else {
                 this.value = option.value
             }
-            this.$refs.search.focus()
+            this.$refs.search?.focus()
             this.closeDropdown()
             this.search = '';
         },
@@ -161,7 +161,7 @@
                 this.value = null
             }
             this.$nextTick(() => {
-                this.$refs.search.focus()
+                this.$refs.search?.focus()
             })
         },
         backspace() {
@@ -262,8 +262,8 @@
             <template x-for="selected in current()">
                 {{-- Each label --}}
                 <div :class="{ 
-                    'whitespace-nowrap rounded bg-primary text-white p-1 px-1.5 text-sm flex items-center justify-center gap-1' : multiple,
-                    'whitespace-nowrap rounded px-1 flex items-center justify-center gap-1' : !multiple,
+                    '{{ $attributes->namespace('label')->merge(['class' => 'whitespace-nowrap rounded bg-primary text-white p-1 px-1.5 text-sm flex items-center justify-center gap-1'])->get('class') }}' : multiple,
+                    '{{ $attributes->namespace('label')->merge(['class' => 'whitespace-nowrap rounded px-1 flex items-center justify-center gap-1'])->get('class') }}' : !multiple,
                     
                 }">
                     <span x-text="selected.label"></span>
@@ -278,15 +278,17 @@
 
             {{-- Search input --}}
             <input {{ $attributes->root()->whereDoesntStartWith("wire:") }} type="text"  x-ref="search" x-model="search" :placeholder="_placeholder" class="!outline-none my-1 mx-1 flex-grow w-1 !ring-0 !border-none !p-0" 
-                @focus="openDropdown" 
+                {{-- @focus="openDropdown"  --}}
                 @click="openDropdown" 
                 @keydown.backspace="backspace()" 
                 @keyup="keyup" 
                 @keydown.enter.prevent="selectFirst()" />
 
-            <svg x-show="multiple || isEmpty()" class="w-5 h-5" @click="openDropdown" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            {{-- \/ button --}}
+            <svg x-show="multiple || isEmpty()" class="w-5 h-5 transition-transform" :class="{ 'rotate-180': open }" @click="openDropdown" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
+            {{-- X button --}}
             <button x-show="!multiple && !isEmpty()" type="button" @click="remove(current()[0])">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
