@@ -26,7 +26,7 @@
     }
 @endphp
 
-<section data-sn="panel" {{ $attributes->merge([ 'class' => 'mx-auto border border-opacity-60 bg-white rounded-md shadow-lg dark:bg-gray-800' ]) }}>
+<section data-sn="panel" {{ $attributes->merge([ 'class' => 'mx-auto border border-opacity-60 bg-white rounded-md shadow-lg ' ]) }}>
     @if(isset($header))
     <div class="{{ $headerClass }}">
         {{ $header }}
