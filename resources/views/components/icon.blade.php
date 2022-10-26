@@ -25,10 +25,6 @@
 
         $component = "heroicon-" . ($outline ? 'o' : 's') . "-" . $icon;
     }
-
-    if($isFontAwesome) {
-        $component = $name;
-    }
 @endphp
 
 <x-dynamic-component data-sn='icon' :component="$component" {{ $attributes }}></x-dynamic-component>

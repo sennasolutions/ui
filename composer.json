@@ -11,8 +11,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "senna/utils": "dev-main",
-        "owenvoke/blade-fontawesome": "^1.9"
+        "senna/utils": "dev-main"
     },
     "autoload": {
         "psr-4": {
