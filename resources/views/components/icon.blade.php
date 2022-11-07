@@ -15,8 +15,9 @@
 @php
     $isHeroicon = str_contains($name, "ho-") || str_contains($name, "hs-");
     $isFontAwesome = str_contains($name, "fas-");
+    $isSenna = str_contains($name, "senna-");
 
-    $component = "senna.icon." . $name;
+    $component = $name;
 
     if ($isHeroicon) {
         $outline = str_contains($name, "ho-");
@@ -25,6 +26,16 @@
 
         $component = "heroicon-" . ($outline ? 'o' : 's') . "-" . $icon;
     }
+
+    if ($isSenna) {
+        $name = str_replace("senna-", "", $name);
+
+        $component = "senna.icon." . $name;
+    }
 @endphp
 
-<x-dynamic-component data-sn='icon' :component="$component" {{ $attributes }}></x-dynamic-component>
+@if($isSenna) 
+    <x-dynamic-component data-sn='icon' :component="$component" {{ $attributes }}></x-dynamic-component>
+@else
+    @svg($component, $attributes->get('class'))
+@endif

@@ -7,13 +7,16 @@
     'closeOnInnerclick' => true
 ])
 
-@php
+@php  
 switch ($align) {
     case 'left':
         $alignmentClasses = 'origin-top-left left-0';
         break;
     case 'top':
         $alignmentClasses = 'origin-top bottom-full right-0';
+        break;
+    case 'top-left':
+        $alignmentClasses = 'origin-top-left bottom-full left-0';
         break;
     case 'none':
     case 'false':

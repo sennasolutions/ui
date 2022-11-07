@@ -307,7 +307,7 @@
             class="absolute left-0 mt-2 w-full rounded-md border bg-white shadow-md max-h-36 overflow-y-auto z-20 text-black"
         >
             <template x-for="option in filteredOptions">
-                <button x-on:keydown.prevent.enter="select(option)" type="button" @click.stop="select(option)" x-text="option.label" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm focus:bg-primary outline-none focus:text-white hover:bg-primary hover:text-white disabled:text-gray-500">
+                <button x-on:keydown.prevent.enter="select(option)" type="button" @click.stop="select(option)" x-text="option.label" {{ $attributes->namespace('item')->merge(['class' => "flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm focus:bg-primary outline-none focus:text-white hover:bg-primary hover:text-white disabled:text-gray-500"]) }}>
 
                 </button>
             </template>
