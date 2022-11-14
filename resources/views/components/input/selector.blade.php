@@ -41,6 +41,7 @@
         'searchText' => __('Type to search...'),
         'noResultsText' => __('No results'),
         'loadingText' => __('Loading..'),
+        'allowHtml' => false
     ]
 ])
 
@@ -266,7 +267,13 @@
                     '{{ $attributes->namespace('label')->merge(['class' => 'whitespace-nowrap rounded px-1 flex items-center justify-center gap-1'])->get('class') }}' : !multiple,
                     
                 }">
-                    <span x-text="selected.label"></span>
+                    <span 
+                        @if($config['allowHtml'] ?? false)
+                            x-html="selected.label" 
+                        @else
+                            x-text="selected.label" 
+                        @endif
+                    ></span>
                     {{-- X button --}}
                     <button x-show="multiple" type="button" @click="remove(selected)">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -274,7 +281,7 @@
                         </svg>
                     </button>
                 </div>
-            </template>
+            </template> 
 
             {{-- Search input --}}
             <input {{ $attributes->root()->whereDoesntStartWith("wire:") }} type="text"  x-ref="search" x-model="search" :placeholder="_placeholder" class="!outline-none my-1 mx-1 flex-grow w-1 !ring-0 !border-none !p-0" 
@@ -307,7 +314,18 @@
             class="absolute left-0 mt-2 w-full rounded-md border bg-white shadow-md max-h-36 overflow-y-auto z-20 text-black"
         >
             <template x-for="option in filteredOptions">
-                <button x-on:keydown.prevent.enter="select(option)" type="button" @click.stop="select(option)" x-text="option.label" {{ $attributes->namespace('item')->merge(['class' => "flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm focus:bg-primary outline-none focus:text-white hover:bg-primary hover:text-white disabled:text-gray-500"]) }}>
+                <button 
+                     x-on:keydown.prevent.enter="select(option)" 
+                     type="button" @click.stop="select(option)"
+                     @if($config['allowHtml'] ?? false)
+                        x-html="option.label" 
+                     @else
+                        x-text="option.label" 
+                     @endif
+                     {{ $attributes
+                            ->namespace('item')
+                            ->merge(['class' => "flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm focus:bg-primary outline-none focus:text-white hover:bg-primary hover:text-white disabled:text-gray-500"]) 
+                     }}>
 
                 </button>
             </template>
