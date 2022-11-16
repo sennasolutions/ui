@@ -36,7 +36,7 @@
         
         role="switch"
         type="button"
-        x-bind:class="value ? '{{ $colors['bg-primary'] }} border-2 border-white' : 'bg-white border-2 {{ $colors['border-primary'] }}'"
+        x-bind:class="value ? '{{ $colors['bg-primary'] }} border-2 border-white' : 'bg-white border-2 border-gray'"
         x-ref="toggle"
         x-on:click="value = ! value"
         x-bind:aria-checked="value"
@@ -47,9 +47,11 @@
         <span
             aria-hidden="true"
             class="h-5 w-5 rounded-full transition"
-
             x-bind:class="value ? 'bg-white translate-x-7' : '{{ $colors['bg-primary'] }} translate-x-1'"
         ></span>
+        <div x-show="value" class="absolute inset-0 text-sm leading-6 text-left left-3 text-white">
+            {{-- v --}}
+        </div>
     </button>
 
     <label

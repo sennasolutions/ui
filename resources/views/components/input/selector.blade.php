@@ -28,6 +28,14 @@
      */
     'placeholder' => "Test...",
     /**
+     * @param string size 'xl', 'lg' or 'sm'
+     */
+    'size' => 'lg',
+    /**
+     * @param string error Whether to show an error border on the input
+     */
+    'error' => false,
+    /**
      * @param array value The options for the component, value label pairs
      */
     'options' => [
@@ -45,6 +53,11 @@
     ]
 ])
 
+@php
+    $inputClass = "-inner --$size " . ($error ? '--error' : '') . " " . '';
+@endphp
+
+
 {{-- Checks for a wire:multiple etc --}}
 @wireProps
 
@@ -52,7 +65,7 @@
     x-ref="container"
     wire:ignore
     data-sn="input.selector"
-    {{ $attributes->namespace('container')->merge(['class' => '-outer relative']) }}
+    {{ $attributes->namespace('container')->merge(['class' => '-outer relative ']) }}
     
     x-data="{
         id: $id('selector'),
@@ -116,6 +129,8 @@
         closeDropdown() {
             this.open = false
             this.isFocused = false
+
+            this.search = ''
         },
         select(option) {
 
@@ -123,6 +138,7 @@
                 this.value.push(option.value)
             } else {
                 this.value = option.value
+
             }
             this.$refs.search?.focus()
             this.closeDropdown()
@@ -244,10 +260,9 @@
      x-on:keydown.shift.tab="tabPrev($event)"
      x-on:keydown.down="pressDown($event)"
      x-on:keydown.up="pressUp($event)"
-
      x-on:click.outside="closeDropdown"
 >
-    <div class="-inner cursor-pointer" :class="{ '--focus': isFocused }" @click="openDropdown">
+    <div {{ $attributes->namespace('inner')->merge(['class' => '-inner cursor-pointer ' . $inputClass]) }} :class="{ '--focus': isFocused }" @click="openDropdown">
         {{-- Fallback select --}}
         <select {{ $attributes->root()->merge(['class' => 'w-full hidden'])->whereDoesntStartWith("wire:")->except(['id']) }} x-model="value" :multiple="multiple">
             <template x-if="placeholder">
@@ -284,7 +299,13 @@
             </template> 
 
             {{-- Search input --}}
-            <input {{ $attributes->root()->whereDoesntStartWith("wire:") }} type="text"  x-ref="search" x-model="search" :placeholder="_placeholder" class="!outline-none my-1 mx-1 flex-grow w-1 !ring-0 !border-none !p-0" 
+            <input {{ $attributes->namespace('search')->whereDoesntStartWith("wire:")->merge(['class' => '!outline-none my-1 mx-1 flex-grow w-1 !ring-0 !border-none !p-0']) }} 
+                type="text" 
+                x-ref="search" 
+                x-model="search" 
+                :disabled="!(current().length == 0 || multiple)"
+                :placeholder="_placeholder"
+
                 {{-- @focus="openDropdown"  --}}
                 @click="openDropdown" 
                 @keydown.backspace="backspace()" 
