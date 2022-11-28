@@ -36,8 +36,9 @@
             </x-senna.button.text>
         </x-slot>
         <x-slot name="content" class="flex flex-col gap-2">
-            <template x-for="option in options">
-                <x-senna.dropdown.item {{ $attributes->namespace('item') }} v-bind:key="option.value" x-on:click="value = option.value">
+            
+            <template x-for="option in options" v-bind:key="option.value">
+                <x-senna.dropdown.item {{ $attributes->namespace('item') }} x-on:click="value = option.value">
                     <span x-text="option.label"></span>
                 </x-senna.dropdown.item>
             </template>
