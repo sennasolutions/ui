@@ -17,6 +17,11 @@
 
             chart.render()
 
+            // nextTick
+            this.$nextTick(() => {
+                chart.render()
+            })
+
             this.$watch('values', () => {
                 chart.updateOptions(this.options)
             })
@@ -34,7 +39,7 @@
                     marker: false,
                     y: {
                         formatter(number) {
-                            return '$'+number
+                            return number
                         }
                     }
                 },
