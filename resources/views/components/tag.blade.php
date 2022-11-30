@@ -32,7 +32,7 @@
                 $sizeClass = "py-1 px-1.5 text-xs";
                 break;
             case "lg":
-                $sizeClass = "py-1.5 px-2 text-sm";
+                $sizeClass = "py-1 px-1.5 text-sm";
                     break;
             case "xl":
                 $sizeClass = "py-2 px-2.5 text-lg";

@@ -1,3 +1,3 @@
-<x-senna.tag {{ $attributes->merge(['colorClass' => 'bg-primary-200 text-primary-800']) }}>
+<x-senna.tag {{ $attributes->merge(['colorClass' => 'bg-primary-100 text-primary']) }}>
     {{ $slot }}
 </x-senna.tag>
