@@ -145,8 +145,6 @@ class Delegate extends Component
                 $name = str_replace("{" . $key . "}", $item, $name);
             }
 
-            ray($name);
-
             // Check for row:slug on view
             $template = $this->checkViewForTemplate($name);
 
