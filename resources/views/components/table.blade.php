@@ -78,7 +78,7 @@
                                     $value = $getRowProp($row, $prop);
                                 @endphp
 
-                                @if (!is_scalar($value))
+                                @if (!is_scalar($value) && $value !== null)
                                     <pre class="bg-gray-100 rounded p-5 overflow-y-auto">{{ json_encode($value, JSON_PRETTY_PRINT) }}</pre>
                                 @else
                                     @if($html) {!! $value !!} @else {{ $value }} @endif
@@ -113,7 +113,7 @@
                                 $value = $getRowProp($row, $prop);
                             @endphp
 
-                            @if (!is_scalar($value))
+                            @if (!is_scalar($value) && $value !== null)
                                 <pre class="bg-gray-100 rounded p-5 overflow-y-auto">{{ json_encode($value, JSON_PRETTY_PRINT) }}</pre>
                             @else
                                 @if($html) {!! $value !!} @else {{ $value }} @endif
