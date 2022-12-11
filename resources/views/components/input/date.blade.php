@@ -11,6 +11,7 @@
      * @param array config The flatpicker config. See https://flatpickr.js.org/options/
      */
     'config' => [
+        'allowInput' => true,
         // maxDate
         // minDate
     ],

@@ -64,7 +64,7 @@
             @endif
         @endif
 
-        {{ $slot }}
+        {{ $content ?? $slot }}
 
         @if($showFooter)
         <x-slot name="footer">
