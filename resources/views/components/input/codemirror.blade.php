@@ -24,6 +24,9 @@
     'value' => null
 ])
 
+{{-- Checks for a wire:multiple etc --}}
+@wireProps
+
 @php
  $slotContents = $slot->toHtml();
  $value = $value ?? ($slot && $slotContents ? $slotContents : null);
@@ -31,13 +34,71 @@
 
 <div
     data-sn="input.codemirror"
-    {{-- x-data="initCodemirror(@safe_entangle($attributes->wire('model')))" --}}
-    x-data="initCodemirror(@safe_entangle($attributes->wire('model')))"
-    x-init='init(@json($config))'
+    x-data="{
+        copied: false,
+        config: @entangleProp('config'),
+        value: @entangleProp('value'),
+        editor: null,
+        copy() {
+            let textarea = this.$refs.container.querySelector('textarea')
+            // textarea.style.display = 'block'
+            textarea.select();
+            document.execCommand('copy');
+            this.editor.execCommand('selectAll');
+            document.execCommand('copy');
+            this.copied = true
+        },
+        refresh() {
+            this.editor.refresh();
+        },
+        init() {
+            this.initCodemirror();
+
+            this.$watch('value', (contents) => {
+                {{-- this.refresh(); --}}
+                if (this.editor.getValue() !== contents) {
+                    this.editor.setValue(contents)
+                }
+            })
+        },
+        initCodemirror() {
+            {{-- if(!this.$refs.container) return; --}}
+
+            let localConfig = @json(config('senna.ui.codemirror'))
+
+            this.editor = window.CodeMirror(this.$refs.container, {
+                lineNumbers: true,
+                indentWithTabs: false,
+                tabSize: 2,
+                theme: 'dark',
+                value: '' + this.value,
+                mode: 'application/xml',
+                theme: 'generator',
+                keyMap: 'sublime',
+                readOnly: false,
+                ...localConfig,
+                ...this.config,
+            });
+
+            // Value change
+            this.editor.on('change', (editor) => {
+                this.value = editor.getValue();
+                console.log(this.value)
+            });
+
+            {{-- this.editor.setOption('mode', 'application/xml'); --}}
+        },
+        setValue(value) {
+            this.editor.setValue(value)
+        }
+    }"
     x-on:cm-refresh.window="refresh"
     {{ $attributes->merge(['class' => 'bg-gray-800 cm-wrapper relative']) }}
-    wire:ignore>
+    wire:ignore
+    >
+    
     <div class="cm-container" x-ref="container"></div>
+
     @if($showCopyButton)
     <div class="absolute z-10 {{ $copyClass }}" x-on:click="copy">
         <x-senna.button.text x-show="!copied" colorClass="text-white">
@@ -63,75 +124,5 @@
 
     @push('senna-ui-scripts')
     <script src="{{ senna_ui_asset('js/codemirror.js') }}"></script>
-    <script>
-        function initCodemirror(value) {
-            return {
-                copied: false,
-                config: {},
-                currentValue: value,
-                copy() {
-                    console.log(this.$refs.container)
-                    let textarea = this.$refs.container.querySelector('textarea')
-                    // textarea.style.display = 'block'
-                    textarea.select();
-                    document.execCommand('copy');
-                    this.editor.execCommand('selectAll');
-                    document.execCommand('copy');
-                    this.copied = true
-                },
-                refresh() {
-                    this.editor.refresh();
-                },
-                init(config) {
-                    console.log(this.currentValue);
-                    this.config = config
-                    this.initCodemirror();
-
-                    this.$watch('currentValue', (contents) => {
-                       this.refresh();
-                       if (this.editor.getValue() !== contents) {
-                           this.editor.setValue(contents)
-                        //    this.$nextTick(() => {
-                        //     })
-                            // this.editor.setValue(contents)
-                        }
-                    })
-                    // if (window.is_lwd) {
-                    //     Livewire.hook('message.processed', (msg, component) => {
-                    //         if (component.id === @this.__instance.id) {
-                    //             // On update reinitialize
-                    //             this.initCodemirror();
-                    //         }
-                    //     })
-                    // }
-                },
-                initCodemirror() {
-                    if(!this.$refs.container) return;
-
-                    let localConfig = @json(config('senna.ui.codemirror'))
-
-                    this.editor = window.CodeMirror(this.$refs.container, {
-                        lineNumbers: true,
-                        indentWithTabs: false,
-                        tabSize: 2,
-                        theme: 'dark',
-                        value: "" + this.currentValue,
-                        mode: 'xml',
-                        theme: 'generator',
-                        keyMap: 'sublime',
-                        readOnly: false,
-                        ...localConfig,
-                        ...this.config,
-                    });
-
-                    this.editor.setOption("theme", 'dark');
-                    // this.editor.setOption("readOnly", true)
-                },
-                setValue(value) {
-                    this.editor.setValue(value)
-                }
-            }
-        }
-    </script>
     @endpush
 @endonce
