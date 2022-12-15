@@ -31,14 +31,15 @@
     $name = trim($slot->toHtml());
 @endphp
 
-@if($img && !str_contains($img, "ui-avatars.com"))
+<div {{ $attributes->merge([ 'class' => 'relative' ]) }}>
+@if($img)
 <img {{ $attributes->merge([
     'src' => $img,
-    'class' => 'grow-0 shrink-0  rounded-full object-cover ' . $sizeClass,
+    'class' => 'absolute grow-0 shrink-0  rounded-full object-cover ' . $sizeClass,
     'alt' => $name
     ]) }} />
-@else
-
+{{-- @else --}}
+@endif
 @php
     $parts = explode(" ", $name);
 
@@ -49,8 +50,6 @@
         $text = strtoupper(($parts[0][0] ?? '') . ($parts[count($parts) - 1][0] ?? ''));
     }
 @endphp
-
-
 
 <svg {{ $attributes->merge(['class' => $sizeClass . ' grow-0 shrink-0  rounded-full bg-white']) }} xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" version="1.1">
     <rect fill="{{ $bgColor }}" cx="32" width="64" height="64" cy="32" r="32"/>
@@ -66,4 +65,5 @@
         {{ $text }}
     </text>
 </svg>
-@endif
+
+</div>
