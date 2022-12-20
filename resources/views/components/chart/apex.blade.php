@@ -8,6 +8,7 @@
 
 <div
     {{ $attributes }}
+    
     x-data="{
         values: @entangleProp('values'),
         labels: @entangleProp('labels'),
@@ -15,7 +16,7 @@
         init() {
             let chart = new ApexCharts(this.$refs.chart, this.options)
 
-            chart.render()
+            {{-- chart.render() --}}
 
             // nextTick
             this.$nextTick(() => {
@@ -54,7 +55,7 @@
     }"
     class="w-full"
 >
-    <div x-ref="chart"></div>
+    <div wire:ignore x-ref="chart"></div>
 </div>
 
 
