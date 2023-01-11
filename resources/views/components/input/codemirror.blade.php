@@ -55,25 +55,23 @@
             this.initCodemirror();
 
             this.$watch('value', (contents) => {
-                {{-- this.refresh(); --}}
+                console.log('value', contents)
                 if (this.editor.getValue() !== contents) {
                     this.editor.setValue(contents)
                 }
             })
         },
         initCodemirror() {
-            {{-- if(!this.$refs.container) return; --}}
-
             let localConfig = @json(config('senna.ui.codemirror'))
 
             this.editor = window.CodeMirror(this.$refs.container, {
                 lineNumbers: true,
                 indentWithTabs: false,
+                autoRefresh: true,
                 tabSize: 2,
                 theme: 'dark',
                 value: '' + this.value,
                 mode: 'application/xml',
-                theme: 'generator',
                 keyMap: 'sublime',
                 readOnly: false,
                 ...localConfig,
@@ -82,11 +80,12 @@
 
             // Value change
             this.editor.on('change', (editor) => {
-                this.value = editor.getValue();
-                console.log(this.value)
+                setTimeout(() => {
+                    console.log('change', editor.getValue())
+                    this.value = editor.getValue();
+                }, 100)
+                {{-- this.value = editor.getValue(); --}}
             });
-
-            {{-- this.editor.setOption('mode', 'application/xml'); --}}
         },
         setValue(value) {
             this.editor.setValue(value)

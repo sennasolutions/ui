@@ -6,4 +6,7 @@ import simple from 'codemirror/addon/mode/simple';
 import sublime from 'codemirror/keymap/sublime';
 import sc from 'codemirror/addon/search/searchcursor';
 
+// autorefresh
+import autoRefresh from 'codemirror/addon/display/autorefresh';
+
 window.CodeMirror = CodeMirror;

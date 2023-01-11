@@ -34,6 +34,11 @@
             })
         },
         get options() {
+            let apex = this.apex
+            if (typeof apex === 'string') {
+                apex = Function('return ' + this.apex)()
+            }
+
             return {
                 chart: { type: 'bar', toolbar: false, height: '100%' },
                 tooltip: {
@@ -49,7 +54,7 @@
                     name: 'Sales',
                     data: this.values,
                 }],
-                ...this.apex
+                ...apex
             }
         }
     }"

@@ -16,6 +16,10 @@
      */
     'multiple' => false,
     /**
+    * @param bool showClear Whether to show a clear button
+    */
+    'showClear' => true,
+    /**
      * @param string search The search
      */
     'search' => '',
@@ -26,7 +30,7 @@
     /**
      * @param null|string placeholder The placeholder
      */
-    'placeholder' => "Test...",
+    'placeholder' => __("Make a choice"),
     /**
      * @param string size 'xl', 'lg' or 'sm'
      */
@@ -50,11 +54,16 @@
         'noResultsText' => __('No results'),
         'loadingText' => __('Loading..'),
         'allowHtml' => false
-    ]
+    ],
+    /**
+     * @param bool inline Whether to make an inline style picker
+     */
+     'inline' => false,
 ])
 
 @php
     $inputClass = "-inner --$size " . ($error ? '--error' : '') . " " . '';
+    $min = str($placeholder)->length() + 2;
 @endphp
 
 
@@ -65,11 +74,14 @@
     x-ref="container"
     wire:ignore
     data-sn="input.selector"
+    
     {{ $attributes->namespace('container')->merge(['class' => '-outer relative ']) }}
+    style="{{ $inline ? 'display: inline-block; min-width: ' . $min . 'ch' : '' }}"
     
     x-data="{
         id: $id('selector'),
         value: @entangleProp('value'),
+        valueBackup: null,
         
         options: @entangleProp('options'),
         placeholder: @entangleProp('placeholder'),
@@ -121,16 +133,30 @@
             }
         },
         openDropdown() {
-            {{-- this.$refs.container.focus() --}}
             this.open = true
             this.isFocused = true
             this.$refs.search?.focus()
+
+            if (this.value) {
+                this.$nextTick(() => {
+                    this.valueBackup = this.value
+                    this.removeCurrent()
+                    setTimeout(() => {
+                        this.$refs.search?.focus()
+                    }, 1)
+                })
+            }
         },
         closeDropdown() {
             this.open = false
             this.isFocused = false
 
             this.search = ''
+
+            if (!this.value && this.valueBackup) {
+                this.value = this.valueBackup
+                this.valueBackup = null
+            }
         },
         select(option) {
 
@@ -177,6 +203,17 @@
             } else {
                 this.value = null
             }
+            this.$nextTick(() => {
+                this.$refs.search?.focus()
+            })
+        },
+        removeCurrent() {
+            if (this.multiple) {
+                this.value.pop()
+            } else {
+                this.value = null
+            }
+
             this.$nextTick(() => {
                 this.$refs.search?.focus()
             })
@@ -262,7 +299,12 @@
      x-on:keydown.up="pressUp($event)"
      x-on:click.outside="closeDropdown"
 >
-    <div {{ $attributes->namespace('inner')->merge(['class' => '-inner cursor-pointer ' . $inputClass]) }} :class="{ '--focus': isFocused }" @click="openDropdown">
+    <div 
+        {{ $attributes->namespace('inner')->merge(['class' => '-inner cursor-pointer ' . $inputClass]) }} 
+        :class="{ '--focus': isFocused }" 
+        @click="openDropdown"
+        style="{{ $inline ? 'border: none; padding: 2px 1px;' : '' }}"
+    >
         {{-- Fallback select --}}
         <select {{ $attributes->root()->merge(['class' => 'w-full hidden'])->whereDoesntStartWith("wire:")->except(['id']) }} x-model="value" :multiple="multiple">
             <template x-if="placeholder">
@@ -290,7 +332,7 @@
                         @endif
                     ></span>
                     {{-- X button --}}
-                    <button x-show="multiple" type="button" @click="remove(selected)">
+                    <button x-show="multiple" type="button" @click="removeCurrent">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -306,22 +348,23 @@
                 :disabled="!(current().length == 0 || multiple)"
                 :placeholder="_placeholder"
 
-                {{-- @focus="openDropdown"  --}}
-                @click="openDropdown" 
                 @keydown.backspace="backspace()" 
                 @keyup="keyup" 
                 @keydown.enter.prevent="selectFirst()" />
 
             {{-- \/ button --}}
-            <svg x-show="multiple || isEmpty()" class="w-5 h-5 transition-transform" :class="{ 'rotate-180': open }" @click="openDropdown" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <svg x-show="multiple || isEmpty()" class="w-5 h-5 transition-transform" :class="{ 'rotate-180': open }" 
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
+            @if($showClear)
             {{-- X button --}}
             <button x-show="!multiple && !isEmpty()" type="button" @click="remove(current()[0])">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
+            @endif
         </div>
 
         {{-- Dropdown panel --}}
@@ -331,7 +374,7 @@
             x-transition.origin.top.left
             
             :id="$id('dropdown-button')"
-            style="display: none;"
+            style="display: none; min-width: 200px;"
             class="absolute left-0 mt-2 w-full rounded-md border bg-white shadow-md max-h-36 overflow-y-auto z-20 text-black"
         >
             <template x-for="option in filteredOptions">
