@@ -1,7 +1,5 @@
 @props([
     'align' => 'right',
-    'widthClass' => 'w-48',
-    'contentClass' => 'py-1 bg-white',
     'dropdownClass' => '',
     'open' => false,
     'closeOnInnerclick' => true
@@ -31,7 +29,7 @@ switch ($align) {
 @endphp
 
 <div data-sn='dropdown' {{ $attributes->merge(['class' => 'relative']) }} x-data="{ open: {{ $open ? 'true' : 'false' }} }" @click.away="open = false" @close.stop="open = false">
-    <div @click="open = ! open">
+    <div @click="open = ! open" {{ $trigger->attributes }}>
         {{ $trigger }}
     </div>
 
@@ -42,13 +40,13 @@ switch ($align) {
             x-transition:leave="transition ease-in duration-75"
             x-transition:leave-start="transform opacity-100 scale-100"
             x-transition:leave-end="transform opacity-0 scale-95"
-            class="{{ class_merge('absolute z-50 mt-2 rounded-md', $widthClass, $alignmentClasses, $dropdownClass) }}"
+            {{ $attributes->namespace('dropdown')->merge(['class' => "absolute z-50 mt-2 rounded-md w-48 $alignmentClasses"]) }}
             style="display: none;"
             @if($closeOnInnerclick)
             @click="open = false"
             @endif
     >
-        <div class="{{ class_merge("rounded-md ring-1 ring-black ring-opacity-5", $contentClass) }}">
+        <div {{ $content->attributes->merge(['class' => 'rounded-md ring-1 ring-black ring-opacity-5 py-1 bg-white' ]) }}>
             {{ $content }}
         </div>
     </div>

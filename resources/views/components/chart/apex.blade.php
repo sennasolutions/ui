@@ -1,7 +1,5 @@
 @props([
-    'values' => [45, 55, 75, 25, 45, 110],
-    'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June'],
-    'apex' => [],
+    'apex' => null,
 ])
 
 @wireProps
@@ -10,50 +8,88 @@
     {{ $attributes }}
     
     x-data="{
-        values: @entangleProp('values'),
-        labels: @entangleProp('labels'),
         apex: @entangleProp('apex'),
-        init() {
-            let chart = new ApexCharts(this.$refs.chart, this.options)
-
-            {{-- chart.render() --}}
-
-            // nextTick
-            this.$nextTick(() => {
-                chart.render()
+        initialized: false,
+        chart: null,
+        async init() {
+            this.setupHelpers()
+            this.$watch('apex', async () => {
+                await this.initChart()
+                this.chart.updateOptions(this.options)
             })
 
-            this.$watch('values', () => {
-                chart.updateOptions(this.options)
-            })
-            this.$watch('labels', () => {
-                chart.updateOptions(this.options)
-            })
-            this.$watch('apex', () => {
-                chart.updateOptions(this.options)
+            if (this.apex) {
+                this.initChart()
+            }
+        },
+        setupHelpers() {
+            window.percentage = (ratio) => {
+                return Math.round((ratio) * 100) + '%'
+            }
+
+            window.euro = (value) => {
+                return '€' + value
+            }
+
+            window.dollar = (value) => {
+                return '$' + value
+            }
+        },
+        async initChart() {
+            if (this.initialized) return
+
+            return new Promise((resolve) => {
+                this.initialized = true
+
+                this.chart = new ApexCharts(this.$refs.chart, this.options)
+
+                this.$nextTick(() => {
+                    this.chart.render()
+                    resolve()
+                })
             })
         },
         get options() {
-            let apex = this.apex
+            let apex = this.apex ?? '{}';
             if (typeof apex === 'string') {
                 apex = Function('return ' + this.apex)()
             }
+
+            console.log(apex)
 
             return {
                 chart: { type: 'bar', toolbar: false, height: '100%' },
                 tooltip: {
                     marker: false,
+                    x: {
+                        format: 'dd/MM/yyyy'
+                    },
                     y: {
-                        formatter(number) {
-                            return number
+                        formatter(x, { seriesIndex, dataPointIndex, w }) {
+                            let formatter = apex.series[seriesIndex].formatter
+                            let map = {};
+
+                            if (apex.series[0].data ?? null) {
+                                for (let i = 0; i < apex.series.length; i++) {
+                                    map[apex.series[i].name] = apex.series[i].data[dataPointIndex];
+                                }
+                            }
+
+                            if (formatter) {
+                                return new Function('x', 'data', 'return ' + formatter)(x, map)
+                            }
+
+                            return x;
                         }
                     }
                 },
-                xaxis: { categories: this.labels },
-                series: [{
-                    name: 'Sales',
-                    data: this.values,
-                }],
+                {{-- yaxis: { 
+                    labels: {
+                        formatter: function (value) {
+                            return value + '$'
+                        }
+                    },
+                }, --}}
                 ...apex
             }
         }

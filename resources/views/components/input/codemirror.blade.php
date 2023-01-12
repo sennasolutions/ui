@@ -55,7 +55,7 @@
             this.initCodemirror();
 
             this.$watch('value', (contents) => {
-                console.log('value', contents)
+                {{-- console.log('value', contents) --}}
                 if (this.editor.getValue() !== contents) {
                     this.editor.setValue(contents)
                 }
@@ -63,6 +63,7 @@
         },
         initCodemirror() {
             let localConfig = @json(config('senna.ui.codemirror'))
+
 
             this.editor = window.CodeMirror(this.$refs.container, {
                 lineNumbers: true,
@@ -74,17 +75,44 @@
                 mode: 'application/xml',
                 keyMap: 'sublime',
                 readOnly: false,
+                extraKeys: {'Ctrl-Space': 'autocomplete'},
                 ...localConfig,
                 ...this.config,
+                hintOptions: {
+                    hint: CodeMirror.hint.sql,
+                    {{-- tables: {
+                        users: ['name', 'score', 'birthDate'],
+                        countries: ['name', 'population', 'size']
+                    }, --}}
+                    completeSingle: false,
+                    // extra hint words
+                    words: [
+                        'extra1',
+                    ],  
+                    ...(localConfig ?? {}).hintOptions ?? {},
+                    ...this.config.hintOptions ?? {},
+                },
+            });
+
+            this.editor.on('keyup', function (cm, event) {
+                // no arrow keys or backspace or tab or comma or space escape
+                if (event.keyCode >= 37 && event.keyCode <= 40 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 188 || event.keyCode == 32 || event.keyCode == 27) {
+                    return;
+                }
+
+                if (!cm.state.completionActive && /*Enables keyboard navigation in autocomplete list*/
+                    event.keyCode != 13) {        /*Enter - do not open autocomplete list just after item has been selected in it*/ 
+                    if (CodeMirror.commands.autocomplete) {
+                        CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
+                    }
+                }
             });
 
             // Value change
             this.editor.on('change', (editor) => {
                 setTimeout(() => {
-                    console.log('change', editor.getValue())
                     this.value = editor.getValue();
                 }, 100)
-                {{-- this.value = editor.getValue(); --}}
             });
         },
         setValue(value) {

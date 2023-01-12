@@ -81,6 +81,7 @@ class UIServiceProvider extends AddonServiceProvider {
         Blade::directive('safeEntangle', [UIBladeDirectives::class, 'safeEntangle']);;
         Blade::directive('entangleProp', [UIBladeDirectives::class, 'entangleProp']);;
         Blade::directive('wireProps', [UIBladeDirectives::class, 'wireProps']);;
+        Blade::directive('wireVars', [UIBladeDirectives::class, 'wireVars']);;
         Blade::directive('wireMethod', [UIBladeDirectives::class, 'wireMethod']);;
         // Blade::directive('wiredProps', [UIBladeDirectives::class, 'wiredProps']);;
 

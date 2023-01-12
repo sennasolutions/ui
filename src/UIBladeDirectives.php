@@ -7,11 +7,20 @@ use Livewire\Livewire;
 class UIBladeDirectives 
 {
 
+    /**
+     * This is a helper function to get the value contents of a wire:prop from the livewire component
+     * 
+     * @example
+     * <x-component wire:thing='someVar' />
+     * $thing contains the value of $this->someVar
+     *
+     * @return void
+     */
     public static function wireProps()
     {
         return <<<EOT
             <?php 
-                foreach(\$attributes->whereStartsWith("wire:")->getAttributes() as \$__key => \$__value) {
+                foreach(\$__data['attributes']->whereStartsWith("wire:")->getAttributes() as \$__key => \$__value) {
                     \$__key = str_replace("wire:", "", \$__key);
                     if (isset(\$\$__key) && isset(\$this) && \$this instanceof \Livewire\Component) {
                         \$\$__key = Senna\Utils\Helpers\deep_get(\$this, \$__value);
@@ -21,6 +30,29 @@ class UIBladeDirectives
             ?>
         EOT;
     }
+
+    /**
+     * This is a helper function to get the defined value from a wire:prop attribute
+     * 
+     * @example
+     * <x-component wire:thing='someVar' />
+     * $thing contains 'someVar'
+     *
+     * @return void
+     */
+    public static function wireVars()
+    {
+        return <<<EOT
+            <?php 
+                foreach(\$__data['attributes']->whereStartsWith("wire:")->getAttributes() as \$__key => \$__value) {
+                    \$__key = str_replace("wire:", "", \$__key);
+                    \$\$__key = \$__value;
+                }
+                unset(\$__key, \$__value);
+            ?>
+        EOT;
+    }
+
 
     /**
      *
