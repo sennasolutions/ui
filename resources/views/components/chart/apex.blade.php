@@ -43,6 +43,66 @@
 
                 this.chart = new ApexCharts(this.$refs.chart, this.options)
 
+                Apex.chart = {
+                    locales: [
+                        {
+                            'name': 'nl',
+                            'options': {
+                                'months': [
+                                    'Januari',
+                                    'Februari',
+                                    'Maart',
+                                    'April',
+                                    'Mei',
+                                    'Juni',
+                                    'Juli',
+                                    'Augustus',
+                                    'September',
+                                    'Oktober',
+                                    'November',
+                                    'December'
+                                ],
+                                'shortMonths': [
+                                    'Jan',
+                                    'Feb',
+                                    'Mrt',
+                                    'Apr',
+                                    'Mei',
+                                    'Jun',
+                                    'Jul',
+                                    'Aug',
+                                    'Sep',
+                                    'Okt',
+                                    'Nov',
+                                    'Dec'
+                                ],
+                                'days': [
+                                    'Zondag',
+                                    'Maandag',
+                                    'Dinsdag',
+                                    'Woensdag',
+                                    'Donderdag',
+                                    'Vrijdag',
+                                    'Zaterdag'
+                                ],
+                                'shortDays': ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'],
+                                'toolbar': {
+                                    'exportToSVG': 'Download SVG',
+                                    'exportToPNG': 'Download PNG',
+                                    'exportToCSV': 'Download CSV',
+                                    'menu': 'Menu',
+                                    'selection': 'Selectie',
+                                    'selectionZoom': 'Zoom selectie',
+                                    'zoomIn': 'Zoom in',
+                                    'zoomOut': 'Zoom out',
+                                    'pan': 'Verplaatsen',
+                                    'reset': 'Standaardwaarden'
+                                }
+                            }
+                        }],
+                        defaultLocale: 'nl'
+                }
+
                 this.$nextTick(() => {
                     this.chart.render()
                     resolve()
@@ -55,14 +115,14 @@
                 apex = Function('return ' + this.apex)()
             }
 
-            console.log(apex)
-
             return {
                 chart: { type: 'bar', toolbar: false, height: '100%' },
                 tooltip: {
                     marker: false,
                     x: {
-                        format: 'dd/MM/yyyy'
+                        // donderdag 
+                        format: 'dddd dd/MM/yyyy HH:mm'
+                        {{-- format: 'dddd D MMMM YYYY HH:mm' --}}
                     },
                     y: {
                         formatter(x, { seriesIndex, dataPointIndex, w }) {
