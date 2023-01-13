@@ -27,8 +27,9 @@
                 return Math.round((ratio) * 100) + '%'
             }
 
-            window.euro = (value) => {
-                return '€' + value
+            window.euro = (value, digits) => {
+                // 1000.00 => 1.000,00
+                return '€' + value.toLocaleString('nl-NL', { minimumFractionDigits: digits, maximumFractionDigits: digits })
             }
 
             window.dollar = (value) => {
