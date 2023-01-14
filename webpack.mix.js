@@ -13,6 +13,7 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/alpine.js', './dist/js')
     .js('resources/js/codemirror.js', './dist/js')
+    .js('resources/js/helpers.js', './dist/js')
     .postCss('resources/css/codemirror.css', './dist/css')
     .postCss('resources/css/tailwind.css', './dist/css', [
         require('postcss-import'),

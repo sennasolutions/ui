@@ -112,46 +112,68 @@
         },
         get options() {
             let apex = this.apex ?? '{}';
+            
             if (typeof apex === 'string') {
-                apex = Function('return ' + this.apex)()
+                apex = Function('return ' + this.apex ?? '{}')()
+            }
+
+            let conf = Object.assign({}, apex)
+
+            let getDataPoint = (dataPointIndex, seriesIndex = 0) => {
+                let flatSeries = conf.chart.type == 'pie';
+                let data = flatSeries ? conf.series : conf.series[seriesIndex].data;
+
+                return data[dataPointIndex] ?? null;
             }
 
             return {
-                chart: { type: 'bar', toolbar: false, height: '100%' },
-                tooltip: {
-                    marker: false,
-                    x: {
-                        // donderdag 
-                        format: 'dddd dd/MM/yyyy HH:mm'
-                        {{-- format: 'dddd D MMMM YYYY HH:mm' --}}
-                    },
-                    y: {
-                        formatter(x, { seriesIndex, dataPointIndex, w }) {
-                            let formatter = apex.series[seriesIndex].formatter
-                            let map = {};
+                chart: { 
+                    type: 'bar', 
+                    toolbar: false, 
+                    height: '100%',
+                },
+                ...conf,
+                ...{
+                    tooltip: {
+                        marker: false,
+                        ...conf.tooltip ?? {},
+                        y: {
+                            formatter: (x, { seriesIndex, dataPointIndex, w }) => {
+                                let flatSeries = conf.chart.type == 'pie';
 
-                            if (apex.series[0].data ?? null) {
-                                for (let i = 0; i < apex.series.length; i++) {
-                                    map[apex.series[i].name] = apex.series[i].data[dataPointIndex];
+                                let formatter = flatSeries ? conf.insight.formatters : conf.insight.formatters[seriesIndex] ?? null;
+                                let series = conf.series
+
+                                let map = {};
+
+                                if (!flatSeries) {
+                                    series.forEach((serie) => {
+                                        map[serie.name] = serie.data[dataPointIndex] ?? null;
+                                    })
                                 }
-                            }
 
-                            if (formatter) {
-                                return new Function('x', 'data', 'return ' + formatter)(x, map)
-                            }
+                                if (formatter) {
+                                    return new Function('x', 'data', 'return ' + formatter)(x, map)
+                                }
 
-                            return x;
+                                return x;
+                            }
+                        }
+                    },
+                    chart: {
+                        ...conf.chart ?? {},
+                        events: {
+                            click: (event, chartContext, { seriesIndex, dataPointIndex }) => {
+                                if (this.$wire) {
+                                    this.$wire.chartClick({
+                                        dataPointIndex,
+                                        seriesIndex,
+                                    })
+                                }
+                            },
                         }
                     }
-                },
-                {{-- yaxis: { 
-                    labels: {
-                        formatter: function (value) {
-                            return value + '$'
-                        }
-                    },
-                }, --}}
-                ...apex
+                }
             }
         }
     }"
