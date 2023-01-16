@@ -75,7 +75,7 @@
         <x-senna.input.group :label="$label">
             <div class="sn-input-text flex-grow relative block">
                 <div class="-prefix">
-                    <x-senna.icon class="w-5 h-5 -mt-1" name="hs-location-marker"></x-senna.icon>
+                    <x-senna.icon class="w-5 h-5 -mt-1" name="hs-map-pin"></x-senna.icon>
                 </div>
                 <input placeholder="{{ $placeholder }}" type="text" x-ref="input" class="{{ $inputClass }}"/>
             </div>

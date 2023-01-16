@@ -11,7 +11,7 @@ function get_status($key, $type = 'success') {
     $data['bgColor'] = 'bg-success';
 
     if ($type == 'error') {
-        $data['icon'] = 'hs-exclamation';
+        $data['icon'] = 'hs-exclamation-triangle';
         $data['color'] = 'danger';
         $data['buttonClass'] = 'text-white bg-danger ring-danger-ring';
         $data['textColor'] = 'text-danger';

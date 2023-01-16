@@ -2,7 +2,7 @@
 
 namespace Senna\UI\Traits;
 
-use Senna\UI\Delegate;
+use Senna\Utils\Components\Delegate;
 
 trait WithDelegate
 {

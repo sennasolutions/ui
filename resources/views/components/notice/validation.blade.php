@@ -29,7 +29,7 @@
         <x-senna.icon class="w-4" name="hs-check"></x-senna.icon>
     @endif
     @if ($type === "error")
-        <x-senna.icon class="w-4" name="hs-exclamation"></x-senna.icon>
+        <x-senna.icon class="w-4" name="hs-exclamation-triangle"></x-senna.icon>
     @endif
     @if ($type === "info")
         <x-senna.icon class="w-4" name="hs-information-circle"></x-senna.icon>

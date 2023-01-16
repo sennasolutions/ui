@@ -27,34 +27,34 @@ class UIServiceProvider extends PackageServiceProvider
             // ->hasMigration('create_ui_table')
             ->hasHelperDirectory("Helpers", inGlobalScope: true)
             ->hasViewComponentsDirectory("../resources/views/components")
-            // ->hasInstallCommand(function(InstallCommand $command) use($package) {
-            //     $command
-            //         ->startWith(function() use($package, $command) {
-            //             // link dist to /senna-ui
-            //             $from = $package->basePath("../dist");
-            //             $to =  public_path(config('senna.ui.asset_dir'));
+            ->hasInstallCommand(function(InstallCommand $command) use($package) {
+                $command
+                    ->startWith(function() use($package, $command) {
+                        // link dist to /senna-ui
+                        $from = $package->basePath("../dist");
+                        $to =  public_path(config('senna.ui.asset_dir'));
 
-            //             relative_link($from, $to);
-            //             $command->info('Created link: ' . $from . ' => ' . $to . PHP_EOL);
+                        relative_link($from, $to);
+                        $command->info('Created link: ' . $from . ' => ' . $to . PHP_EOL);
 
-            //             // link components
-            //             $from = $package->basePath("../resources/views/components");
-            //             $componentsDir = resource_path('views/components');
-            //             $to = resource_path('views/components/senna');
+                        // link components
+                        $from = $package->basePath("../resources/views/components");
+                        $componentsDir = resource_path('views/components');
+                        $to = resource_path('views/components/senna');
 
-            //             if (!is_dir($componentsDir)) {
-            //                 mkdir($componentsDir, 0755, true);
-            //             }
+                        if (!is_dir($componentsDir)) {
+                            mkdir($componentsDir, 0755, true);
+                        }
 
-            //             relative_link($from, $to);
-            //             $command->info('Created link: ' . $from . ' => ' . $to . PHP_EOL);
-            //         })
-            //         ->publishConfigFile();
-            //         // ->publishMigrations()
-            //         // ->askToRunMigrations()
-            //         // ->copyAndRegisterServiceProviderInApp()
-            //         // ->askToStarRepoOnGitHub('your-vendor/your-repo-name')
-            // })
+                        relative_link($from, $to);
+                        $command->info('Created link: ' . $from . ' => ' . $to . PHP_EOL);
+                    })
+                    ->publishConfigFile();
+                    // ->publishMigrations()
+                    // ->askToRunMigrations()
+                    // ->copyAndRegisterServiceProviderInApp()
+                    // ->askToStarRepoOnGitHub('your-vendor/your-repo-name')
+            })
             // ->hasCommand(UtilsCommand::class)
             ;
     }
@@ -76,6 +76,8 @@ class UIServiceProvider extends PackageServiceProvider
         if (!class_exists(Livewire::class)) {
             Blade::directive('this', [UIBladeDirectives::class, 'this']);;
         }
+
+        
     }
 
 }

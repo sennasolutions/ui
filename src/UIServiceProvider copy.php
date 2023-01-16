@@ -186,7 +186,7 @@ class UIServiceProvider extends AddonServiceProvider {
             }
         });
 
-        Blade::component(Delegate::class, 'senna.delegate');
+        // Blade::component(Delegate::class, 'senna.delegate');
     }
 
     /**

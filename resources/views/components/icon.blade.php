@@ -13,6 +13,7 @@
 ])
 
 @php
+    // ray($name);
     $isHeroicon = str_contains($name, "ho-") || str_contains($name, "hs-");
     $isFontAwesome = str_contains($name, "fas-");
     $isSenna = str_contains($name, "senna-");
@@ -32,6 +33,10 @@
 
         $component = "senna.icon." . $name;
     }
+
+    $component = str_replace("s-chat-alt", "s-chat-bubble-oval-left-ellipsis", $component);
+    $component = str_replace("s-music-note", "s-musical-note", $component);
+    $component = str_replace("o-download", "o-arrow-down-tray", $component);
 @endphp
 
 @if($isSenna) 

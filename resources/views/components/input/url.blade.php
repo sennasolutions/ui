@@ -15,7 +15,7 @@
     ]) }} 
     data-sn="input.url">
     <x-slot name="prefix">
-        <x-senna.icon name="hs-globe" class="w-4 h-4" />
+        <x-senna.icon name="hs-globe-alt" class="w-4 h-4" />
     </x-slot>
 </x-senna.input>
 

@@ -59,7 +59,7 @@
             {{ $close}}
             @else
             <button type="button" x-on:click="$dispatch('close')" class="absolute right-0 top-0 p-5">
-                <x-senna.icon name="hs-x" class="w-6"></x-senna.icon>
+                <x-senna.icon name="hs-x-mark" class="w-6"></x-senna.icon>
             </button>
             @endif
         @endif

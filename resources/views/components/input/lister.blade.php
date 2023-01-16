@@ -128,7 +128,7 @@
                     <div x-text="item"></div>
                     @endif
                     <x-senna.button.text x-on:click="remove(item)" size="sm" class=" ml-auto shrink-0">
-                        <x-senna.icon name="hs-x" class=" text-black w-5 h-5" />
+                        <x-senna.icon name="hs-x-mark" class=" text-black w-5 h-5" />
                     </x-senna.button>
                 </div>
             </li>

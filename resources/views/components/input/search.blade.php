@@ -19,6 +19,6 @@
 
 <x-senna.input {{ $attributes }} data-sn="input.search">
     <x-slot name="prefix">
-        <x-senna.icon name="hs-search" class="w-5 cursor-pointer"></x-senna.icon>
+        <x-senna.icon name="hs-magnifying-glass" class="w-5 cursor-pointer"></x-senna.icon>
     </x-slot>
 </x-senna.input>
