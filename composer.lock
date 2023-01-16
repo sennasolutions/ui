@@ -2229,7 +2229,7 @@
             "dist": {
                 "type": "path",
                 "url": "../package-tools",
-                "reference": "8afff0f151602f74329fa7c1f7e8f41975cb7e4d"
+                "reference": "d9c56295773a7e84c15474baa5565aac07f8d69c"
             },
             "require": {
                 "illuminate/contracts": "^8.0|^9.28|^10.0",
@@ -2237,9 +2237,9 @@
             },
             "require-dev": {
                 "mockery/mockery": "^1.5",
-                "orchestra/testbench": "^7.7|^8.0",
+                "orchestra/testbench": "^7.19",
                 "pestphp/pest": "^1.22",
-                "phpunit/phpunit": "^9.5.24",
+                "phpunit/phpunit": "^9.5",
                 "spatie/pest-plugin-test-time": "^1.1"
             },
             "type": "library",
@@ -2286,7 +2286,7 @@
             "dist": {
                 "type": "path",
                 "url": "../utils",
-                "reference": "a284d52a722d6ce40117a106b2a9a00ad94dc0d2"
+                "reference": "a1912f889b147b017442b98599fe726afe15bc30"
             },
             "require": {
                 "ezyang/htmlpurifier": "^4.16",
@@ -8769,10 +8769,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "senna/package-tools": 20,
-        "senna/utils": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
