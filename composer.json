@@ -6,12 +6,28 @@
     "authors": [
         {
             "name": "Lennard",
-            "email": "packagist@spring.nl"
+            "email": "packagist@spring.nl",
+            "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.0",
-        "senna/utils": "dev-main"
+        "senna/package-tools": "dev-main",
+        "senna/utils": "dev-main",
+        "livewire/livewire": "^2.11"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.4",
+        "nunomaduro/collision": "^6.4",
+        "nunomaduro/larastan": "^2.4",
+        "orchestra/testbench": "^7.19",
+        "pestphp/pest": "^1.22",
+        "pestphp/pest-plugin-laravel": "^1.4",
+        "phpstan/extension-installer": "^1.2",
+        "phpstan/phpstan-deprecation-rules": "^1.1",
+        "phpstan/phpstan-phpunit": "^1.3",
+        "phpunit/phpunit": "^9.5",
+        "spatie/laravel-ray": "^1.32"
     },
     "autoload": {
         "psr-4": {
@@ -23,10 +39,6 @@
             "Senna\\UI\\Tests\\": "tests"
         }
     },
-    "require-dev": {
-        "orchestra/testbench": "^6.0",
-        "phpunit/phpunit": "^9.4"
-    },
     "extra": {
         "laravel": {
             "providers": [
@@ -35,8 +47,11 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --testdox",
-        "test-f": "vendor/bin/phpunit --filter"
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "vendor/bin/phpstan analyse .",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -44,6 +59,10 @@
         {
             "type": "path",
             "url": "../utils"
+        },
+        {
+            "type": "path",
+            "url": "../package-tools"
         },
         {
             "type": "path",
@@ -61,5 +80,11 @@
             "type": "path",
             "url": "../admin"
         }
-    ]
+    ],
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    }
 }
