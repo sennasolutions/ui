@@ -128,10 +128,9 @@
                     this.onReady();
                 }
 
-                this.$watch('value', (newValue) => {
-                    console.log('new value', newValue);
-                    this.updateValue(newValue)
-                })
+                // this.$watch('value', (newValue) => {
+                //     this.updateValue(newValue)
+                // })
 
                 Alpine.mapComponents.push(this);
             },
