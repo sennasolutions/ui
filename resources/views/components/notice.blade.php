@@ -30,7 +30,7 @@
         <x-senna.icon class="w-10 mr-6 ml-3 shrink-0" name="ho-check"></x-senna.icon>
     @endif
     @if ($type === "error")
-        <x-senna.icon class="w-10 mr-6 ml-3 shrink-0" name="ho-exclamation"></x-senna.icon>
+        <x-senna.icon class="w-10 mr-6 ml-3 shrink-0" name="ho-exclamation-triangle"></x-senna.icon>
     @endif
     @if ($type === "info")
         <x-senna.icon class="w-10 mr-6 ml-3 shrink-0" name="ho-information-circle"></x-senna.icon>
