@@ -3,6 +3,7 @@
 namespace Senna\UI;
 
 use Illuminate\Support\Facades\Blade;
+use Livewire\Livewire;
 use Senna\PackageTools\Commands\InstallCommand;
 use Senna\PackageTools\Package;
 use Senna\PackageTools\PackageServiceProvider;
