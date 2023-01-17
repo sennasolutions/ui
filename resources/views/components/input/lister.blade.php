@@ -120,7 +120,7 @@
                 x-on:drop="dropBefore(item, $event)"
                 class="flex flex-col items-center">
                 <div {{ $attributes->namespace('item')->merge(['class' => 'senna-lister__item flex w-full gap-2 items-center py-1']) }}>
-                    <x-senna.icon name="hs-menu-alt-4" class="w-5 h-5 cursor-move opacity-20" />
+                    <x-senna.icon name="hs-bars-2" class="w-5 h-5 cursor-move opacity-20" />
                     @if($useLabelValueFormat)
                     <div x-text="item.label"></div>
                     <div x-text="item.value" class="opacity-50"></div>
