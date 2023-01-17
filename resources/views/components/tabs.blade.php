@@ -42,7 +42,9 @@ if (isset($active)) $value = $active;
         tabClick(tab, $dispatch, $nextTick) {
             this.activeTab = tab;
             this.toggleTabs();
-            $el = this.$refs.tabs;
+
+            let $el = this.$refs.tabs;
+
             $nextTick(() => {
                 $dispatch('tab-visible', { tab, $el })
             })
