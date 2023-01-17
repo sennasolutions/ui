@@ -133,14 +133,6 @@
                     this.updateValue(newValue)
                 })
 
-                // if (window.is_lwd) {
-                //     Livewire.hook('message.processed', (msg, component) => {
-                //         if (component.id === @this.__instance.id) {
-
-                //         }
-                //     })
-                // }
-
                 Alpine.mapComponents.push(this);
             },
             onReady() {
