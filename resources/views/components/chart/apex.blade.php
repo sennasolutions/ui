@@ -125,13 +125,25 @@
 
                 return data[dataPointIndex] ?? null;
             }
-
-            return {
+            let config = {
+                grid: {
+                    borderColor: 'transparent',
+                    row: {
+                        colors: ['#f3f4f5', 'transparent'], // takes an array which will be repeated on columns
+                    },
+                    column: {
+                        colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
+                    }
+                },
+            
                 chart: { 
                     type: 'bar', 
                     toolbar: false, 
                     height: '100%',
                 },
+                {{-- forecastDataPoints: {
+                    count: 10,
+                }, --}}
                 ...conf,
                 ...{
                     tooltip: {
@@ -175,7 +187,10 @@
                     }
                 }
             }
+
+            return config;
         }
+
     }"
     class="w-full"
 >
