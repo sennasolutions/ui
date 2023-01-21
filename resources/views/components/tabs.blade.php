@@ -19,7 +19,8 @@ if (isset($active)) $value = $active;
         activeTab: @entangleProp('value'),
         init() {
             this.$nextTick(() => {
-                this.tabs = [...this.$refs.tabs.children];
+                this.tabs = [...this.$refs.tabs.querySelectorAll('[data-sn=tab]')]
+                    .filter(x => x.parentElement.getAttribute('visible') === 'yes')
                 this.tabHeadings = this.getTabs().map((tab, index) => {
                     tab._x_dataStack[0].id = (index + 1);
                     // tab.__x.$data.id = (index + 1);
@@ -30,6 +31,18 @@ if (isset($active)) $value = $active;
                 }
                 this.toggleTabs();
             })
+
+            // Check the localstorage for an active tab for this page
+            let urlPath = window.location.pathname;
+            let activeTab = localStorage.getItem('activeTab-' + urlPath);
+
+            if (activeTab) {
+                this.activeTab = activeTab;
+                let $el = this.$refs.tabs;
+                $nextTick(() => {
+                    $dispatch('tab-visible', { activeTab, $el })
+                })
+            }
         },
         getTabs() {
             return this.tabs.filter(x => typeof x._x_dataStack !== 'undefined');
@@ -42,6 +55,10 @@ if (isset($active)) $value = $active;
         tabClick(tab, $dispatch, $nextTick) {
             this.activeTab = tab;
             this.toggleTabs();
+
+            // Save the active tab to localstorage
+            let urlPath = window.location.pathname;
+            localStorage.setItem('activeTab-' + urlPath, tab);
 
             let $el = this.$refs.tabs;
 
