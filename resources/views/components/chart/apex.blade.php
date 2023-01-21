@@ -6,200 +6,246 @@
 
 <div
     {{ $attributes }}
-    
-    x-data="{
-        apex: @entangleProp('apex'),
-        initialized: false,
-        chart: null,
-        async init() {
-            this.setupHelpers()
-            this.$watch('apex', async () => {
-                await this.initChart()
-                this.chart.updateOptions(this.options)
-            })
-
-            if (this.apex) {
-                this.initChart()
-            }
-        },
-        setupHelpers() {
-            window.percentage = (ratio) => {
-                return Math.round((ratio) * 100) + '%'
-            }
-
-            window.euro = (value, digits = 0) => {
-                // 1000.00 => 1.000,00
-                return '€' + value.toLocaleString('nl-NL', { minimumFractionDigits: digits, maximumFractionDigits: digits })
-            }
-
-            window.dollar = (value) => {
-                return '$' + value
-            }
-        },
-        async initChart() {
-            if (this.initialized) return
-
-            return new Promise((resolve) => {
-                this.initialized = true
-
-                this.chart = new ApexCharts(this.$refs.chart, this.options)
-
-                Apex.chart = {
-                    locales: [
-                        {
-                            'name': 'nl',
-                            'options': {
-                                'months': [
-                                    'Januari',
-                                    'Februari',
-                                    'Maart',
-                                    'April',
-                                    'Mei',
-                                    'Juni',
-                                    'Juli',
-                                    'Augustus',
-                                    'September',
-                                    'Oktober',
-                                    'November',
-                                    'December'
-                                ],
-                                'shortMonths': [
-                                    'Jan',
-                                    'Feb',
-                                    'Mrt',
-                                    'Apr',
-                                    'Mei',
-                                    'Jun',
-                                    'Jul',
-                                    'Aug',
-                                    'Sep',
-                                    'Okt',
-                                    'Nov',
-                                    'Dec'
-                                ],
-                                'days': [
-                                    'Zondag',
-                                    'Maandag',
-                                    'Dinsdag',
-                                    'Woensdag',
-                                    'Donderdag',
-                                    'Vrijdag',
-                                    'Zaterdag'
-                                ],
-                                'shortDays': ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'],
-                                'toolbar': {
-                                    'exportToSVG': 'Download SVG',
-                                    'exportToPNG': 'Download PNG',
-                                    'exportToCSV': 'Download CSV',
-                                    'menu': 'Menu',
-                                    'selection': 'Selectie',
-                                    'selectionZoom': 'Zoom selectie',
-                                    'zoomIn': 'Zoom in',
-                                    'zoomOut': 'Zoom out',
-                                    'pan': 'Verplaatsen',
-                                    'reset': 'Standaardwaarden'
-                                }
-                            }
-                        }],
-                        defaultLocale: 'nl'
-                }
-
-                this.$nextTick(() => {
-                    this.chart.render()
-                    resolve()
-                })
-            })
-        },
-        get options() {
-            let apex = this.apex ?? '{}';
-            
-            if (typeof apex === 'string') {
-                apex = Function('return ' + this.apex ?? '{}')()
-            }
-
-            let conf = Object.assign({}, apex)
-
-            let getDataPoint = (dataPointIndex, seriesIndex = 0) => {
-                let flatSeries = conf.chart.type == 'pie';
-                let data = flatSeries ? conf.series : conf.series[seriesIndex].data;
-
-                return data[dataPointIndex] ?? null;
-            }
-            let config = {
-                grid: {
-                    borderColor: 'transparent',
-                    row: {
-                        colors: ['#f3f4f5', 'transparent'], // takes an array which will be repeated on columns
-                    },
-                    column: {
-                        colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
-                    }
-                },
-            
-                chart: { 
-                    type: 'bar', 
-                    toolbar: false, 
-                    height: '100%',
-                },
-                {{-- forecastDataPoints: {
-                    count: 10,
-                }, --}}
-                ...conf,
-                ...{
-                    tooltip: {
-                        marker: false,
-                        ...conf.tooltip ?? {},
-                        y: {
-                            formatter: (x, { seriesIndex, dataPointIndex, w }) => {
-                                let flatSeries = conf.chart.type == 'pie';
-
-                                let formatter = flatSeries ? conf.insight.formatters : conf.insight.formatters[seriesIndex] ?? null;
-                                let series = conf.series
-
-                                let map = {};
-
-                                if (!flatSeries) {
-                                    series.forEach((serie) => {
-                                        map[serie.name] = serie.data[dataPointIndex] ?? null;
-                                    })
-                                }
-
-                                if (formatter) {
-                                    return new Function('x', 'data', 'return ' + formatter)(x, map)
-                                }
-
-                                return x;
-                            }
-                        }
-                    },
-                    chart: {
-                        ...conf.chart ?? {},
-                        events: {
-                            click: (event, chartContext, { seriesIndex, dataPointIndex }) => {
-                                if (this.$wire) {
-                                    this.$wire.chartClick({
-                                        dataPointIndex,
-                                        seriesIndex,
-                                    })
-                                }
-                            },
-                        }
-                    }
-                }
-            }
-
-            return config;
-        }
-
-    }"
+    x-data="apex_chart({
+        apexConfig: @entangleProp('apex')
+    })"
     class="w-full"
 >
     <div wire:ignore x-ref="chart"></div>
 </div>
 
-
 @once
     @push('senna-ui-scripts')
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+        <script>
+
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('apex_chart', (props) => ({
+                    apex: props.apexConfig,
+                    apexParsed: null,
+                    initialized: false,
+                    chart: null,
+                    async init() {
+                        this.$watch('apex', async () => {
+                            await this.initChart()
+                            this.parseApex();
+                            this.chart.updateOptions(this.options)
+                        })
+
+                        if (this.apex) {
+                            this.initChart()
+                        }
+                    },
+                    async initChart() {
+                        if (this.initialized) return
+                        
+                        return new Promise((resolve) => {
+                            this.parseApex();
+                            this.initialized = true
+
+                            this.chart = new ApexCharts(this.$refs.chart, this.options)
+
+                            Apex.chart = {
+                                locales: [apexNL],
+                                defaultLocale: 'nl'
+                            }
+
+                            this.$nextTick(() => {
+                                this.chart.render()
+                                resolve()
+                            })
+                        })
+                    },
+                    parseApex() {
+                        let apex = this.apex ?? '{}';
+                        
+                        if (typeof apex === 'string') {
+                            // Parse the string
+                            apex = Function('return ' + this.apex ?? '{}')()
+                        }
+
+                        this.apexParsed = Object.assign({}, apex)
+                    },
+                    getDatapoint(conf, index, seriesIndex = 0) {
+                        let flatSeries = conf.chart.type == 'pie';
+                        let data = flatSeries ? conf.series : conf.series[seriesIndex].data;
+
+                        return data[dataPointIndex] ?? null;
+                    },
+                    tooltipFormatter(x, { seriesIndex, dataPointIndex, w }) {
+                        let conf = this.apexParsed
+                        let flatSeries = conf.chart.type == 'pie';
+                        let helpers = this.setupHelpers({})
+
+                        let formatter = flatSeries ? conf.insight.formatters : conf.insight.formatters[seriesIndex] ?? null;
+                        let series = conf.series
+
+                        function isNumeric(n) {
+                            return !isNaN(parseFloat(n)) && isFinite(n);
+                        }
+
+                        // Lets the user write 
+                        let xObject = {
+                            x: x,
+                            toString() {
+                                return this.x
+                            }
+                        };
+
+                        if (!flatSeries) {
+                            series.forEach((serie) => {
+                                let data =  serie.data[dataPointIndex] ?? null
+
+                                if (isNumeric(data)) {
+                                    data = Number(data)
+                                }
+
+                                xObject[serie.name] = data
+                            })
+                        }
+
+                        if (formatter) {
+                            let prepend = '';
+
+
+                            for (let key in helpers) {
+                                prepend += `var ${key} = ${helpers[key].toString()};`
+                            }
+
+                            return new Function('x', prepend + 'return \'\' + ' + formatter)(xObject)
+                        }
+
+                        return xObject
+                    },
+                    onChartClick(event, chartContext, { seriesIndex, dataPointIndex }) {
+                        if (this.$wire) {
+                            this.$wire.chartClick({
+                                dataPointIndex,
+                                seriesIndex,
+                            })
+                        }
+                    },
+                    get options() {
+                        let conf = this.apexParsed
+
+                        let config = {
+                            grid: {
+                                borderColor: 'rgba(0,0,0,0.035)',
+                            },
+                            chart: { 
+                                type: 'bar', 
+                                toolbar: false, 
+                                height: '100%',
+                            },
+                            // forecastDataPoints: {
+                            //      count: 10,
+                            // },
+                            ...conf,
+                            ...{
+                                tooltip: {
+                                    marker: false,
+                                    intersect: false,
+                                    shared: true,
+                                    ...conf.tooltip ?? {},
+                                    y: {
+                                        formatter: (value, { seriesIndex, dataPointIndex, w }) => {
+                                            return this.tooltipFormatter(value, { seriesIndex, dataPointIndex, w })
+                                        }
+                                    }
+                                },
+                                chart: {
+                                    ...conf.chart ?? {},
+                                    events: {
+                                        click: (event, chartContext, { seriesIndex, dataPointIndex }) => {
+                                            this.onChartClick(event, chartContext, { seriesIndex, dataPointIndex })
+                                        },
+                                    }
+                                }
+                            }
+                        }
+
+                        return config;
+                    },
+                    setupHelpers(obj = {}) {
+                        obj.percentage = (ratio) => {
+                            return Math.round((ratio) * 100) + '%'
+                        }
+
+                        obj.euro = (value, digits = 0) => {
+                            // 1000.00 => 1.000,00
+                            return '€' + value.toLocaleString('nl-NL', { minimumFractionDigits: digits, maximumFractionDigits: digits })
+                        }
+
+                        obj.dollar = (value) => {
+                            return '$' + value
+                        }
+
+                        obj.isNumeric = (n) => {
+                            return !isNaN(parseFloat(n)) && isFinite(n);
+                        }
+
+                        return obj
+                    },
+                })
+            )
+            })
+
+            let apexNL = {
+                'name': 'nl',
+                'options': {
+                    'months': [
+                        'Januari',
+                        'Februari',
+                        'Maart',
+                        'April',
+                        'Mei',
+                        'Juni',
+                        'Juli',
+                        'Augustus',
+                        'September',
+                        'Oktober',
+                        'November',
+                        'December'
+                    ],
+                    'shortMonths': [
+                        'Jan',
+                        'Feb',
+                        'Mrt',
+                        'Apr',
+                        'Mei',
+                        'Jun',
+                        'Jul',
+                        'Aug',
+                        'Sep',
+                        'Okt',
+                        'Nov',
+                        'Dec'
+                    ],
+                    'days': [
+                        'Zondag',
+                        'Maandag',
+                        'Dinsdag',
+                        'Woensdag',
+                        'Donderdag',
+                        'Vrijdag',
+                        'Zaterdag'
+                    ],
+                    'shortDays': ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'],
+                    'toolbar': {
+                        'exportToSVG': 'Download SVG',
+                        'exportToPNG': 'Download PNG',
+                        'exportToCSV': 'Download CSV',
+                        'menu': 'Menu',
+                        'selection': 'Selectie',
+                        'selectionZoom': 'Zoom selectie',
+                        'zoomIn': 'Zoom in',
+                        'zoomOut': 'Zoom out',
+                        'pan': 'Verplaatsen',
+                        'reset': 'Standaardwaarden'
+                    }
+                }
+            }
+        </script>
     @endpush
 @endonce
