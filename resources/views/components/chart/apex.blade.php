@@ -145,9 +145,10 @@
                             ...{
                                 tooltip: {
                                     marker: false,
+                                    ...conf.tooltip ?? {},
                                     intersect: false,
                                     shared: true,
-                                    ...conf.tooltip ?? {},
+                                    followCursor: true,
                                     y: {
                                         formatter: (value, { seriesIndex, dataPointIndex, w }) => {
                                             return this.tooltipFormatter(value, { seriesIndex, dataPointIndex, w })

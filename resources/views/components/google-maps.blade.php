@@ -134,7 +134,7 @@
             @wireMethod('onFitMarkers')(this.markers);
         }
     }">
-        <div wire:ignore x-ref="map" class="sn-google-maps" ></div>
+        <div wire:ignore x-ref="map" class="sn-google-maps" {{ $attributes->namespace('map') }} ></div>
 
 </div>
 
