@@ -1,0 +1,55 @@
+
+
+.flatpickr-calendar {
+  color: black;
+  font-size: 1rem;
+  width: 100% !important;
+}
+
+.flatpickr-calendar.is-not-inline {
+  max-width: 340px !important;
+  padding: 12px !important;
+}
+
+.flatpickr-calendar.is-not-inline .flatpickr-prev-month {
+  padding: 20px;
+}
+.flatpickr-calendar.is-not-inline .flatpickr-next-month {
+  padding: 20px;
+}
+
+.flatpickr-current-month {
+  padding: 0px;
+}
+
+.flatpickr-calendar.inline {
+  box-shadow: none;
+}
+
+.flatpickr-day {
+  border-radius: 4px;
+  border: none !important;
+  border-color: transparent !important;
+}
+
+
+.flatpickr-rContainer {
+  margin-top: 4px;
+}
+
+/* Primary colors for selected */
+
+/* Make horizontal sizing relative to container width */
+.flatpickr-days {
+  width: 100%;
+}
+
+.flatpickr-day {
+  max-width: inherit;
+}
+
+.dayContainer {
+  width: inherit;
+  min-width: inherit;
+  max-width: inherit;
+}

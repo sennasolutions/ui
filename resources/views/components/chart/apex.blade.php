@@ -11,7 +11,7 @@
     })"
     class="w-full"
 >
-    <div wire:ignore x-ref="chart"></div>
+    <div wire:ignore x-ref="chart" class="grow"></div>
 </div>
 
 @once
@@ -27,22 +27,22 @@
                     initialized: false,
                     chart: null,
                     async init() {
+                        if (this.apex) {
+                            this.initChart()
+                        }
+
                         this.$watch('apex', async () => {
                             await this.initChart()
                             this.parseApex();
                             this.chart.updateOptions(this.options)
                         })
-
-                        if (this.apex) {
-                            this.initChart()
-                        }
                     },
                     async initChart() {
                         if (this.initialized) return
                         
                         return new Promise((resolve) => {
-                            this.parseApex();
                             this.initialized = true
+                            this.parseApex();
 
                             this.chart = new ApexCharts(this.$refs.chart, this.options)
 
@@ -73,12 +73,15 @@
 
                         return data[dataPointIndex] ?? null;
                     },
-                    tooltipFormatter(x, { seriesIndex, dataPointIndex, w }) {
+                    tooltipFormatter(x, obj) {
+                        let seriesIndex = obj?.seriesIndex ?? 0;
+                        let dataPointIndex = obj?.dataPointIndex ?? 0;
+                        let w = obj?.w ?? null;
                         let conf = this.apexParsed
                         let flatSeries = conf.chart.type == 'pie';
                         let helpers = this.setupHelpers({})
 
-                        let formatter = flatSeries ? conf.insight.formatters : conf.insight.formatters[seriesIndex] ?? null;
+                        let formatter = flatSeries ? conf.insight?.formatters : conf.insight?.formatters[seriesIndex] ?? null;
                         let series = conf.series
 
                         function isNumeric(n) {
@@ -127,7 +130,7 @@
                         }
                     },
                     get options() {
-                        let conf = this.apexParsed
+                        let conf = JSON.parse(JSON.stringify(this.apexParsed))
 
                         let config = {
                             grid: {
@@ -150,8 +153,8 @@
                                     shared: true,
                                     followCursor: true,
                                     y: {
-                                        formatter: (value, { seriesIndex, dataPointIndex, w }) => {
-                                            return this.tooltipFormatter(value, { seriesIndex, dataPointIndex, w })
+                                        formatter: (value, obj) => {
+                                            return this.tooltipFormatter(value, obj)
                                         }
                                     }
                                 },

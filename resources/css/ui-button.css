@@ -1,0 +1,49 @@
+/*
+    Button
+*/
+[data-sn^="button"].-outer  {
+    @apply font-semibold;
+}
+
+[data-sn^="button"].--default  {
+    @apply text-white bg-gray-800 ring-gray-800;
+}
+
+[data-sn^="button"].-outer:not(.--text) {
+    @apply transition duration-100 ease-in-out;
+    @apply leading-5 transform;
+    @apply focus:outline-none focus:ring;
+    @apply font-semibold;
+    @apply inline-flex space-x-2 items-center justify-center;
+    @apply shadow-lg;
+    @apply px-6 py-3;
+    @apply ring-opacity-30;
+}
+
+
+[data-sn^="button"].-outer.--xs {
+    @apply px-2 py-1 text-xs;
+}
+
+[data-sn^="button"].-outer.--sm {
+    @apply px-3 py-2 text-sm;
+}
+
+[data-sn^="button"].-outer.--lg {
+    @apply px-6 py-3;
+}
+
+[data-sn^="button"].-outer.--xl {
+    @apply px-7 py-4 text-lg;
+}
+
+[data-sn^="button"].-outer.--text {
+    @apply p-0;
+}
+
+[data-sn^="button"].-outer.--circle {
+    @apply p-2 rounded-full justify-center;
+}
+[data-sn^="button"].-outer:not(.--circle) {
+    @apply rounded-md;
+}

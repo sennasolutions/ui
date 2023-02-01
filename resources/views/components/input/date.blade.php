@@ -61,6 +61,12 @@
     ])->except('class') }}>
 </div>
 
+<style>
+    .flatpickr-calendar {
+        max-width: 390px !important;
+    }
+</style>
+
 @once
     @push('senna-ui-styles')
     <link rel="stylesheet" href="{{ senna_ui_asset('css/flatpicker.min.css') }}">
