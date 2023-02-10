@@ -41,11 +41,11 @@
     @endphp
 
     <div
-        {{ $attributes->root()->merge([ 'class' => '', 'senna' => 'form.date' ]) }}
+        {{ $attributes->root()->merge([ 'class' => 'sui-date' ]) }}
         x-data="sennaDatepicker({ value: @entangleProp('value'), config: @entangleProp('config'), dayClasses: @entangleProp('dayClasses'), dayTooltips: @entangleProp('dayTooltips'), })"
         wire:ignore>
 
-        <x-senna.form.textbox x-ref="datepicker" {{ $attributes->namespace('input')->merge([ 'input::class' => $textboxClass ]) }}>
+        <x-sui.form.textbox x-ref="datepicker" {{ $attributes->namespace('input')->merge([ 'input::class' => $textboxClass ]) }}>
             <x-slot name="prefix">
                 @if(isset($prefix))
                     {{ $prefix }}
@@ -58,7 +58,7 @@
                     {{ $suffix }}
                 @endif
             </x-slot>
-        </x-senna.form.textbox>
+        </x-sui.form.textbox>
     </div>
 @endif
 

@@ -22,4 +22,6 @@ mix.js('resources/js/alpine.js', './dist/js')
     .postCss('resources/css/ui.css', './dist/css', [
         require('postcss-import'),
         require('tailwindcss'),
+        // nesting
+        require('postcss-nested'),
     ]);

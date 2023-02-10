@@ -28,7 +28,7 @@
     'dayTooltips' => [],
 ])
 
-<x-senna.form.date {{ $attributes->merge([
+<x-sui.form.date {{ $attributes->merge([
     'value' => $value,
     'config' => $config,
     'dayClasses' => $dayClasses,

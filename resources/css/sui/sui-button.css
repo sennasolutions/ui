@@ -1,0 +1,88 @@
+.sui-button {
+    &.sui-theme-cosmic {
+        @apply 
+            transition duration-100 ease-in-out
+            rounded-md
+            leading-5 transform
+            font-semibold
+            inline-flex space-x-2 items-center justify-center
+            /* shadow-lg */
+            
+            ring-opacity-30 active:scale-95 hover:opacity-90
+            focus:transform focus:outline-none focus:ring
+            /* text-white bg-gray-800 ring-gray-800 */
+        ;
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                                   Colors                                   */
+    /* -------------------------------------------------------------------------- */
+    &.sui-button--primary {
+        @apply text-white bg-primary ring-primary-300;
+    }
+
+    &.sui-button--secondary {
+        @apply text-white bg-secondary ring-secondary-300;
+    }
+
+    &.sui-button--gray {
+        @apply text-white bg-gray-800 ring-gray-800 ring-opacity-30;
+    }
+
+    &.sui-button--white {
+        @apply text-gray-800 bg-white ring-gray-100 outline outline-gray-100 outline-offset-0;
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                                   Sizing                                   */
+    /* -------------------------------------------------------------------------- */
+    &.sui-button--xs {
+        @apply text-xs px-3 py-1;
+    }
+
+    &.sui-button--sm {
+        @apply text-sm px-4 py-2;
+    }
+
+    &.sui-button--md {
+        @apply text-base px-5 py-3;
+    
+    }
+    &.sui-button--lg {
+        @apply text-lg px-6 py-4;
+    }
+
+    &.sui-button--xl {
+        @apply text-xl px-7 py-5;
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                                    Mode                                    */
+    /* -------------------------------------------------------------------------- */
+    &.sui-button--inline {
+        @apply inline p-0 ring-offset-2;
+
+        &.sui-button--primary {
+            @apply text-primary bg-transparent ring-primary-300;
+        }
+    
+        &.sui-button--secondary {
+            @apply text-secondary bg-transparent ring-secondary-300;
+        }
+
+        &.sui-button--gray {
+            @apply text-gray-800 bg-transparent ring-gray-800 ring-opacity-30;
+        }
+
+        &.sui-button--white {
+            @apply text-gray-800 bg-transparent ring-gray-100 outline outline-gray-100 outline-offset-0;
+        }
+    }
+
+    .sui-button__prefix {
+
+    }
+    .sui-button__suffix {
+    
+    }
+}

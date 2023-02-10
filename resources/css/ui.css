@@ -3,9 +3,9 @@
 @layer components {
     /** Deprecated **/
     @import 'ui-input.css';
+    @import 'ui-button.css';
 
     /** Replacement **/
-    @import 'ui-form.css';
-
-    @import 'ui-button.css';
+    @import 'sui/sui-form.css';
+    @import 'sui/sui-button.css';
 }

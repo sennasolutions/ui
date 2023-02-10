@@ -20,7 +20,7 @@ if (isset($active)) $value = $active;
         init() {
             this.$nextTick(() => {
                 this.tabs = [...this.$refs.tabs.querySelectorAll('[data-sn=tab]')]
-                    .filter(x => x.parentElement.getAttribute('visible') === 'yes')
+                    .filter(x => x.parentElement.getAttribute('visible') != 'no')
                 this.tabHeadings = this.getTabs().map((tab, index) => {
                     tab._x_dataStack[0].id = (index + 1);
                     // tab.__x.$data.id = (index + 1);

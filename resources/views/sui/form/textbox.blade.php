@@ -6,24 +6,26 @@
 @endphp
 
 @props([
-
+    /**
+     * @param string theme The theme of the textbox. 'default'
+     */
+    'theme' => 'default'
 ])
 
 @wireProps
 
 <div
-    senna="form.textbox"
-    {{ $attributes->root()->merge([ 'class' => 'textbox' ]) }}
+    {{ $attributes->root()->merge([ 'class' => 'sui-textbox' ]) }}
     >
     @isset($prefix)
-        <div {{ $prefix->attributes->merge([ 'class' => 'textbox__prefix' ])}}>
+        <div {{ $prefix->attributes->merge([ 'class' => 'sui-textbox__prefix' ])}}>
             {{ $prefix }}
         </div>
     @endisset
 
     <input {{ $attributes->namespace('input')->merge([ 
         'class' => implode(" ", [
-            'textbox__input',
+            'sui-textbox__input',
             isset($prefix) ? '!pl-10' : '',
             isset($suffix) ? '!pr-10' : '',
         ]), 
@@ -31,7 +33,7 @@
     ]) }} />
 
     @isset($suffix)
-        <div {{ $suffix->attributes->merge([ 'class' => 'textbox__suffix' ])}}>
+        <div {{ $suffix->attributes->merge([ 'class' => 'sui-textbox__suffix' ])}}>
             {{ $suffix }}
         </div>
     @endisset

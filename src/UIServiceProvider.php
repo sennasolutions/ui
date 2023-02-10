@@ -27,7 +27,8 @@ class UIServiceProvider extends PackageServiceProvider
             ->hasViews()
             // ->hasMigration('create_ui_table')
             ->hasHelperDirectory("Helpers", inGlobalScope: true)
-            ->hasViewComponentsDirectory("../resources/views/components")
+            ->hasViewComponentsDirectory("../resources/views/components", "senna")
+            ->hasViewComponentsDirectory("../resources/views/sui", "sui")
             ->hasInstallCommand(function(InstallCommand $command) use($package) {
                 $command
                     ->startWith(function() use($package, $command) {
@@ -41,6 +42,7 @@ class UIServiceProvider extends PackageServiceProvider
                         // link components
                         $from = $package->basePath("../resources/views/components");
                         $componentsDir = resource_path('views/components');
+
                         $to = resource_path('views/components/senna');
 
                         if (!is_dir($componentsDir)) {
@@ -48,6 +50,21 @@ class UIServiceProvider extends PackageServiceProvider
                         }
 
                         relative_link($from, $to);
+                        
+                        $command->info('Created link: ' . $from . ' => ' . $to . PHP_EOL);
+
+                        // link the new sn folder
+                        $from = $package->basePath("../resources/views/sui");
+                        $componentsDir = resource_path('views/components');
+
+                        $to = resource_path('views/components/sui');
+
+                        if (!is_dir($componentsDir)) {
+                            mkdir($componentsDir, 0755, true);
+                        }
+
+                        relative_link($from, $to);
+
                         $command->info('Created link: ' . $from . ' => ' . $to . PHP_EOL);
                     })
                     ->publishConfigFile();
