@@ -24,32 +24,33 @@
         <script src="{{ senna_ui_asset('js/tinymce/tinymce.min.js') }}"></script>
 
         <script>
+            const regexLink = () => /(?!.*(?:youtube\.com|youtu\.be|vimeo\.com))(?:[A-Za-z][A-Za-z\d.+-]{0,14}:\/\/(?:[-.~*+=!&;:'%@?^${}(),\w]+@)?|www\.|[-;:&=+$,.\w]+@)[A-Za-z\d-]+(?:\.[A-Za-z\d-]+)*(?::\d+)?(?:\/(?:[-.~*+=!;:'%@$(),\/\w]*[-~*+=%@$()\/\w])?)?(?:\?(?:[-.~*+=!&;:'%@?^${}(),\/\w]+))?(?:#(?:[-.~*+=!&;:'%@?^${}(),\/\w]+))?/g;
+
             function initTinymce(value, options) {
                 return {
                     currentValue: value,
                     init() {
-                        console.log('INIT', value)
-
                         let tiny = tinymce.init({
                             target: this.$refs.textarea,
                             themes: 'modern',
                             height: 300,
                             menubar: false,
                             cleanup: true,
+                            // /(?:[A-Za-z][A-Za-z\d.+-]{0,14}:\/\/(?:[-.~*+=!&;:'%@?^${}(),\w]+@)?|www\.|[-;:&=+$,.\w]+@)[A-Za-z\d-]+(?:\.[A-Za-z\d-]+)*(?::\d+)?(?:\/(?:[-.~*+=!;:'%@$(),\/\w]*[-~*+=%@$()\/\w])?)?(?:\?(?:[-.~*+=!&;:'%@?^${}(),\/\w]+))?(?:#(?:[-.~*+=!&;:'%@?^${}(),\/\w]+))?/g;
                             plugins: [
-                                'lists wordcount paste link autolink code',
+                                'lists wordcount paste autolink link code',
                             ],
                             block_formats: 'Paragraaf=p; Kop=h3',
                             toolbar: 'undo redo | formatselect | bold italic | bullist numlist | removeformat link | code',
                             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:15px }',
                             paste_block_drop: true,
-                            default_link_target: '_blank',
+                            link_default_target: '_blank',
                             link_assume_external_targets: true,
+                            autolink_pattern: new RegExp('^' + regexLink().source + '$', 'i'),
 
                             ...options,
                             setup: (editor) => {
                                 editor.on('init', (ev) => {
-                                    console.log('EDITOR INIT')
                                     if (this.currentValue != null) {
                                         editor.setContent(this.currentValue);
                                     }
