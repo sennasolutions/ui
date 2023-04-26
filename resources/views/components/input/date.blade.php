@@ -83,7 +83,6 @@
             return {
                 currentValue: currentValue,
                 init() {
-                    this.config = JSON.parse(this.$el.getAttribute('x-json'))
                     this.initDatepicker(this.currentValue);
 
                     this.$watch('currentValue', value => {
@@ -94,7 +93,15 @@
                 initDatepicker(value) {
                     if(!this.$refs.flatpicker) return;
 
+                    this.config = JSON.parse(this.$el.getAttribute('x-json'))
+
                     let localConfig = @json(config('senna.ui.datepicker'))
+
+                    console.log(this.$el.getAttribute('x-json'), {
+                        ...localConfig,
+                        ...this.config,
+                        defaultDate: value
+                    })
 
                     this.instance = flatpickr(this.$refs.flatpicker, {
                         ...localConfig,

@@ -137,7 +137,7 @@
             this.isFocused = true
             this.$refs.search?.focus()
 
-            if (this.value) {
+            if (this.value && !this.multiple) {
                 this.$nextTick(() => {
                     this.valueBackup = this.value
                     this.removeCurrent()
@@ -176,7 +176,6 @@
             }
         },
         current() {
-
             if (this.value === null) return []
 
             let values = Array.isArray(this.value) ? this.value : [this.value]
