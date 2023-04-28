@@ -44,6 +44,8 @@
                             this.initialized = true
                             this.parseApex();
 
+                            console.log(this.options)
+
                             this.chart = new ApexCharts(this.$refs.chart, this.options)
 
                             Apex.chart = {
