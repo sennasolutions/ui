@@ -11,7 +11,7 @@
     $color = $mode === ActivityType::Info ? 'bg-gray-300' : $color; 
 @endphp
 
-<div data-sn="activity" {{ $attributes->merge(['class' => 'relative pl-4 type-' . $mode]) }}>
+<div data-sn="activity" {{ $attributes->merge(['class' => 'relative ml-1 pl-3 type-' . $mode]) }}>
     <div class="absolute -left-1 w-1 h-full {{ $color }}">
     </div>
     <div class="text-sm mb-2 text-gray-400 flex">
