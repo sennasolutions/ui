@@ -17,7 +17,11 @@
      /**
      * @param string error Whether to show an error border on the input
      */
-     'error' => false
+     'error' => false,
+     /**
+      * @param string autogrow Whether to size up the textarea as the user types
+      */
+     'autogrow' => false
 ])
 
 @php
@@ -25,5 +29,19 @@
 @endphp
 
 <div data-sn="input.textarea" {{ $attributes->merge(['class' => '-outer' ])->only('class') }}>
-    <textarea class="{{ $inputClass }}" {{ $attributes->except('class') }}>{{ $slot }}</textarea>
+    <textarea wire:ignore x-data="{
+        init() {
+            if ({{ $autogrow ? 'true' : 'false' }}) {
+                this.$el.addEventListener('input', () => {
+                    this.resize();
+                });
+
+                this.resize();
+            }
+        },
+        resize() {
+            this.$el.style.height = 'auto';
+            this.$el.style.height = this.$el.scrollHeight + 'px';
+        }
+    }" x-init="init" {{ $attributes->except('class') }} class="{{ $inputClass }}"></textarea>
 </div>
