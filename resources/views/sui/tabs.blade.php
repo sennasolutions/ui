@@ -67,13 +67,15 @@
                             if (!this.activeTab) {
                                 this.activeTab = this.tabHeadings[0] ?? null;
                             }
-                            console.log(this.tabs, [...this.$refs.tabs.querySelectorAll('.sui-tab')])
                             this.toggleTabs();
                         })
 
-                        // Check the localstorage for an active tab for this page
-                        let urlPath = window.location.pathname;
-                        let activeTab = localStorage.getItem('activeTab-' + urlPath);
+                        // Check the querystring of a tab
+                        let urlParams = new URLSearchParams(window.location.search);
+                        let tabParam = urlParams.get('tab');
+                        if (tabParam) {
+                            activeTab = tabParam;
+                        }
 
                         if (activeTab) {
                             this.activeTab = activeTab;
@@ -95,9 +97,11 @@
                         this.activeTab = tab;
                         this.toggleTabs();
 
-                        // Save the active tab to localstorage
-                        let urlPath = window.location.pathname;
-                        localStorage.setItem('activeTab-' + urlPath, tab);
+                        // Set it in the query string
+                        let urlParams = new URLSearchParams(window.location.search);
+                        urlParams.set('tab', tab);
+                        window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
+
 
                         let $el = this.$refs.tabs;
 
