@@ -195,20 +195,13 @@
         prevFocusable() { return this.focusables()[this.prevFocusableIndex()] || this.lastFocusable() },
         nextFocusableIndex() { return (this.focusables().indexOf(document.activeElement) + 1) % (this.focusables().length + 1) },
         prevFocusableIndex() { return Math.max(0, this.focusables().indexOf(document.activeElement)) -1 },
-
-        {{-- remove(selected) {
+        removeCurrent(selected = null) {
             if (this.multiple) {
-                this.value = this.value.filter(x => x !== selected.value)
-            } else {
-                this.value = null
-            }
-            this.$nextTick(() => {
-                this.$refs.search?.focus()
-            })
-        }, --}}
-        removeCurrent(ev) {
-            if (this.multiple) {
-                this.value.pop()
+                if (selected) {
+                    this.value = this.value.filter(x => x !== selected.value)
+                } else {
+                    this.value.pop()
+                }
             } else {
                 this.value = null
             }
@@ -327,7 +320,7 @@
                         @endif
                     ></span>
                     {{-- X button --}}
-                    <button x-show="multiple" type="button" @click.stop="removeCurrent">
+                    <button x-show="multiple" type="button" @click.stop="removeCurrent(selected)">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -353,12 +346,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
             @if($showClear)
-            {{-- X button --}}
-            <button x-show="!multiple && !isEmpty()" type="button" @click.stop="removeCurrent">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+                {{-- X button --}}
+                <button x-show="!multiple && !isEmpty()" type="button" @click.stop="removeCurrent">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             @endif
         </div>
 

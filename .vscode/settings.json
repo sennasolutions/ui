@@ -4,5 +4,6 @@
         ".vscode": false,
         "node_modules": false
     },
-    "workspace.isHidden": false
+    "workspace.isHidden": false,
+    "workbench.colorCustomizations": {}
 }
