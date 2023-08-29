@@ -20,6 +20,7 @@
 >
     <div class="mb-3 border-b"
          role="tablist"
+         {{ $attributes->namespace('tab-list') }}
     >
         <template x-for="(tab, index) in tabHeadings"
             :key="index"
@@ -42,7 +43,7 @@
         </template>
     </div>
 
-    <div x-ref="tabs" {{ $attributes->namespace('tabs') }}>
+    <div x-ref="tabs" {{ $attributes->namespace('tabs') }} wire:ignore>
         {{ $slot }}
     </div>
 </div>
@@ -81,7 +82,7 @@
                             this.activeTab = activeTab;
                             let $el = this.$refs.tabs;
                             this.$nextTick(() => {
-                                $dispatch('tab-visible', { activeTab, $el })
+                                this.$dispatch('tab-visible', { activeTab, $el })
                             })
                         }
                     },

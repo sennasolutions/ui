@@ -310,7 +310,6 @@
                 <div :class="{ 
                     '{{ $attributes->namespace('label')->merge(['class' => 'whitespace-nowrap rounded bg-primary text-white p-1 px-1.5 text-sm flex items-center justify-center gap-1'])->get('class') }}' : multiple,
                     '{{ $attributes->namespace('label')->merge(['class' => 'whitespace-nowrap rounded px-1 flex items-center justify-center gap-1'])->get('class') }}' : !multiple,
-                    
                 }">
                     <span 
                         @if($config['allowHtml'] ?? false)
