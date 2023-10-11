@@ -104,6 +104,7 @@
                     })
 
                     this.instance = flatpickr(this.$refs.flatpicker, {
+                        disableMobile: true,
                         ...localConfig,
                         ...this.config,
                         defaultDate: value
