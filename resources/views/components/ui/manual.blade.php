@@ -24,7 +24,7 @@
 
     if($codeView) {
         $contents = file_get_contents(view($codeView)->getPath());
-        preg_match_all('/<x-senna\.ui\.manual.*?name=["|\']' . preg_quote($name, '/') . '["|\'].*?>([\s\S]*?)<\/x-senna\.ui\.manual>/', $contents, $contentMatches);
+        preg_match_all('/<x-senna\.ui\..*?name=["|\']' . preg_quote($name, '/') . '["|\'].*?>([\s\S]*?)<\/x-senna\.ui\.>/', $contents, $contentMatches);
         $contents = $contentMatches[1] ? trim_tabs($contentMatches[1][0]) : '';
     }
 @endphp
