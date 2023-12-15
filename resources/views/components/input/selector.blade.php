@@ -226,6 +226,7 @@
             if (this.endpoint) {
                 this.isLoading = true;
                 this.filteredOptions = (await this.$wire.call(this.endpoint, search))
+                console.log(this.filteredOptions)
                 this.options = this.filteredOptions.concat(current)
                 this.isLoading = false;
             } else {

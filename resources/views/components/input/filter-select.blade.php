@@ -145,7 +145,9 @@
                         this.search = searchBackup
                     }
                 },
-                unselectAll() { this.selected = this.selected.filter(s => !this.getItems().includes(s)) },
+                unselectAll() { 
+                    this.selected = []
+                },
                 init() {
                     console.log('init')
                     let json = JSON.parse(this.$el.getAttribute('x-json'))
