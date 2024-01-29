@@ -1,8 +1,8 @@
 @php
-/**
- * @name Filter Select
- * @description A filterable select using alpine.
- */
+    /**
+     * @name Filter Select
+     * @description A filterable select using alpine.
+     */
 @endphp
 
 @props([
@@ -53,15 +53,15 @@
     /**
      * @param string size 'xl', 'lg' or 'sm'
      */
-     'size' => 'lg',
-     /**
+    'size' => 'lg',
+    /**
      * @param string error Whether to show an error border on the input
      */
-     'error' => false,
-     /**
+    'error' => false,
+    /**
      * @param bool allowHtml Do not escape the label and show as html
      */
-     'allowHtml' => false,
+    'allowHtml' => false,
 
     /**
      * @param string inputClass String of classes applied to the input element
@@ -75,33 +75,26 @@
     $contentAttributes = isset($content) ? $content->attributes : new Illuminate\View\ComponentAttributeBag();
 @endphp
 
-<div
-    data-sn="input.filter-select"
-    x-data="createFilterSelect(@safe_entangle($attributes->wire("model")))"
-    x-json='@json([
-        'identifier' => $identifier
-    ])'
-    wire:ignore.self
-    wire:key="{{ $attributes->wire("model")->value() }}"
-    {{ $attributes->merge(['class' => '-outer flex flex-col p-3 border space-y-2 border-gray-200 rounded-md shadow-sm'])->whereDoesntStartWith('wire:model') }}
-    >
-    @if($showFilter)
-    <input class="{{ $inputClass }}" x-ref="search" x-model="search" type="text" placeholder="{{ $placeholder }}">
+<div data-sn="input.filter-select" x-data="filterSelect(@safe_entangle($attributes->wire('model')))" x-json='@json([
+    'identifier' => $identifier,
+])' wire:ignore.self wire:key="{{ $attributes->wire('model')->value() }}" {{ $attributes->merge(['class' => '-outer flex flex-col p-3 border space-y-2 border-gray-200 rounded-md shadow-sm'])->whereDoesntStartWith('wire:model') }}>
+    @if ($showFilter)
+        <input class="{{ $inputClass }}" x-ref="search" x-model="search" type="text" placeholder="{{ $placeholder }}">
     @endif
-    @if($showButtons)
-    <div class="flex w-full opacity-50 text-sm">
-        <button type="button" x-show="Array.isArray(selected)" x-on:click.prevent="selectAll">{{ __('Select all') }}</button>
-        <button type="button" class="ml-auto" x-show="Array.isArray(selected)" x-on:click.prevent="unselectAll">{{ __('Deselect all') }}</button>
-    </div>
+    @if ($showButtons)
+        <div class="flex w-full opacity-50 text-sm">
+            <button type="button" x-show="Array.isArray(selected)" x-on:click.prevent="selectAll">{{ __('Select all') }}</button>
+            <button type="button" class="ml-auto" x-show="Array.isArray(selected)" x-on:click.prevent="unselectAll">{{ __('Deselect all') }}</button>
+        </div>
     @endif
 
-    <div x-ref="slot" {{ $contentAttributes->merge(['class' => "max-h-32 overflow-y-auto w-full p-1.5 rounded"]) }}>
-        @if($items !== null)
+    <div x-ref="slot" {{ $contentAttributes->merge(['class' => 'max-h-32 overflow-y-auto w-full p-1.5 rounded']) }}>
+        @if ($items !== null)
             @forelse($items as $key => $value)
-                @if($value['key'] ?? null && $value['label'] ?? null)
-                <x-senna.input.filter-select-item :allowHtml="$allowHtml" :showCheckRadio="$showCheckRadio" :showDeleteButton="$showDeleteButtons" :key="$value['key']" :label="$value['label']" />
+                @if ($value['key'] ?? (null && $value['label'] ?? null))
+                    <x-senna.input.filter-select-item :allowHtml="$allowHtml" :showCheckRadio="$showCheckRadio" :showDeleteButton="$showDeleteButtons" :key="$value['key']" :label="$value['label']" />
                 @else
-                <x-senna.input.filter-select-item :allowHtml="$allowHtml" :showCheckRadio="$showCheckRadio" :showDeleteButton="$showDeleteButtons" :key="$key" :label="$value" />
+                    <x-senna.input.filter-select-item :allowHtml="$allowHtml" :showCheckRadio="$showCheckRadio" :showDeleteButton="$showDeleteButtons" :key="$key" :label="$value" />
                 @endif
             @empty
                 <span>{{ $noItemsText }}</span>
@@ -111,87 +104,87 @@
         @endif
     </div>
 
-    @if($showAddOption)
-    <form class="flex space-x-2 mt-3" x-on:submit.prevent="addValue">
-        <input class="{{ default_input_chrome($size, $error) }}" x-ref="add" x-model="add" type="text" placeholder="{{ $addPlaceholder }}">
-        <x-senna.button  class="shrink-0" type="submit">
-            {{ __("Add") }}
-        </x-senna.button>
-    </form>
+    @if ($showAddOption)
+        <form class="flex space-x-2 mt-3" x-on:submit.prevent="addValue">
+            <input class="{{ default_input_chrome($size, $error) }}" x-ref="add" x-model="add" type="text" placeholder="{{ $addPlaceholder }}">
+            <x-senna.button class="shrink-0" type="submit">
+                {{ __('Add') }}
+            </x-senna.button>
+        </form>
     @endif
 </div>
 
 @once
     @push('senna-ui-scripts')
-    <script>
-        function createFilterSelect(selected) {
-            return {
-                search: '',
-                add: '',
-                visible: [],
-                selected: selected,
-                allNames: ['bike', 'car', 'boat'],
-                selectAll(search = null) { 
-                    this.selected = this.getItems() 
-                },
-                append(search = null) { 
-                    let searchBackup = this.search
-                    if (search) {
-                        this.search = search
-                    }
-                    this.selected = this.selected.concat(this.getItems())
-                        .filter((item, index, self) => self.indexOf(item) === index)
-                    if (search) {
-                        this.search = searchBackup
-                    }
-                },
-                unselectAll() { 
-                    this.selected = []
-                },
-                init() {
-                    console.log('init')
-                    let json = JSON.parse(this.$el.getAttribute('x-json'))
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('filterSelect', (selected) => ({
+                    search: '',
+                    add: '',
+                    visible: [],
+                    selected: selected,
+                    allNames: ['bike', 'car', 'boat'],
+                    selectAll(search = null) {
+                        this.selected = this.getItems()
+                    },
+                    append(search = null) {
+                        let searchBackup = this.search
+                        if (search) {
+                            this.search = search
+                        }
+                        this.selected = this.selected.concat(this.getItems())
+                            .filter((item, index, self) => self.indexOf(item) === index)
+                        if (search) {
+                            this.search = searchBackup
+                        }
+                    },
+                    unselectAll() {
+                        this.selected = []
+                    },
+                    init() {
+                        console.log('init')
+                        let json = JSON.parse(this.$el.getAttribute('x-json'))
 
-                    this.identifierEvent = json.identifier ? json.indentifier + ":" : "";
+                        this.identifierEvent = json.identifier ? json.indentifier + ":" : "";
 
-                    this.$watch('search', search => {
-                        this.filter()
-                    })
-                    this.$watch('selected', selected => {
-                        console.log(selected)
-                    })
-                },
-                // @event livewire wire:filter-select:addValue  When the add button is clicked. Has the value as parameter.
-                // @event js filter-select:addValue  When the add button is clicked. Has the value as parameter.
-                addValue() {
-                    if (this.$wire) {
-                        this.$wire.emit('filter-select:' + this.identifierEvent + 'addValue', this.add)
-                    }
-                    this.$dispatch('filter-select:' + this.identifierEvent + 'addValue', this.add)
+                        this.$watch('search', search => {
+                            this.filter()
+                        })
+                        this.$watch('selected', selected => {
+                            console.log(selected)
+                        })
+                    },
+                    // @event livewire wire:filter-select:addValue  When the add button is clicked. Has the value as parameter.
+                    // @event js filter-select:addValue  When the add button is clicked. Has the value as parameter.
+                    addValue() {
+                        if (this.$wire) {
+                            this.$wire.emit('filter-select:' + this.identifierEvent + 'addValue', this.add)
+                        }
+                        this.$dispatch('filter-select:' + this.identifierEvent + 'addValue', this.add)
 
-                    this.add = ''
-                },
-                // @event livewire filter-select:removeValue  When the remove button is clicked. Has the key as parameter.
-                // @event js filter-select:removeValue  When the remove button is clicked. Has the key as parameter.
-                deleteValue(key) {
-                    if (this.$wire) {
-                        this.$wire.emit('filter-select:' + this.identifierEvent + 'deleteValue', key)
+                        this.add = ''
+                    },
+                    // @event livewire filter-select:removeValue  When the remove button is clicked. Has the key as parameter.
+                    // @event js filter-select:removeValue  When the remove button is clicked. Has the key as parameter.
+                    deleteValue(key) {
+                        if (this.$wire) {
+                            this.$wire.emit('filter-select:' + this.identifierEvent + 'deleteValue', key)
+                        }
+                        this.$dispatch('filter-select:' + this.identifierEvent + 'deleteValue', key)
+                    },
+                    filter() {
+                        this.visible = this.getItems()
+                    },
+                    getItems() {
+                        return Array.from(this.$refs.slot.querySelectorAll('input, [data-sn="input.filter-select-item"]'))
+                            .filter(x => x.textContent.toLowerCase().indexOf(this.search.toLowerCase()) >= 0 ||
+                                x.title.indexOf(this.search.toLowerCase()) >= 0)
+                            // .map(x => {console.log(x.textContent.trim(), x.querySelector('[value]').value); return x})
+                            .map(x => x.querySelector('[value]')?.value)
+                            .filter(x => x)
                     }
-                    this.$dispatch('filter-select:' + this.identifierEvent + 'deleteValue', key)
-                },
-                filter() {
-                    this.visible = this.getItems()
-                },
-                getItems() {
-                    return Array.from(this.$refs.slot.querySelectorAll('input, [data-sn="input.filter-select-item"]'))
-                        .filter(x => x.textContent.toLowerCase().indexOf(this.search.toLowerCase()) >= 0 ||
-                                     x.title.indexOf(this.search.toLowerCase()) >= 0)
-                        // .map(x => {console.log(x.textContent.trim(), x.querySelector('[value]').value); return x})
-                        .map(x => x.querySelector('[value]')?.value)
-                        .filter(x => x)
-                }
-            }
-        }
-    </script>
+                }))
+            })
+        </script>
     @endpush
 @endonce
