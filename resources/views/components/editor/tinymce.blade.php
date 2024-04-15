@@ -6,8 +6,8 @@
     'value' => null
 ])
 
-<div>
-    <textarea x-ref="textarea" x-data="initTinymce(@safe_entangle($attributes->wire('model')), @js($options))">
+<div wire:ignore x-data="tinymce(@safe_entangle($attributes->wire('model')), @js($options))">
+    <textarea x-ref="textarea" >
 
     </textarea>
 </div>
@@ -25,9 +25,8 @@
 
         <script>
             const regexLink = () => /(?!.*(?:youtube\.com|youtu\.be|vimeo\.com))(?:[A-Za-z][A-Za-z\d.+-]{0,14}:\/\/(?:[-.~*+=!&;:'%@?^${}(),\w]+@)?|www\.|[-;:&=+$,.\w]+@)[A-Za-z\d-]+(?:\.[A-Za-z\d-]+)*(?::\d+)?(?:\/(?:[-.~*+=!;:'%@$(),\/\w]*[-~*+=%@$()\/\w])?)?(?:\?(?:[-.~*+=!&;:'%@?^${}(),\/\w]+))?(?:#(?:[-.~*+=!&;:'%@?^${}(),\/\w]+))?/g;
-
-            function initTinymce(value, options) {
-                return {
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('tinymce', (value, options) => ({
                     currentValue: value,
                     init() {
                         let tiny = tinymce.init({
@@ -57,7 +56,6 @@
                                 })
 
                                 function putCursorToEnd() {
-                                    debugger
                                     editor.selection.select(editor.getBody(), true);
                                     editor.selection.collapse(false);
                                 }
@@ -71,16 +69,13 @@
                                 });
 
                                 editor.on('blur', (ev) => {
-                                    console.log('BLUR')
                                     this.currentValue = editor.getContent();
                                 })
                             }
                         });
                     }
-                }
-            }
-
-
+                }))
+            })
       </script>
     @endpush
 @endonce
