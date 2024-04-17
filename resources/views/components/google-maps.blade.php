@@ -53,7 +53,6 @@
         {{-- maxZoom:  @entangleProp('maxZoom'), --}}
         infoWindow: null,
         init() {
-            console.log(this.markers)
             if (typeof Alpine.mapComponents === 'undefined') {
                 Alpine.mapComponents = [];
             }

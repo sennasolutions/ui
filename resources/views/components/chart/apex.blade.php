@@ -113,12 +113,19 @@
                         if (formatter) {
                             let prepend = '';
 
-
                             for (let key in helpers) {
                                 prepend += `var ${key} = ${helpers[key].toString()};`
                             }
 
                             return new Function('x', prepend + 'return \'\' + ' + formatter)(xObject)
+                        }
+
+                        if (!formatter && conf.chart.type == 'pie') {
+                            // append the percentage
+                            let total = series.reduce((a, b) => a + b, 0)
+                            let percentage = x / total
+
+                            return `${x} (${helpers.percentage(percentage)})`
                         }
 
                         return xObject
@@ -164,7 +171,7 @@
                                     ...conf.chart ?? {},
                                     events: {
                                         click: (event, chartContext, { seriesIndex, dataPointIndex }) => {
-                                            this.onChartClick(event, chartContext, { seriesIndex, dataPointIndex })
+                                            // this.onChartClick(event, chartContext, { seriesIndex, dataPointIndex })
                                         },
                                     }
                                 }
