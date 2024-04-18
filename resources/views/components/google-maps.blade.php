@@ -23,7 +23,7 @@
     ],
     'markers' => [
         [
-            'title' => 'hey',
+            'content' => 'hey',
             'position' => [
                 'lat' => 51.2,
                 'lng' => 5.4,
