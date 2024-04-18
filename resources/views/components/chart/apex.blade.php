@@ -44,8 +44,6 @@
                             this.initialized = true
                             this.parseApex();
 
-                            console.log(this.options)
-
                             this.chart = new ApexCharts(this.$refs.chart, this.options)
 
                             Apex.chart = {
@@ -84,7 +82,10 @@
                         let helpers = this.setupHelpers({})
 
                         let formatter = flatSeries ? conf.insight?.formatters : conf.insight?.formatters[seriesIndex] ?? null;
+                        formatter = formatter ?? conf.insight?.raw_formatters?.popover ?? null;
+
                         let series = conf.series
+
 
                         function isNumeric(n) {
                             return !isNaN(parseFloat(n)) && isFinite(n);
@@ -108,6 +109,10 @@
 
                                 xObject[serie.name] = data
                             })
+
+                            let serie = series[seriesIndex]
+
+                            xObject.current = serie.data[dataPointIndex] ?? null
                         }
 
                         if (formatter) {
@@ -116,6 +121,8 @@
                             for (let key in helpers) {
                                 prepend += `var ${key} = ${helpers[key].toString()};`
                             }
+
+                            {{-- console.log(obj, xObject) --}}
 
                             return new Function('x', prepend + 'return \'\' + ' + formatter)(xObject)
                         }

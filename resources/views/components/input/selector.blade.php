@@ -101,6 +101,8 @@
         _placeholder: null,
 
         init() {
+            this.options = Array.isArray(this.options) ? this.options : Object.values(this.options)
+
             this.refreshFilteredOptions(this.endpoint ? null : this.search)
 
             if (this.multiple && this.value === null) {
@@ -329,7 +331,7 @@
             </template> 
 
             {{-- Search input --}}
-            <input {{ $attributes->namespace('search')->whereDoesntStartWith("wire:")->merge(['class' => '!outline-none my-1 mx-1 flex-grow w-1 !ring-0 !border-none !p-0']) }} 
+            <input {{ $attributes->namespace('search')->whereDoesntStartWith("wire:")->merge(['class' => '!outline-none my-1 bg-transparent mx-1 flex-grow w-1 !ring-0 !border-none !p-0']) }} 
                 type="text" 
                 x-ref="search" 
                 x-model="search" 
