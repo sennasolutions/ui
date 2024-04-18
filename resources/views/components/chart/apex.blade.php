@@ -156,8 +156,10 @@
                         element.style.top = '50%'
                         element.style.left = '50%'
                         element.style.transform = 'translate(-50%, -50%)'
-                        element.style.width = '300px'
-                        element.style.height = '300px'
+                        element.style.maxWidth = '650px'
+                        element.style.maxHeight = '380px'
+                        element.style.width = '100%'
+                        element.style.height = '100%'
 
                         document.body.appendChild(element)
                         
