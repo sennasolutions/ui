@@ -125,10 +125,6 @@
                                         formatter: (value, obj) => {
                                             return this.tooltipFormatter(value, obj)
                                         }
-                                    },
-                                    fixed: {
-                                        enabled: true,
-                                        position: 'topRight',
                                     }
                                 },
                                 chart: {
