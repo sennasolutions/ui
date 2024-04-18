@@ -67,75 +67,26 @@
 
                         this.apexParsed = Object.assign({}, apex)
                     },
-                    getDatapoint(conf, index, seriesIndex = 0) {
+                    getDatapoint(conf, dataPointIndex, seriesIndex = 0) {
                         let flatSeries = conf.chart.type == 'pie';
                         let data = flatSeries ? conf.series : conf.series[seriesIndex].data;
+                        let dataPoint = data[dataPointIndex] ?? null;
 
-                        return data[dataPointIndex] ?? null;
+                        let otherDataPointsAsObject = flatSeries ? {} : conf.series.reduce((acc, serie) => {
+                            acc[serie.name] = serie.data[dataPointIndex]
+                            return acc
+                        }, {})
+
+                        return {
+                            name: data.name ?? null,
+                            ...otherDataPointsAsObject,
+                            ...dataPoint,
+                            value: typeof dataPoint === 'object' ? (dataPoint.y ?? dataPoint.x)  : dataPoint,
+                            toString() { return this.value}
+                        }
                     },
                     tooltipFormatter(x, obj) {
-                        let seriesIndex = obj?.seriesIndex ?? 0;
-                        let dataPointIndex = obj?.dataPointIndex ?? 0;
-                        let w = obj?.w ?? null;
-                        let conf = this.apexParsed
-                        let flatSeries = conf.chart.type == 'pie';
-                        let helpers = this.setupHelpers({})
-
-                        let formatter = flatSeries ? conf.insight?.formatters : conf.insight?.formatters[seriesIndex] ?? null;
-                        formatter = formatter ?? conf.insight?.raw_formatters?.popover ?? null;
-
-                        let series = conf.series
-
-
-                        function isNumeric(n) {
-                            return !isNaN(parseFloat(n)) && isFinite(n);
-                        }
-
-                        // Lets the user write 
-                        let xObject = {
-                            x: x,
-                            toString() {
-                                return this.x
-                            }
-                        };
-
-                        if (!flatSeries) {
-                            series.forEach((serie) => {
-                                let data =  serie.data[dataPointIndex] ?? null
-
-                                if (isNumeric(data)) {
-                                    data = Number(data)
-                                }
-
-                                xObject[serie.name] = data
-                            })
-
-                            let serie = series[seriesIndex]
-
-                            xObject.current = serie.data[dataPointIndex] ?? null
-                        }
-
-                        if (formatter) {
-                            let prepend = '';
-
-                            for (let key in helpers) {
-                                prepend += `var ${key} = ${helpers[key].toString()};`
-                            }
-
-                            {{-- console.log(obj, xObject) --}}
-
-                            return new Function('x', prepend + 'return \'\' + ' + formatter)(xObject)
-                        }
-
-                        if (!formatter && conf.chart.type == 'pie') {
-                            // append the percentage
-                            let total = series.reduce((a, b) => a + b, 0)
-                            let percentage = x / total
-
-                            return `${x} (${helpers.percentage(percentage)})`
-                        }
-
-                        return xObject
+                        return this.handleFormatter('hover', this.getDatapoint(this.apexParsed, obj.dataPointIndex, obj.seriesIndex))
                     },
                     onChartClick(event, chartContext, { seriesIndex, dataPointIndex }) {
                         if (this.$wire) {
@@ -147,6 +98,8 @@
                     },
                     get options() {
                         let conf = JSON.parse(JSON.stringify(this.apexParsed))
+
+                        console.log(conf)
 
                         let config = {
                             grid: {
@@ -172,13 +125,21 @@
                                         formatter: (value, obj) => {
                                             return this.tooltipFormatter(value, obj)
                                         }
+                                    },
+                                    fixed: {
+                                        enabled: true,
+                                        position: 'topRight',
                                     }
                                 },
                                 chart: {
                                     ...conf.chart ?? {},
                                     events: {
                                         click: (event, chartContext, { seriesIndex, dataPointIndex }) => {
-                                            // this.onChartClick(event, chartContext, { seriesIndex, dataPointIndex })
+                                            let popupFormatter = conf.insight?.raw_formatters?.popup ?? null
+
+                                            if (popupFormatter) {
+                                                this.handlePopup(this.getDatapoint(conf, dataPointIndex, seriesIndex))
+                                            }
                                         },
                                     }
                                 }
@@ -186,6 +147,38 @@
                         }
 
                         return config;
+                    },
+                    handlePopup(data) {
+                        console.log(data)
+                        let element = document.createElement('div');
+                        element.className = 'fixed border bg-white overflow-y-auto p-5 rounded-lg shadow-2xl z-50'
+                        element.innerHTML = this.handleFormatter('popup', data)
+                        element.style.top = '50%'
+                        element.style.left = '50%'
+                        element.style.transform = 'translate(-50%, -50%)'
+                        element.style.width = '300px'
+                        element.style.height = '300px'
+
+                        document.body.appendChild(element)
+                        
+                        // once
+                        setTimeout(() => {
+                            document.body.addEventListener('click', function handler() {
+                                element.remove()
+                                document.body.removeEventListener('click', handler)
+                            })
+                        }, 0)
+                    },
+                    handleFormatter(type = 'popup', data) {
+                        let conf = JSON.parse(JSON.stringify(this.apexParsed))
+                        let formatter = conf.insight?.raw_formatters[type] ?? 'x';
+
+                        let helpers = this.setupHelpers({})
+                        let prepend = Object.keys(helpers).map((key) => {
+                            return `var ${key} = ${helpers[key].toString()};`
+                        }).join('')
+
+                        return new Function('x', prepend + 'return \'\' + ' + formatter)(data)
                     },
                     setupHelpers(obj = {}) {
                         obj.percentage = (ratio) => {

@@ -22,12 +22,12 @@
 
 ],
 'markers' => [
-[
-'title' => 'hey',
-'position' => [
-'lat' => 51.2,
-'lng' => 5.4,
-]
+    [
+    'title' => 'hey',
+    'position' => [
+        'lat' => 51.2,
+        'lng' => 5.4,
+    ]
 ]
 ]
 ])
@@ -104,8 +104,7 @@
                   
                     // Request needed libraries.
                     googleMap = new Map(this.$map, {
-                        center: { lat: 37.4239163, lng: -122.0947209 },
-                        zoom: 14,
+                        ...this.config,
                         mapId: Math.random().toString(36).substring(7),
                     });
 
