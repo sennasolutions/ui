@@ -69,16 +69,17 @@
                     },
                     getDatapoint(conf, dataPointIndex, seriesIndex = 0) {
                         let flatSeries = conf.chart.type == 'pie';
-                        let data = flatSeries ? conf.series : conf.series[seriesIndex].data;
+                        let serie = flatSeries ? conf.insight.seriesWithHiddenData : conf.insight.seriesWithHiddenData[seriesIndex];
+                        let data = flatSeries ? serie : serie.data;
                         let dataPoint = data[dataPointIndex] ?? null;
 
-                        let otherDataPointsAsObject = flatSeries ? {} : conf.series.reduce((acc, serie) => {
+                        let otherDataPointsAsObject = flatSeries ? {} : conf.insight.seriesWithHiddenData.reduce((acc, serie) => {
                             acc[serie.name] = serie.data[dataPointIndex]
                             return acc
                         }, {})
 
                         return {
-                            name: data.name ?? null,
+                            name: serie.name ?? null,
                             ...otherDataPointsAsObject,
                             ...dataPoint,
                             value: typeof dataPoint === 'object' ? (dataPoint.y ?? dataPoint.x)  : dataPoint,
@@ -98,8 +99,6 @@
                     },
                     get options() {
                         let conf = JSON.parse(JSON.stringify(this.apexParsed))
-
-                        console.log(conf)
 
                         let config = {
                             grid: {
@@ -131,7 +130,7 @@
                                     ...conf.chart ?? {},
                                     events: {
                                         click: (event, chartContext, { seriesIndex, dataPointIndex }) => {
-                                            let popupFormatter = conf.insight?.raw_formatters?.popup ?? null
+                                            let popupFormatter = conf.insight?.rawFormatters?.popup ?? null
 
                                             if (popupFormatter) {
                                                 this.handlePopup(this.getDatapoint(conf, dataPointIndex, seriesIndex))
@@ -145,7 +144,6 @@
                         return config;
                     },
                     handlePopup(data) {
-                        console.log(data)
                         let element = document.createElement('div');
                         element.className = 'fixed border bg-white overflow-y-auto p-5 rounded-lg shadow-2xl z-50'
                         element.innerHTML = this.handleFormatter('popup', data)
@@ -169,7 +167,7 @@
                     },
                     handleFormatter(type = 'popup', data) {
                         let conf = JSON.parse(JSON.stringify(this.apexParsed))
-                        let formatter = conf.insight?.raw_formatters[type] ?? 'x';
+                        let formatter = conf.insight?.rawFormatters[type] ?? 'x';
 
                         let helpers = this.setupHelpers({})
                         let prepend = Object.keys(helpers).map((key) => {
@@ -179,16 +177,18 @@
                         return new Function('x', prepend + 'return \'\' + ' + formatter)(data)
                     },
                     setupHelpers(obj = {}) {
-                        obj.percentage = (ratio) => {
-                            return Math.round((ratio) * 100) + '%'
+                        obj.percentage = (value) => {
+                            value = parseFloat(value.toString())
+                            return Math.round((value) * 100) + '%'
                         }
 
                         obj.euro = (value, digits = 0) => {
-                            // 1000.00 => 1.000,00
+                            value = parseFloat(value.toString())
                             return '€' + value.toLocaleString('nl-NL', { minimumFractionDigits: digits, maximumFractionDigits: digits })
                         }
 
                         obj.dollar = (value) => {
+                            value = parseFloat(value.toString())
                             return '$' + value
                         }
 
