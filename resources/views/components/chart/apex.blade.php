@@ -185,7 +185,12 @@
 
                         obj.euro = (value, digits = 0) => {
                             value = parseFloat(value.toString())
-                            return '€' + value.toLocaleString('nl-NL', { minimumFractionDigits: digits, maximumFractionDigits: digits })
+                            value = '€' + value.toLocaleString('nl-NL', { minimumFractionDigits: digits, maximumFractionDigits: digits })
+
+                            // replace  . by ''
+                            // value = value.replace(/\./g, '')
+
+                            return value
                         }
 
                         obj.dollar = (value) => {
