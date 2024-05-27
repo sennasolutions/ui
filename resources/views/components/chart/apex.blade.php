@@ -69,8 +69,9 @@
                     },
                     getDatapoint(conf, dataPointIndex, seriesIndex = 0) {
                         let flatSeries = conf.chart.type == 'pie';
-                        let serie = flatSeries ? conf.insight.seriesWithHiddenData : conf.insight.seriesWithHiddenData[seriesIndex];
-                        let data = flatSeries ? serie : serie.data;
+                        // let serie = flatSeries ? conf.insight.seriesWithHiddenData : conf.insight.seriesWithHiddenData[seriesIndex];
+                        let serie = flatSeries ? conf.insight.seriesWithHiddenData[0] : conf.insight.seriesWithHiddenData[seriesIndex];
+                        let data = serie.data;
                         let dataPoint = data[dataPointIndex] ?? null;
 
                         let otherDataPointsAsObject = flatSeries ? {} : conf.insight.seriesWithHiddenData.reduce((acc, serie) => {
