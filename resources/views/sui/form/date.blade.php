@@ -151,8 +151,6 @@
                             ...this.config
                         };
 
-                        console.log(config)
-
                         if (this.instance) {
                             this.instance.destroy()
                         }
