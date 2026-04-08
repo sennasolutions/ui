@@ -46,7 +46,15 @@
     config: @entangleProp('config'),
     markers: @entangleProp('markers')
     })">
-    <div wire:ignore x-ref="map" class="sn-google-maps" {{ $attributes->namespace('map') }} ></div>
+    <div wire:ignore x-ref="map" class="sn-google-maps" {{ $attributes->namespace('map') }} x-show="!consentNeeded"></div>
+    <div x-show="consentNeeded" x-cloak class="sn-google-maps flex items-center justify-center bg-gray-100 rounded">
+        <div class="text-center p-6 text-gray-500">
+            <p>{{ __('The map cannot be displayed because cookies have not been accepted.') }}</p>
+            <button type="button" x-on:click="if(window.CookieFirst) CookieFirst.openPanel()" class="mt-2 text-indigo-600 hover:text-indigo-800 underline text-sm">
+                {{ __('Manage cookie settings') }}
+            </button>
+        </div>
+    </div>
 
 </div>
 
@@ -84,13 +92,29 @@
             return {
                 config,
                 markers,
+                consentNeeded: false,
                 $map: null,
                 instance: null,
                 infoWindow: null,
                 google: {},
                 async init() {
-                    this.google.maps = await google.maps.importLibrary("maps");
-                    this.google.marker = await google.maps.importLibrary("marker");
+                    if (typeof google === 'undefined' || !google.maps || !google.maps.importLibrary) {
+                        this.consentNeeded = true;
+                        return;
+                    }
+
+                    try {
+                        const withTimeout = (promise, ms) => Promise.race([
+                            promise,
+                            new Promise((_, reject) => setTimeout(() => reject(), ms))
+                        ]);
+
+                        this.google.maps = await withTimeout(google.maps.importLibrary("maps"), 3000);
+                        this.google.marker = await withTimeout(google.maps.importLibrary("marker"), 3000);
+                    } catch(e) {
+                        this.consentNeeded = true;
+                        return;
+                    }
 
                     this.$map = this.$refs.map
 

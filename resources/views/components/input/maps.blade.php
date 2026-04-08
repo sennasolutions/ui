@@ -82,7 +82,16 @@
         </x-senna.input.group>
     </div>
     @if($showMap)
-    <div wire:ignore x-ref="map" class="sn-input-maps-map" ></div>
+    <div wire:ignore x-ref="map" class="sn-input-maps-map" x-show="!consentNeeded"></div>
+    <div x-show="consentNeeded" x-cloak class="sn-input-maps-map flex items-center justify-center bg-gray-100 rounded-b">
+        <div class="text-center p-6 text-gray-500">
+            <x-senna.icon class="w-8 h-8 mx-auto mb-3 text-gray-400" name="hs-map-pin"></x-senna.icon>
+            <p>{{ __('The map cannot be displayed because cookies have not been accepted.') }}</p>
+            <button type="button" x-on:click="if(window.CookieFirst) CookieFirst.openPanel()" class="mt-2 text-indigo-600 hover:text-indigo-800 underline text-sm">
+                {{ __('Manage cookie settings') }}
+            </button>
+        </div>
+    </div>
     @endif
 </div>
 
@@ -107,15 +116,10 @@
                 markers: [],
                 mapsConfig: @entangleProp('mapsConfig'),
                 autocompleteConfig: @entangleProp('autoCompleteConfig'),
+                consentNeeded: false,
                 $map: null,
                 $search: null,
                 init() {
-                    console.log('init value', this.value)
-                    
-                    // let json = JSON.parse(this.$el.getAttribute('x-json'))
-                    // this.mapsConfig = json.mapsConfig
-                    // this.autocompleteConfig = json.autocompleteConfig
-
                     if (typeof Alpine.mapComponents === 'undefined') {
                         Alpine.mapComponents = [];
                     }
@@ -125,6 +129,8 @@
 
                     if (window.mapIsLoaded) {
                         this.onReady();
+                    } else {
+                        this.consentNeeded = true;
                     }
 
                     this.$watch('value', (newValue) => {
@@ -134,13 +140,17 @@
                     Alpine.mapComponents.push(this);
                 },
                 onReady() {
-                    if (this.$map) {
-                        this.map = new google.maps.Map(this.$map, {...this.mapsConfig});
-                    }
+                    this.consentNeeded = false;
 
-                    if (this.value) {
-                        this.updateValue(this.value)
-                    }
+                    this.$nextTick(() => {
+                        if (this.$map) {
+                            this.map = new google.maps.Map(this.$map, {...this.mapsConfig});
+                        }
+
+                        if (this.value) {
+                            this.updateValue(this.value)
+                        }
+                    });
 
                     this.initSearch()
                 },
