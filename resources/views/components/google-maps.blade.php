@@ -50,8 +50,8 @@
     <div x-show="consentNeeded" x-cloak class="sn-google-maps flex items-center justify-center bg-gray-100 rounded">
         <div class="text-center p-6 text-gray-500">
             <p>{{ __('The map cannot be displayed because cookies have not been accepted.') }}</p>
-            <button type="button" x-on:click="if(window.CookieFirst) CookieFirst.openPanel()" class="mt-2 text-indigo-600 hover:text-indigo-800 underline text-sm">
-                {{ __('Manage cookie settings') }}
+            <button type="button" x-on:click="if(window.CookieFirst) CookieFirst.acceptAllCategories()" class="mt-3 inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700">
+                {{ __('Accept cookies') }}
             </button>
         </div>
     </div>
