@@ -87,8 +87,11 @@
         <div class="text-center p-6 text-gray-500">
             <x-senna.icon class="w-8 h-8 mx-auto mb-3 text-gray-400" name="hs-map-pin"></x-senna.icon>
             <p>{{ __('The map cannot be displayed because cookies have not been accepted.') }}</p>
-            <button type="button" x-on:click="if(window.CookieFirst) CookieFirst.acceptAllCategories()" class="mt-3 inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700">
+            <x-senna.button.primary tag="button" type="button" size="sm" class="mt-3" x-on:click="if(window.CookieFirst) CookieFirst.acceptAllCategories()">
                 {{ __('Accept cookies') }}
+            </x-senna.button.primary>
+            <button type="button" x-on:click="if(window.CookieFirst) CookieFirst.openPanel()" class="block mx-auto mt-2 text-gray-400 hover:text-gray-600 underline text-xs">
+                {{ __('Manage cookie settings') }}
             </button>
         </div>
     </div>
