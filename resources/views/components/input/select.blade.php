@@ -83,7 +83,8 @@
                     this.setValue(this.currentValue)
 
                     if (window.is_lwd) {
-                        Livewire.hook('message.processed', (msg, component) => {
+                        // Livewire 4: replaces the old v2 per-message hook; 'morphed' fires after a component's DOM is updated.
+                        Livewire.hook('morphed', ({ component }) => {
                             if (component.id === @this.__instance.id) {
                                 // On update reinitialise
                                 this.initChoices();

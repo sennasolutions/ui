@@ -28,7 +28,7 @@ abstract class Autocomplete extends Component
 
     public function updatedSelected($id)
     {
-        $this->emitSelf('valueSelected', $id);
+        $this->dispatch('valueSelected', $id)->self();
     }
 
     public function updatedSearch()

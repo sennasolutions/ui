@@ -70,7 +70,7 @@ class UIBladeDirectives
 
         return <<<EOT
             <?php if(\$attributes && \$attributes->has('wire.method:$param') ): ?>
-                window.livewire.find('{{ \$_instance->id }}').{{ \$attributes->get('wire.method:$param') }}
+                window.Livewire.find('{{ \$_instance->getId() }}').{{ \$attributes->get('wire.method:$param') }}
             <?php endif; ?>
         EOT;
     }
@@ -106,8 +106,8 @@ class UIBladeDirectives
         // Check if Livewire is available
         if (class_exists(Livewire::class)) {
             // The regular entangle directive
-            $entangled = \Livewire\LivewireBladeDirectives::entangle($expression);
-            $entangledModel = \Livewire\LivewireBladeDirectives::entangle("\$attributes->wire('model')");
+            $entangled = static::compileEntangle($expression);
+            $entangledModel = static::compileEntangle("\$attributes->wire('model')");
 
             if ($type === null) { // 'somethinglese'
                 return $entangled;
@@ -130,6 +130,24 @@ class UIBladeDirectives
 
         // Embed the scoped variable in js
         return static::js($fallbackExpression);
+    }
+
+    /**
+     * Compile an entangle expression to JS.
+     *
+     * Livewire 4 no longer ships \Livewire\LivewireBladeDirectives; this replicates
+     * the compiled output of the v4 @entangle directive (see
+     * \Livewire\Features\SupportEntangle\SupportEntangle). Note: in v4 entangle is
+     * deferred by default; the `.live` modifier on the wire:* attribute makes it live.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected static function compileEntangle($expression) : string
+    {
+        return <<<EOT
+        <?php if ((object) ({$expression}) instanceof \Livewire\WireDirective) : ?>window.Livewire.find('{{ \$__livewire->getId() }}').entangle('{{ {$expression}->value() }}'){{ {$expression}->hasModifier('live') ? '.live' : '' }}<?php else : ?>window.Livewire.find('{{ \$__livewire->getId() }}').entangle('{{ {$expression} }}')<?php endif; ?>
+        EOT;
     }
 
     /**

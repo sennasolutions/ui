@@ -82,7 +82,7 @@
                                     icon: 'image',
                                     tooltip: 'Media invoegen',
                                     onAction: () => {
-                                        Livewire.emit(mediaId + ':show');
+                                        Livewire.dispatch(mediaId + ':show');
                                     }
                                 });
 
@@ -128,7 +128,8 @@
                             }
                         });
 
-                        Livewire.on(mediaId + ':editor:insert', (id, url, hash, type) => {
+                        {{-- Livewire 4: listener callbacks receive a single params argument; the media-manager dispatches positional params, so destructure the array. --}}
+                        Livewire.on(mediaId + ':editor:insert', ([id, url, hash, type]) => {
                             if (component.editorInstance) {
                                 var html = '';
                                 if (type === 'video-link') {

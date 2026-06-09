@@ -158,7 +158,8 @@
                     // @event js filter-select:addValue  When the add button is clicked. Has the value as parameter.
                     addValue() {
                         if (this.$wire) {
-                            this.$wire.emit('filter-select:' + this.identifierEvent + 'addValue', this.add)
+                            // Livewire 4: JS dispatch uses named params; `val` matches the listener method's parameter name.
+                            this.$wire.dispatch('filter-select:' + this.identifierEvent + 'addValue', { val: this.add })
                         }
                         this.$dispatch('filter-select:' + this.identifierEvent + 'addValue', this.add)
 
@@ -168,7 +169,8 @@
                     // @event js filter-select:removeValue  When the remove button is clicked. Has the key as parameter.
                     deleteValue(key) {
                         if (this.$wire) {
-                            this.$wire.emit('filter-select:' + this.identifierEvent + 'deleteValue', key)
+                            // Livewire 4: JS dispatch uses named params; `key` matches the listener method's parameter name.
+                            this.$wire.dispatch('filter-select:' + this.identifierEvent + 'deleteValue', { key: key })
                         }
                         this.$dispatch('filter-select:' + this.identifierEvent + 'deleteValue', key)
                     },
