@@ -105,8 +105,11 @@ class UIBladeDirectives
 
         // Check if Livewire is available
         if (class_exists(Livewire::class)) {
-            // The regular entangle directive
-            $entangled = static::compileEntangle($expression);
+            // Custom wire:props (wire:value, wire:config, ...) waren in Livewire 2
+            // live by default; v4 default is deferred. v2LiveDefault herstelt dat
+            // (.defer-modifier blijft opt-out). wire:model volgt v4-semantiek —
+            // die attributen zijn al door de wire:model-codemod genormaliseerd.
+            $entangled = static::compileEntangle($expression, v2LiveDefault: true);
             $entangledModel = static::compileEntangle("\$attributes->wire('model')");
 
             if ($type === null) { // 'somethinglese'
@@ -140,13 +143,23 @@ class UIBladeDirectives
      * \Livewire\Features\SupportEntangle\SupportEntangle). Note: in v4 entangle is
      * deferred by default; the `.live` modifier on the wire:* attribute makes it live.
      *
+     * With $v2LiveDefault (custom wire:props en directe string-entangles): Livewire 2
+     * was live by default met .defer als opt-out — zonder modifier wordt het .live,
+     * met .defer-modifier deferred (v4 plain).
+     *
      * @param string $expression
      * @return string
      */
-    protected static function compileEntangle($expression) : string
+    protected static function compileEntangle($expression, bool $v2LiveDefault = false) : string
     {
+        $modifier = $v2LiveDefault
+            ? "{{ {$expression}->hasModifier('defer') ? '' : '.live' }}"
+            : "{{ {$expression}->hasModifier('live') ? '.live' : '' }}";
+
+        $directString = $v2LiveDefault ? '.live' : '';
+
         return <<<EOT
-        <?php if ((object) ({$expression}) instanceof \Livewire\WireDirective) : ?>window.Livewire.find('{{ \$__livewire->getId() }}').entangle('{{ {$expression}->value() }}'){{ {$expression}->hasModifier('live') ? '.live' : '' }}<?php else : ?>window.Livewire.find('{{ \$__livewire->getId() }}').entangle('{{ {$expression} }}')<?php endif; ?>
+        <?php if ((object) ({$expression}) instanceof \Livewire\WireDirective) : ?>window.Livewire.find('{{ \$__livewire->getId() }}').entangle('{{ {$expression}->value() }}'){$modifier}<?php else : ?>window.Livewire.find('{{ \$__livewire->getId() }}').entangle('{{ {$expression} }}'){$directString}<?php endif; ?>
         EOT;
     }
 
